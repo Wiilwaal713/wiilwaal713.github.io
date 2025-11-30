@@ -900,10 +900,10 @@
                 </button>
                 <ul class="nav-links" id="navLinks">
                     <li><a onclick="showPage('home')" class="nav-home">الرئيسية</a></li>
-                    <li><a onclick="showPage('services')" class="nav-services">الخدمات</a></li>
-                    <li><a onclick="showPage('about')" class="nav-about">من نحن</a></li>
-                    <li><a onclick="showPage('appointments')" class="nav-appointments">المواعيد</a></li>
-                    <li><a onclick="showPage('contact')" class="nav-contact">اتصل بنا</a></li>
+                    <li><a onclick="scrollToSection('services')" class="nav-services">الخدمات</a></li>
+                    <li><a onclick="scrollToSection('about')" class="nav-about">من نحن</a></li>
+                    <li><a onclick="scrollToSection('appointments')" class="nav-appointments">المواعيد</a></li>
+                    <li><a onclick="scrollToSection('contact')" class="nav-contact">اتصل بنا</a></li>
                     <li class="lang-switch-li-mobile"><button class="lang-switch" onclick="toggleLanguage()"><i class="fas fa-globe"></i> English</button></li>
                 </ul>
                 <button class="lang-switch lang-switch-desktop" onclick="toggleLanguage()"><i class="fas fa-globe"></i> English</button>
@@ -1573,9 +1573,9 @@
                         <h3 class="footer-links-title">روابط سريعة</h3>
                         <ul>
                             <li><a onclick="showPage('home')" class="footer-home">الرئيسية</a></li>
-                            <li><a onclick="showPage('services')" class="footer-services">الخدمات</a></li>
-                            <li><a onclick="showPage('about')" class="footer-about">من نحن</a></li>
-                            <li><a onclick="showPage('contact')" class="footer-contact">اتصل بنا</a></li>
+                            <li><a onclick="scrollToSection('services')" class="footer-services">الخدمات</a></li>
+                            <li><a onclick="scrollToSection('about')" class="footer-about">من نحن</a></li>
+                            <li><a onclick="scrollToSection('contact')" class="footer-contact">اتصل بنا</a></li>
                         </ul>
                     </div>
                 </div>
@@ -2228,333 +2228,357 @@
         };
 
         let currentLang = 'ar';
+        let currentPage = 'home';
 
-        function toggleLanguage() {
-            currentLang = currentLang === 'en' ? 'ar' : 'en';
+        // Initialize page on load
+        function init() {
+            // Load language preference from localStorage
+            const savedLang = localStorage.getItem('wassl-language');
+            if (savedLang) {
+                currentLang = savedLang;
+                setLanguage(currentLang);
+            }
+
+            // Load page preference from localStorage
+            const savedPage = localStorage.getItem('wassl-currentPage');
+            if (savedPage) {
+                currentPage = savedPage;
+                showPage(currentPage);
+            }
+        }
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('wassl-language', lang);
             const html = document.documentElement;
-            const lang = translations[currentLang];
+            const langData = translations[lang];
 
             // Update language and direction
-            html.lang = currentLang;
-            html.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+            html.lang = lang;
+            html.dir = lang === 'ar' ? 'rtl' : 'ltr';
 
             // Update all text content
-            updateTextContent('.nav-home', lang.navHome);
-            updateTextContent('.nav-services', lang.navServices);
-            updateTextContent('.nav-about', lang.navAbout);
-            updateTextContent('.nav-appointments', lang.navAppointments);
-            updateTextContent('.nav-contact', lang.navContact);
+            updateTextContent('.nav-home', langData.navHome);
+            updateTextContent('.nav-services', langData.navServices);
+            updateTextContent('.nav-about', langData.navAbout);
+            updateTextContent('.nav-appointments', langData.navAppointments);
+            updateTextContent('.nav-contact', langData.navContact);
             
             document.querySelectorAll('.lang-switch').forEach(btn => {
                 const span = btn.querySelector('span') || btn;
                 if (span.tagName === 'SPAN') {
-                    span.textContent = lang.langBtn;
+                    span.textContent = langData.langBtn;
                 } else {
-                    btn.innerHTML = `<i class="fas fa-globe"></i> ${lang.langBtn}`;
+                    btn.innerHTML = `<i class="fas fa-globe"></i> ${langData.langBtn}`;
                 }
             });
             
-            updateTextContent('.hero-title', lang.heroTitle);
-            updateTextContent('.hero-subtitle', lang.heroSubtitle);
-            updateButtonContent('.cta-text', lang.ctaText);
-            updateTextContent('.services-title', lang.servicesTitle);
-            updateTextContent('.services-subtitle', lang.servicesSubtitle);
+            updateTextContent('.hero-title', langData.heroTitle);
+            updateTextContent('.hero-subtitle', langData.heroSubtitle);
+            updateButtonContent('.cta-text', langData.ctaText);
+            updateTextContent('.services-title', langData.servicesTitle);
+            updateTextContent('.services-subtitle', langData.servicesSubtitle);
             
             // Update service cards
-            updateTextContent('.service1-title', lang.service1Title);
-            updateTextContent('.service1-desc', lang.service1Desc);
-            updateButtonContent('.service1-link', lang.service1Link);
+            updateTextContent('.service1-title', langData.service1Title);
+            updateTextContent('.service1-desc', langData.service1Desc);
+            updateButtonContent('.service1-link', langData.service1Link);
             
-            updateTextContent('.service2-title', lang.service2Title);
-            updateTextContent('.service2-desc', lang.service2Desc);
-            updateButtonContent('.service2-link', lang.service2Link);
+            updateTextContent('.service2-title', langData.service2Title);
+            updateTextContent('.service2-desc', langData.service2Desc);
+            updateButtonContent('.service2-link', langData.service2Link);
             
-            updateTextContent('.service3-title', lang.service3Title);
-            updateTextContent('.service3-desc', lang.service3Desc);
-            updateButtonContent('.service3-link', lang.service3Link);
+            updateTextContent('.service3-title', langData.service3Title);
+            updateTextContent('.service3-desc', langData.service3Desc);
+            updateButtonContent('.service3-link', langData.service3Link);
             
-            updateTextContent('.service4-title', lang.service4Title);
-            updateTextContent('.service4-desc', lang.service4Desc);
-            updateButtonContent('.service4-link', lang.service4Link);
+            updateTextContent('.service4-title', langData.service4Title);
+            updateTextContent('.service4-desc', langData.service4Desc);
+            updateButtonContent('.service4-link', langData.service4Link);
             
-            updateTextContent('.service5-title', lang.service5Title);
-            updateTextContent('.service5-desc', lang.service5Desc);
-            updateButtonContent('.service5-link', lang.service5Link);
+            updateTextContent('.service5-title', langData.service5Title);
+            updateTextContent('.service5-desc', langData.service5Desc);
+            updateButtonContent('.service5-link', langData.service5Link);
             
-            updateTextContent('.service6-title', lang.service6Title);
-            updateTextContent('.service6-desc', lang.service6Desc);
-            updateButtonContent('.service6-link', lang.service6Link);
+            updateTextContent('.service6-title', langData.service6Title);
+            updateTextContent('.service6-desc', langData.service6Desc);
+            updateButtonContent('.service6-link', langData.service6Link);
             
             // Update about section
-            updateTextContent('.about-title', lang.aboutTitle);
-            updateTextContent('.about-p1', lang.aboutP1);
-            updateTextContent('.about-p2', lang.aboutP2);
-            updateTextContent('.about-p3', lang.aboutP3);
+            updateTextContent('.about-title', langData.aboutTitle);
+            updateTextContent('.about-p1', langData.aboutP1);
+            updateTextContent('.about-p2', langData.aboutP2);
+            updateTextContent('.about-p3', langData.aboutP3);
             
             // Update appointments section
-            updateTextContent('.appointments-title', lang.appointmentsTitle);
-            updateTextContent('.appointments-subtitle', lang.appointmentsSubtitle);
-            updateTextContent('.label-name', lang.labelName);
-            updateTextContent('.label-email', lang.labelEmail);
-            updateTextContent('.label-phone', lang.labelPhone);
-            updateTextContent('.label-service', lang.labelService);
-            updateTextContent('.label-date', lang.labelDate);
-            updateTextContent('.label-message', lang.labelMessage);
-            updateTextContent('.option-select', lang.optionSelect);
-            updateTextContent('.option1', lang.option1);
-            updateTextContent('.option2', lang.option2);
-            updateTextContent('.option3', lang.option3);
-            updateTextContent('.option4', lang.option4);
-            updateTextContent('.option5', lang.option5);
-            updateTextContent('.option6', lang.option6);
-            updateButtonContent('.btn-text', lang.btnText);
-            updateTextContent('.success-text', lang.successText);
+            updateTextContent('.appointments-title', langData.appointmentsTitle);
+            updateTextContent('.appointments-subtitle', langData.appointmentsSubtitle);
+            updateTextContent('.label-name', langData.labelName);
+            updateTextContent('.label-email', langData.labelEmail);
+            updateTextContent('.label-phone', langData.labelPhone);
+            updateTextContent('.label-service', langData.labelService);
+            updateTextContent('.label-date', langData.labelDate);
+            updateTextContent('.label-message', langData.labelMessage);
+            updateTextContent('.option-select', langData.optionSelect);
+            updateTextContent('.option1', langData.option1);
+            updateTextContent('.option2', langData.option2);
+            updateTextContent('.option3', langData.option3);
+            updateTextContent('.option4', langData.option4);
+            updateTextContent('.option5', langData.option5);
+            updateTextContent('.option6', langData.option6);
+            updateButtonContent('.btn-text', langData.btnText);
+            updateTextContent('.success-text', langData.successText);
             
             // Update contact section
-            updateTextContent('.contact-title', lang.contactTitle);
-            updateTextContent('.contact-subtitle', lang.contactSubtitle);
-            updateTextContent('.contact1-title', lang.contact1Title);
-            updateTextContent('.contact1-info', lang.contact1Info);
-            updateTextContent('.contact2-title', lang.contact2Title);
-            updateTextContent('.contact2-info', lang.contact2Info);
-            updateTextContent('.contact3-title', lang.contact3Title);
-            updateTextContent('.contact3-info', lang.contact3Info);
+            updateTextContent('.contact-title', langData.contactTitle);
+            updateTextContent('.contact-subtitle', langData.contactSubtitle);
+            updateTextContent('.contact1-title', langData.contact1Title);
+            updateTextContent('.contact1-info', langData.contact1Info);
+            updateTextContent('.contact2-title', langData.contact2Title);
+            updateTextContent('.contact2-info', langData.contact2Info);
+            updateTextContent('.contact3-title', langData.contact3Title);
+            updateTextContent('.contact3-info', langData.contact3Info);
             
             // Update footer
-            updateTextContent('.footer-text', lang.footerText);
-            updateTextContent('.footer-about-text', lang.footerAboutText);
-            updateTextContent('.footer-links-title', lang.footerLinksTitle);
-            updateTextContent('.footer-home', lang.footerHome);
-            updateTextContent('.footer-services', lang.footerServices);
-            updateTextContent('.footer-about', lang.footerAbout);
-            updateTextContent('.footer-contact', lang.footerContact);
-            updateTextContent('.footer-services-title', lang.footerServicesTitle);
-            updateTextContent('.footer-real-estate', lang.footerRealEstate);
-            updateTextContent('.footer-tourism', lang.footerTourism);
-            updateTextContent('.footer-student', lang.footerStudent);
-            updateTextContent('.footer-medical', lang.footerMedical);
-            updateTextContent('.footer-business', lang.footerBusiness);
-            updateTextContent('.footer-other', lang.footerOther);
-            updateTextContent('.footer-contact-title', lang.footerContactTitle);
-            updateTextContent('.footer-location', lang.footerLocation);
-            updateTextContent('.footer-phone', lang.footerPhone);
-            updateTextContent('.footer-email', lang.footerEmail);
-            updateTextContent('.footer-lang-text', lang.footerLangText);
+            updateTextContent('.footer-text', langData.footerText);
+            updateTextContent('.footer-about-text', langData.footerAboutText);
+            updateTextContent('.footer-links-title', langData.footerLinksTitle);
+            updateTextContent('.footer-home', langData.footerHome);
+            updateTextContent('.footer-services', langData.footerServices);
+            updateTextContent('.footer-about', langData.footerAbout);
+            updateTextContent('.footer-contact', langData.footerContact);
+            updateTextContent('.footer-services-title', langData.footerServicesTitle);
+            updateTextContent('.footer-real-estate', langData.footerRealEstate);
+            updateTextContent('.footer-tourism', langData.footerTourism);
+            updateTextContent('.footer-student', langData.footerStudent);
+            updateTextContent('.footer-medical', langData.footerMedical);
+            updateTextContent('.footer-business', langData.footerBusiness);
+            updateTextContent('.footer-other', langData.footerOther);
+            updateTextContent('.footer-contact-title', langData.footerContactTitle);
+            updateTextContent('.footer-location', langData.footerLocation);
+            updateTextContent('.footer-phone', langData.footerPhone);
+            updateTextContent('.footer-email', langData.footerEmail);
+            updateTextContent('.footer-lang-text', langData.footerLangText);
             
             // Update service pages
-            updateTextContent('.back-text', lang.backText);
+            updateTextContent('.back-text', langData.backText);
             
             // Update real estate service page
-            updateTextContent('.service1-subtitle', lang.service1Subtitle);
-            updateTextContent('.real-estate-content-title1', lang.realEstateContentTitle1);
-            updateTextContent('.real-estate-content-p1', lang.realEstateContentP1);
-            updateTextContent('.real-estate-content-title2', lang.realEstateContentTitle2);
-            updateTextContent('.real-estate-content-p2', lang.realEstateContentP2);
-            updateTextContent('.real-estate-content-title3', lang.realEstateContentTitle3);
-            updateTextContent('.real-estate-content-p3', lang.realEstateContentP3);
-            updateTextContent('.real-estate-content-title4', lang.realEstateContentTitle4);
-            updateTextContent('.real-estate-list-item1', lang.realEstateListItem1);
-            updateTextContent('.real-estate-list-item2', lang.realEstateListItem2);
-            updateTextContent('.real-estate-list-item3', lang.realEstateListItem3);
-            updateTextContent('.real-estate-list-item4', lang.realEstateListItem4);
-            updateTextContent('.real-estate-list-item5', lang.realEstateListItem5);
-            updateTextContent('.real-estate-list-item6', lang.realEstateListItem6);
-            updateTextContent('.real-estate-form-title', lang.realEstateFormTitle);
-            updateTextContent('.real-estate-label1', lang.realEstateLabel1);
-            updateTextContent('.real-estate-label2', lang.realEstateLabel2);
-            updateTextContent('.real-estate-label3', lang.realEstateLabel3);
-            updateTextContent('.real-estate-label4', lang.realEstateLabel4);
-            updateTextContent('.real-estate-label5', lang.realEstateLabel5);
-            updateButtonContent('.real-estate-submit', lang.realEstateSubmit);
+            updateTextContent('.service1-subtitle', langData.service1Subtitle);
+            updateTextContent('.real-estate-content-title1', langData.realEstateContentTitle1);
+            updateTextContent('.real-estate-content-p1', langData.realEstateContentP1);
+            updateTextContent('.real-estate-content-title2', langData.realEstateContentTitle2);
+            updateTextContent('.real-estate-content-p2', langData.realEstateContentP2);
+            updateTextContent('.real-estate-content-title3', langData.realEstateContentTitle3);
+            updateTextContent('.real-estate-content-p3', langData.realEstateContentP3);
+            updateTextContent('.real-estate-content-title4', langData.realEstateContentTitle4);
+            updateTextContent('.real-estate-list-item1', langData.realEstateListItem1);
+            updateTextContent('.real-estate-list-item2', langData.realEstateListItem2);
+            updateTextContent('.real-estate-list-item3', langData.realEstateListItem3);
+            updateTextContent('.real-estate-list-item4', langData.realEstateListItem4);
+            updateTextContent('.real-estate-list-item5', langData.realEstateListItem5);
+            updateTextContent('.real-estate-list-item6', langData.realEstateListItem6);
+            updateTextContent('.real-estate-form-title', langData.realEstateFormTitle);
+            updateTextContent('.real-estate-label1', langData.realEstateLabel1);
+            updateTextContent('.real-estate-label2', langData.realEstateLabel2);
+            updateTextContent('.real-estate-label3', langData.realEstateLabel3);
+            updateTextContent('.real-estate-label4', langData.realEstateLabel4);
+            updateTextContent('.real-estate-label5', langData.realEstateLabel5);
+            updateButtonContent('.real-estate-submit', langData.realEstateSubmit);
             
             // Update real estate form options
-            updateTextContent('.real-estate-option-select', lang.realEstateOptionSelect);
-            updateTextContent('.real-estate-option1', lang.realEstateOption1);
-            updateTextContent('.real-estate-option2', lang.realEstateOption2);
-            updateTextContent('.real-estate-option3', lang.realEstateOption3);
-            updateTextContent('.real-estate-option4', lang.realEstateOption4);
-            updateTextContent('.real-estate-option-select2', lang.realEstateOptionSelect2);
-            updateTextContent('.real-estate-option5', lang.realEstateOption5);
-            updateTextContent('.real-estate-option6', lang.realEstateOption6);
+            updateTextContent('.real-estate-option-select', langData.realEstateOptionSelect);
+            updateTextContent('.real-estate-option1', langData.realEstateOption1);
+            updateTextContent('.real-estate-option2', langData.realEstateOption2);
+            updateTextContent('.real-estate-option3', langData.realEstateOption3);
+            updateTextContent('.real-estate-option4', langData.realEstateOption4);
+            updateTextContent('.real-estate-option-select2', langData.realEstateOptionSelect2);
+            updateTextContent('.real-estate-option5', langData.realEstateOption5);
+            updateTextContent('.real-estate-option6', langData.realEstateOption6);
             
             // Update tourism service page
-            updateTextContent('.service2-subtitle', lang.service2Subtitle);
-            updateTextContent('.tourism-content-title1', lang.tourismContentTitle1);
-            updateTextContent('.tourism-content-p1', lang.tourismContentP1);
-            updateTextContent('.tourism-content-title2', lang.tourismContentTitle2);
-            updateTextContent('.tourism-content-p2', lang.tourismContentP2);
-            updateTextContent('.tourism-content-title3', lang.tourismContentTitle3);
-            updateTextContent('.tourism-content-p3', lang.tourismContentP3);
-            updateTextContent('.tourism-content-title4', lang.tourismContentTitle4);
-            updateTextContent('.tourism-list-item1', lang.tourismListItem1);
-            updateTextContent('.tourism-list-item2', lang.tourismListItem2);
-            updateTextContent('.tourism-list-item3', lang.tourismListItem3);
-            updateTextContent('.tourism-list-item4', lang.tourismListItem4);
-            updateTextContent('.tourism-list-item5', lang.tourismListItem5);
-            updateTextContent('.tourism-list-item6', lang.tourismListItem6);
-            updateTextContent('.tourism-form-title', lang.tourismFormTitle);
-            updateTextContent('.tourism-label1', lang.tourismLabel1);
-            updateTextContent('.tourism-label2', lang.tourismLabel2);
-            updateTextContent('.tourism-label3', lang.tourismLabel3);
-            updateTextContent('.tourism-label4', lang.tourismLabel4);
-            updateTextContent('.tourism-label5', lang.tourismLabel5);
-            updateTextContent('.tourism-label6', lang.tourismLabel6);
-            updateButtonContent('.tourism-submit', lang.tourismSubmit);
+            updateTextContent('.service2-subtitle', langData.service2Subtitle);
+            updateTextContent('.tourism-content-title1', langData.tourismContentTitle1);
+            updateTextContent('.tourism-content-p1', langData.tourismContentP1);
+            updateTextContent('.tourism-content-title2', langData.tourismContentTitle2);
+            updateTextContent('.tourism-content-p2', langData.tourismContentP2);
+            updateTextContent('.tourism-content-title3', langData.tourismContentTitle3);
+            updateTextContent('.tourism-content-p3', langData.tourismContentP3);
+            updateTextContent('.tourism-content-title4', langData.tourismContentTitle4);
+            updateTextContent('.tourism-list-item1', langData.tourismListItem1);
+            updateTextContent('.tourism-list-item2', langData.tourismListItem2);
+            updateTextContent('.tourism-list-item3', langData.tourismListItem3);
+            updateTextContent('.tourism-list-item4', langData.tourismListItem4);
+            updateTextContent('.tourism-list-item5', langData.tourismListItem5);
+            updateTextContent('.tourism-list-item6', langData.tourismListItem6);
+            updateTextContent('.tourism-form-title', langData.tourismFormTitle);
+            updateTextContent('.tourism-label1', langData.tourismLabel1);
+            updateTextContent('.tourism-label2', langData.tourismLabel2);
+            updateTextContent('.tourism-label3', langData.tourismLabel3);
+            updateTextContent('.tourism-label4', langData.tourismLabel4);
+            updateTextContent('.tourism-label5', langData.tourismLabel5);
+            updateTextContent('.tourism-label6', langData.tourismLabel6);
+            updateButtonContent('.tourism-submit', langData.tourismSubmit);
             
             // Update tourism form options
-            updateTextContent('.tourism-option-select', lang.tourismOptionSelect);
-            updateTextContent('.tourism-option1', lang.tourismOption1);
-            updateTextContent('.tourism-option2', lang.tourismOption2);
-            updateTextContent('.tourism-option-select2', lang.tourismOptionSelect2);
-            updateTextContent('.tourism-option3', lang.tourismOption3);
-            updateTextContent('.tourism-option4', lang.tourismOption4);
-            updateTextContent('.tourism-option-select3', lang.tourismOptionSelect3);
-            updateTextContent('.tourism-option5', lang.tourismOption5);
-            updateTextContent('.tourism-option6', lang.tourismOption6);
+            updateTextContent('.tourism-option-select', langData.tourismOptionSelect);
+            updateTextContent('.tourism-option1', langData.tourismOption1);
+            updateTextContent('.tourism-option2', langData.tourismOption2);
+            updateTextContent('.tourism-option-select2', langData.tourismOptionSelect2);
+            updateTextContent('.tourism-option3', langData.tourismOption3);
+            updateTextContent('.tourism-option4', langData.tourismOption4);
+            updateTextContent('.tourism-option-select3', langData.tourismOptionSelect3);
+            updateTextContent('.tourism-option5', langData.tourismOption5);
+            updateTextContent('.tourism-option6', langData.tourismOption6);
             
             // Update student service page
-            updateTextContent('.service3-subtitle', lang.service3Subtitle);
-            updateTextContent('.student-content-title1', lang.studentContentTitle1);
-            updateTextContent('.student-content-p1', lang.studentContentP1);
-            updateTextContent('.student-content-title2', lang.studentContentTitle2);
-            updateTextContent('.student-content-p2', lang.studentContentP2);
-            updateTextContent('.student-content-title3', lang.studentContentTitle3);
-            updateTextContent('.student-content-p3', lang.studentContentP3);
-            updateTextContent('.student-content-title4', lang.studentContentTitle4);
-            updateTextContent('.student-list-item1', lang.studentListItem1);
-            updateTextContent('.student-list-item2', lang.studentListItem2);
-            updateTextContent('.student-list-item3', lang.studentListItem3);
-            updateTextContent('.student-list-item4', lang.studentListItem4);
-            updateTextContent('.student-list-item5', lang.studentListItem5);
-            updateTextContent('.student-list-item6', lang.studentListItem6);
-            updateTextContent('.student-form-title', lang.studentFormTitle);
-            updateTextContent('.student-label1', lang.studentLabel1);
-            updateTextContent('.student-label2', lang.studentLabel2);
-            updateTextContent('.student-label3', lang.studentLabel3);
-            updateTextContent('.student-label4', lang.studentLabel4);
-            updateTextContent('.student-label5', lang.studentLabel5);
-            updateTextContent('.student-label6', lang.studentLabel6);
-            updateTextContent('.student-label7', lang.studentLabel7);
-            updateButtonContent('.student-submit', lang.studentSubmit);
+            updateTextContent('.service3-subtitle', langData.service3Subtitle);
+            updateTextContent('.student-content-title1', langData.studentContentTitle1);
+            updateTextContent('.student-content-p1', langData.studentContentP1);
+            updateTextContent('.student-content-title2', langData.studentContentTitle2);
+            updateTextContent('.student-content-p2', langData.studentContentP2);
+            updateTextContent('.student-content-title3', langData.studentContentTitle3);
+            updateTextContent('.student-content-p3', langData.studentContentP3);
+            updateTextContent('.student-content-title4', langData.studentContentTitle4);
+            updateTextContent('.student-list-item1', langData.studentListItem1);
+            updateTextContent('.student-list-item2', langData.studentListItem2);
+            updateTextContent('.student-list-item3', langData.studentListItem3);
+            updateTextContent('.student-list-item4', langData.studentListItem4);
+            updateTextContent('.student-list-item5', langData.studentListItem5);
+            updateTextContent('.student-list-item6', langData.studentListItem6);
+            updateTextContent('.student-form-title', langData.studentFormTitle);
+            updateTextContent('.student-label1', langData.studentLabel1);
+            updateTextContent('.student-label2', langData.studentLabel2);
+            updateTextContent('.student-label3', langData.studentLabel3);
+            updateTextContent('.student-label4', langData.studentLabel4);
+            updateTextContent('.student-label5', langData.studentLabel5);
+            updateTextContent('.student-label6', langData.studentLabel6);
+            updateTextContent('.student-label7', langData.studentLabel7);
+            updateButtonContent('.student-submit', langData.studentSubmit);
             
             // Update student form options
-            updateTextContent('.student-option-select', lang.studentOptionSelect);
-            updateTextContent('.student-option1', lang.studentOption1);
-            updateTextContent('.student-option2', lang.studentOption2);
-            updateTextContent('.student-option-select2', lang.studentOptionSelect2);
-            updateTextContent('.student-option3', lang.studentOption3);
-            updateTextContent('.student-option4', lang.studentOption4);
-            updateTextContent('.student-option-select3', lang.studentOptionSelect3);
-            updateTextContent('.student-option5', lang.studentOption5);
-            updateTextContent('.student-option6', lang.studentOption6);
-            updateTextContent('.student-option7', lang.studentOption7);
-            updateTextContent('.student-option8', lang.studentOption8);
+            updateTextContent('.student-option-select', langData.studentOptionSelect);
+            updateTextContent('.student-option1', langData.studentOption1);
+            updateTextContent('.student-option2', langData.studentOption2);
+            updateTextContent('.student-option-select2', langData.studentOptionSelect2);
+            updateTextContent('.student-option3', langData.studentOption3);
+            updateTextContent('.student-option4', langData.studentOption4);
+            updateTextContent('.student-option-select3', langData.studentOptionSelect3);
+            updateTextContent('.student-option5', langData.studentOption5);
+            updateTextContent('.student-option6', langData.studentOption6);
+            updateTextContent('.student-option7', langData.studentOption7);
+            updateTextContent('.student-option8', langData.studentOption8);
             
             // Update medical service page
-            updateTextContent('.service4-subtitle', lang.service4Subtitle);
-            updateTextContent('.medical-content-title1', lang.medicalContentTitle1);
-            updateTextContent('.medical-content-p1', lang.medicalContentP1);
-            updateTextContent('.medical-content-title2', lang.medicalContentTitle2);
-            updateTextContent('.medical-list-item1', lang.medicalListItem1);
-            updateTextContent('.medical-list-item2', lang.medicalListItem2);
-            updateTextContent('.medical-list-item3', lang.medicalListItem3);
-            updateTextContent('.medical-list-item4', lang.medicalListItem4);
-            updateTextContent('.medical-list-item5', lang.medicalListItem5);
-            updateTextContent('.medical-list-item6', lang.medicalListItem6);
-            updateTextContent('.medical-list-item7', lang.medicalListItem7);
-            updateTextContent('.medical-list-item8', lang.medicalListItem8);
-            updateTextContent('.medical-list-item9', lang.medicalListItem9);
-            updateTextContent('.medical-content-title3', lang.medicalContentTitle3);
-            updateTextContent('.medical-content-p2', lang.medicalContentP2);
-            updateTextContent('.medical-form-title', lang.medicalFormTitle);
-            updateTextContent('.medical-label1', lang.medicalLabel1);
-            updateTextContent('.medical-label2', lang.medicalLabel2);
-            updateTextContent('.medical-label3', lang.medicalLabel3);
-            updateTextContent('.medical-label4', lang.medicalLabel4);
-            updateTextContent('.medical-label5', lang.medicalLabel5);
-            updateTextContent('.medical-label6', lang.medicalLabel6);
-            updateTextContent('.medical-label7', lang.medicalLabel7);
-            updateButtonContent('.medical-submit', lang.medicalSubmit);
+            updateTextContent('.service4-subtitle', langData.service4Subtitle);
+            updateTextContent('.medical-content-title1', langData.medicalContentTitle1);
+            updateTextContent('.medical-content-p1', langData.medicalContentP1);
+            updateTextContent('.medical-content-title2', langData.medicalContentTitle2);
+            updateTextContent('.medical-list-item1', langData.medicalListItem1);
+            updateTextContent('.medical-list-item2', langData.medicalListItem2);
+            updateTextContent('.medical-list-item3', langData.medicalListItem3);
+            updateTextContent('.medical-list-item4', langData.medicalListItem4);
+            updateTextContent('.medical-list-item5', langData.medicalListItem5);
+            updateTextContent('.medical-list-item6', langData.medicalListItem6);
+            updateTextContent('.medical-list-item7', langData.medicalListItem7);
+            updateTextContent('.medical-list-item8', langData.medicalListItem8);
+            updateTextContent('.medical-list-item9', langData.medicalListItem9);
+            updateTextContent('.medical-content-title3', langData.medicalContentTitle3);
+            updateTextContent('.medical-content-p2', langData.medicalContentP2);
+            updateTextContent('.medical-form-title', langData.medicalFormTitle);
+            updateTextContent('.medical-label1', langData.medicalLabel1);
+            updateTextContent('.medical-label2', langData.medicalLabel2);
+            updateTextContent('.medical-label3', langData.medicalLabel3);
+            updateTextContent('.medical-label4', langData.medicalLabel4);
+            updateTextContent('.medical-label5', langData.medicalLabel5);
+            updateTextContent('.medical-label6', langData.medicalLabel6);
+            updateTextContent('.medical-label7', langData.medicalLabel7);
+            updateButtonContent('.medical-submit', langData.medicalSubmit);
             
             // Update medical form options
-            updateTextContent('.medical-option-select', lang.medicalOptionSelect);
-            updateTextContent('.medical-option1', lang.medicalOption1);
-            updateTextContent('.medical-option2', lang.medicalOption2);
-            updateTextContent('.medical-option-select2', lang.medicalOptionSelect2);
-            updateTextContent('.medical-option3', lang.medicalOption3);
-            updateTextContent('.medical-option4', lang.medicalOption4);
-            updateTextContent('.medical-option5', lang.medicalOption5);
-            updateTextContent('.medical-option6', lang.medicalOption6);
-            updateTextContent('.medical-option7', lang.medicalOption7);
-            updateTextContent('.medical-option-select3', lang.medicalOptionSelect3);
-            updateTextContent('.medical-option8', lang.medicalOption8);
-            updateTextContent('.medical-option9', lang.medicalOption9);
-            updateTextContent('.medical-option10', lang.medicalOption10);
-            updateTextContent('.medical-option-select4', lang.medicalOptionSelect4);
-            updateTextContent('.medical-option11', lang.medicalOption11);
-            updateTextContent('.medical-option12', lang.medicalOption12);
-            updateTextContent('.medical-option13', lang.medicalOption13);
-            updateTextContent('.medical-option-select5', lang.medicalOptionSelect5);
-            updateTextContent('.medical-option14', lang.medicalOption14);
-            updateTextContent('.medical-option15', lang.medicalOption15);
-            updateTextContent('.medical-option16', lang.medicalOption16);
+            updateTextContent('.medical-option-select', langData.medicalOptionSelect);
+            updateTextContent('.medical-option1', langData.medicalOption1);
+            updateTextContent('.medical-option2', langData.medicalOption2);
+            updateTextContent('.medical-option-select2', langData.medicalOptionSelect2);
+            updateTextContent('.medical-option3', langData.medicalOption3);
+            updateTextContent('.medical-option4', langData.medicalOption4);
+            updateTextContent('.medical-option5', langData.medicalOption5);
+            updateTextContent('.medical-option6', langData.medicalOption6);
+            updateTextContent('.medical-option7', langData.medicalOption7);
+            updateTextContent('.medical-option-select3', langData.medicalOptionSelect3);
+            updateTextContent('.medical-option8', langData.medicalOption8);
+            updateTextContent('.medical-option9', langData.medicalOption9);
+            updateTextContent('.medical-option10', langData.medicalOption10);
+            updateTextContent('.medical-option-select4', langData.medicalOptionSelect4);
+            updateTextContent('.medical-option11', langData.medicalOption11);
+            updateTextContent('.medical-option12', langData.medicalOption12);
+            updateTextContent('.medical-option13', langData.medicalOption13);
+            updateTextContent('.medical-option-select5', langData.medicalOptionSelect5);
+            updateTextContent('.medical-option14', langData.medicalOption14);
+            updateTextContent('.medical-option15', langData.medicalOption15);
+            updateTextContent('.medical-option16', langData.medicalOption16);
             
             // Update business service page
-            updateTextContent('.service5-subtitle', lang.service5Subtitle);
-            updateTextContent('.business-content-title1', lang.businessContentTitle1);
-            updateTextContent('.business-content-p1', lang.businessContentP1);
-            updateTextContent('.business-content-p2', lang.businessContentP2);
-            updateTextContent('.business-content-title2', lang.businessContentTitle2);
-            updateTextContent('.business-list-item1', lang.businessListItem1);
-            updateTextContent('.business-list-item2', lang.businessListItem2);
-            updateTextContent('.business-list-item3', lang.businessListItem3);
-            updateTextContent('.business-list-item4', lang.businessListItem4);
-            updateTextContent('.business-list-item5', lang.businessListItem5);
-            updateTextContent('.business-list-item6', lang.businessListItem6);
-            updateTextContent('.business-list-item7', lang.businessListItem7);
-            updateTextContent('.business-list-item8', lang.businessListItem8);
-            updateTextContent('.business-form-title', lang.businessFormTitle);
-            updateTextContent('.business-label1', lang.businessLabel1);
-            updateTextContent('.business-label2', lang.businessLabel2);
-            updateTextContent('.business-label3', lang.businessLabel3);
-            updateTextContent('.business-label4', lang.businessLabel4);
-            updateTextContent('.business-label5', lang.businessLabel5);
-            updateTextContent('.business-label6', lang.businessLabel6);
-            updateButtonContent('.business-submit', lang.businessSubmit);
+            updateTextContent('.service5-subtitle', langData.service5Subtitle);
+            updateTextContent('.business-content-title1', langData.businessContentTitle1);
+            updateTextContent('.business-content-p1', langData.businessContentP1);
+            updateTextContent('.business-content-p2', langData.businessContentP2);
+            updateTextContent('.business-content-title2', langData.businessContentTitle2);
+            updateTextContent('.business-list-item1', langData.businessListItem1);
+            updateTextContent('.business-list-item2', langData.businessListItem2);
+            updateTextContent('.business-list-item3', langData.businessListItem3);
+            updateTextContent('.business-list-item4', langData.businessListItem4);
+            updateTextContent('.business-list-item5', langData.businessListItem5);
+            updateTextContent('.business-list-item6', langData.businessListItem6);
+            updateTextContent('.business-list-item7', langData.businessListItem7);
+            updateTextContent('.business-list-item8', langData.businessListItem8);
+            updateTextContent('.business-form-title', langData.businessFormTitle);
+            updateTextContent('.business-label1', langData.businessLabel1);
+            updateTextContent('.business-label2', langData.businessLabel2);
+            updateTextContent('.business-label3', langData.businessLabel3);
+            updateTextContent('.business-label4', langData.businessLabel4);
+            updateTextContent('.business-label5', langData.businessLabel5);
+            updateTextContent('.business-label6', langData.businessLabel6);
+            updateButtonContent('.business-submit', langData.businessSubmit);
             
             // Update other services page
-            updateTextContent('.service6-subtitle', lang.service6Subtitle);
-            updateTextContent('.other-content-title1', lang.otherContentTitle1);
-            updateTextContent('.other-content-p1', lang.otherContentP1);
-            updateTextContent('.other-content-title2', lang.otherContentTitle2);
-            updateTextContent('.other-content-p2', lang.otherContentP2);
-            updateTextContent('.other-content-title3', lang.otherContentTitle3);
-            updateTextContent('.other-content-p3', lang.otherContentP3);
-            updateTextContent('.other-content-title4', lang.otherContentTitle4);
-            updateTextContent('.other-content-p4', lang.otherContentP4);
-            updateTextContent('.other-content-title5', lang.otherContentTitle5);
-            updateTextContent('.other-list-item1', lang.otherListItem1);
-            updateTextContent('.other-list-item2', lang.otherListItem2);
-            updateTextContent('.other-list-item3', lang.otherListItem3);
-            updateTextContent('.other-list-item4', lang.otherListItem4);
-            updateTextContent('.other-list-item5', lang.otherListItem5);
-            updateTextContent('.other-list-item6', lang.otherListItem6);
-            updateTextContent('.other-list-item7', lang.otherListItem7);
-            updateTextContent('.other-form-title', lang.otherFormTitle);
-            updateTextContent('.other-label1', lang.otherLabel1);
-            updateTextContent('.other-label2', lang.otherLabel2);
-            updateTextContent('.other-label3', lang.otherLabel3);
-            updateTextContent('.other-label4', lang.otherLabel4);
-            updateTextContent('.other-label5', lang.otherLabel5);
-            updateButtonContent('.other-submit', lang.otherSubmit);
+            updateTextContent('.service6-subtitle', langData.service6Subtitle);
+            updateTextContent('.other-content-title1', langData.otherContentTitle1);
+            updateTextContent('.other-content-p1', langData.otherContentP1);
+            updateTextContent('.other-content-title2', langData.otherContentTitle2);
+            updateTextContent('.other-content-p2', langData.otherContentP2);
+            updateTextContent('.other-content-title3', langData.otherContentTitle3);
+            updateTextContent('.other-content-p3', langData.otherContentP3);
+            updateTextContent('.other-content-title4', langData.otherContentTitle4);
+            updateTextContent('.other-content-p4', langData.otherContentP4);
+            updateTextContent('.other-content-title5', langData.otherContentTitle5);
+            updateTextContent('.other-list-item1', langData.otherListItem1);
+            updateTextContent('.other-list-item2', langData.otherListItem2);
+            updateTextContent('.other-list-item3', langData.otherListItem3);
+            updateTextContent('.other-list-item4', langData.otherListItem4);
+            updateTextContent('.other-list-item5', langData.otherListItem5);
+            updateTextContent('.other-list-item6', langData.otherListItem6);
+            updateTextContent('.other-list-item7', langData.otherListItem7);
+            updateTextContent('.other-form-title', langData.otherFormTitle);
+            updateTextContent('.other-label1', langData.otherLabel1);
+            updateTextContent('.other-label2', langData.otherLabel2);
+            updateTextContent('.other-label3', langData.otherLabel3);
+            updateTextContent('.other-label4', langData.otherLabel4);
+            updateTextContent('.other-label5', langData.otherLabel5);
+            updateButtonContent('.other-submit', langData.otherSubmit);
             
             // Update other services form options
-            updateTextContent('.other-option-select', lang.otherOptionSelect);
-            updateTextContent('.other-option1', lang.otherOption1);
-            updateTextContent('.other-option2', lang.otherOption2);
-            updateTextContent('.other-option3', lang.otherOption3);
-            updateTextContent('.other-option4', lang.otherOption4);
-            updateTextContent('.other-option5', lang.otherOption5);
+            updateTextContent('.other-option-select', langData.otherOptionSelect);
+            updateTextContent('.other-option1', langData.otherOption1);
+            updateTextContent('.other-option2', langData.otherOption2);
+            updateTextContent('.other-option3', langData.otherOption3);
+            updateTextContent('.other-option4', langData.otherOption4);
+            updateTextContent('.other-option5', langData.otherOption5);
+        }
+
+        function toggleLanguage() {
+            const newLang = currentLang === 'en' ? 'ar' : 'en';
+            setLanguage(newLang);
         }
 
         function updateTextContent(selector, text) {
@@ -2593,11 +2617,32 @@
             // Show the selected page
             document.getElementById(`${pageId}-page`).classList.add('active');
             
+            // Save the current page to localStorage
+            localStorage.setItem('wassl-currentPage', pageId);
+            currentPage = pageId;
+            
             // Close mobile menu if open
             document.getElementById('navLinks').classList.remove('active');
             
             // Scroll to top
             window.scrollTo(0, 0);
+        }
+
+        // Scroll to section on home page
+        function scrollToSection(sectionId) {
+            // Show the home page
+            showPage('home');
+            
+            // Close mobile menu if open
+            document.getElementById('navLinks').classList.remove('active');
+            
+            // Wait a bit for the page to show, then scroll to the section
+            setTimeout(() => {
+                const section = document.getElementById(sectionId);
+                if (section) {
+                    section.scrollIntoView({ behavior: 'smooth' });
+                }
+            }, 100);
         }
 
         // Header scroll effect
@@ -2679,6 +2724,9 @@
             alert(currentLang === 'en' ? 'Other service request submitted! We will contact you soon.' : 'تم تقديم طلب الخدمة الإضافية! سنتصل بك قريباً.');
             this.reset();
         });
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>
