@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wassl - Your Trusted Gateway in Turkey</title>
-    <meta name="description" content="Wassl offers comprehensive services including real estate, tourism, education, healthcare, and business solutions in Turkey">
+    <title>Wassl - بوابتك الموثوقة في تركيا</title>
+    <meta name="description" content="يقدم وصل خدمات شاملة تشمل العقارات، السياحة، التعليم، الرعاية الصحية، وحلول الأعمال في تركيا">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -36,15 +36,15 @@
         }
 
         body {
-            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Cairo', 'Arial', sans-serif;
             line-height: 1.7;
             color: var(--text);
             background-color: var(--light);
             overflow-x: hidden;
         }
 
-        [dir="rtl"] body {
-            font-family: 'Cairo', 'Arial', sans-serif;
+        [dir="ltr"] body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         .container {
@@ -95,11 +95,11 @@
             gap: 2rem;
             list-style: none;
             align-items: center;
-            margin-right: 0; /* Removed margin to fix overlap */
+            margin-left: 0;
         }
 
-        [dir="rtl"] .nav-links {
-            margin-left: 0;
+        [dir="ltr"] .nav-links {
+            margin-right: 0;
         }
 
         .nav-links a {
@@ -118,7 +118,7 @@
             width: 0;
             height: 2px;
             bottom: 0;
-            left: 0;
+            right: 0;
             background-color: var(--secondary);
             transition: var(--transition);
         }
@@ -154,13 +154,13 @@
         }
 
         .lang-switch-desktop {
-            position: static; /* Changed from absolute to fix overlap */
-            margin-left: 1rem; /* Added margin for spacing */
+            position: static;
+            margin-right: 1rem;
         }
 
-        [dir="rtl"] .lang-switch-desktop {
-            margin-left: 0;
-            margin-right: 1rem;
+        [dir="ltr"] .lang-switch-desktop {
+            margin-right: 0;
+            margin-left: 1rem;
         }
 
         .lang-switch-li-mobile {
@@ -181,8 +181,8 @@
             content: '';
             position: absolute;
             top: 0;
-            left: 0;
             right: 0;
+            left: 0;
             bottom: 0;
             background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
         }
@@ -251,8 +251,8 @@
             color: var(--text-light);
             margin-bottom: 4rem;
             max-width: 600px;
-            margin-left: auto;
             margin-right: auto;
+            margin-left: auto;
         }
 
         .services-grid {
@@ -281,8 +281,8 @@
             content: '';
             position: absolute;
             top: 0;
-            left: 0;
             right: 0;
+            left: 0;
             height: 4px;
             background: linear-gradient(90deg, var(--primary), var(--secondary));
         }
@@ -303,8 +303,8 @@
             align-items: center;
             justify-content: center;
             border-radius: 50%;
-            margin-left: auto;
             margin-right: auto;
+            margin-left: auto;
             transition: var(--transition);
         }
 
@@ -600,7 +600,7 @@
         .footer-links a:hover,
         .footer-services a:hover {
             color: var(--secondary);
-            padding-left: 5px;
+            padding-right: 5px;
         }
 
         .footer-bottom {
@@ -640,7 +640,7 @@
         .whatsapp-fab {
             position: fixed;
             bottom: 30px;
-            right: 30px;
+            left: 30px;
             background-color: #25D366;
             color: var(--white);
             width: 65px;
@@ -719,7 +719,7 @@
 
         .service-content ul {
             margin-bottom: 1.5rem;
-            padding-left: 1.5rem;
+            padding-right: 1.5rem;
         }
 
         .service-content li {
@@ -732,7 +732,7 @@
             color: var(--secondary);
             font-weight: bold;
             position: absolute;
-            left: -1.5rem;
+            right: -1.5rem;
         }
 
         .service-form {
@@ -788,8 +788,8 @@
                 display: none;
                 position: fixed;
                 top: 0;
-                left: 0;
                 right: 0;
+                left: 0;
                 bottom: 0;
                 background: var(--white);
                 flex-direction: column;
@@ -837,7 +837,7 @@
                 height: 55px;
                 font-size: 2.2rem;
                 bottom: 20px;
-                right: 20px;
+                left: 20px;
             }
             
             .service-content, .service-form {
@@ -893,20 +893,20 @@
             <nav>
                 <a class="logo" onclick="showPage('home')">
                     <i class="fas fa-handshake logo-icon"></i>
-                    <span>Wassl</span>
+                    <span>وصل</span>
                 </a>
                 <button class="mobile-menu-btn" onclick="toggleMenu()">
                     <i class="fas fa-bars"></i>
                 </button>
                 <ul class="nav-links" id="navLinks">
-                    <li><a onclick="showPage('home')" class="nav-home">Home</a></li>
-                    <li><a onclick="showPage('services')" class="nav-services">Services</a></li>
-                    <li><a onclick="showPage('about')" class="nav-about">About</a></li>
-                    <li><a onclick="showPage('appointments')" class="nav-appointments">Appointments</a></li>
-                    <li><a onclick="showPage('contact')" class="nav-contact">Contact</a></li>
-                    <li class="lang-switch-li-mobile"><button class="lang-switch" onclick="toggleLanguage()"><i class="fas fa-globe"></i> العربية</button></li>
+                    <li><a onclick="showPage('home')" class="nav-home">الرئيسية</a></li>
+                    <li><a onclick="showPage('services')" class="nav-services">الخدمات</a></li>
+                    <li><a onclick="showPage('about')" class="nav-about">من نحن</a></li>
+                    <li><a onclick="showPage('appointments')" class="nav-appointments">المواعيد</a></li>
+                    <li><a onclick="showPage('contact')" class="nav-contact">اتصل بنا</a></li>
+                    <li class="lang-switch-li-mobile"><button class="lang-switch" onclick="toggleLanguage()"><i class="fas fa-globe"></i> English</button></li>
                 </ul>
-                <button class="lang-switch lang-switch-desktop" onclick="toggleLanguage()"><i class="fas fa-globe"></i> العربية</button>
+                <button class="lang-switch lang-switch-desktop" onclick="toggleLanguage()"><i class="fas fa-globe"></i> English</button>
             </nav>
         </div>
     </header>
@@ -916,11 +916,11 @@
         <div class="hero" id="home">
             <div class="container">
                 <div class="hero-content">
-                    <h1 class="hero-title">Your Trusted Gateway in Turkey</h1>
-                    <p class="hero-subtitle">Comprehensive services for real estate, tourism, education, healthcare, and business solutions. Based in Bolu, serving all of Turkey with excellence and reliability.</p>
+                    <h1 class="hero-title">بوابتك الموثوقة في تركيا</h1>
+                    <p class="hero-subtitle">خدمات شاملة للعقارات، السياحة، التعليم، الرعاية الصحية، وحلول الأعمال. متمركزون في بولو، نخدم جميع أنحاء تركيا بتميز وموثوقية.</p>
                     <button onclick="showPage('appointments')" class="cta-button cta-text">
-                        <span>Get Started</span>
-                        <i class="fas fa-arrow-right"></i>
+                        <span>ابدأ رحلتك</span>
+                        <i class="fas fa-arrow-left"></i>
                     </button>
                 </div>
             </div>
@@ -928,61 +928,61 @@
 
         <section class="services" id="services">
             <div class="container">
-                <h2 class="section-title services-title">Our Premium Services</h2>
-                <p class="section-subtitle services-subtitle">Comprehensive solutions tailored to your needs in Turkey, delivered with expertise and dedication</p>
+                <h2 class="section-title services-title">خدماتنا المتميزة</h2>
+                <p class="section-subtitle services-subtitle">حلول شاملة مصممة خصيصاً لاحتياجاتك في تركيا، مقدمة بخبرة وتفانٍ</p>
                 <div class="services-grid">
                     <div class="service-card" data-service="real-estate">
                         <div class="service-icon"><i class="fas fa-building"></i></div>
-                        <h3 class="service1-title">Real Estate Services</h3>
-                        <p class="service1-desc">Find your dream property in Turkey's most desirable locations. We offer exclusive residential and commercial properties for sale and rent with premium service.</p>
+                        <h3 class="service1-title">الخدمات العقارية</h3>
+                        <p class="service1-desc">اعثر على عقار أحلامك في أكثر المواقع المرغوبة في تركيا. نقدم عقارات سكنية وتجارية حصرية للبيع والإيجار مع خدمة متميزة.</p>
                         <button onclick="showPage('real-estate')" class="service-link service1-link">
-                            <span>Discover Properties</span>
-                            <i class="fas fa-arrow-right"></i>
+                            <span>اكتشف العقارات</span>
+                            <i class="fas fa-arrow-left"></i>
                         </button>
                     </div>
                     <div class="service-card" data-service="tourism">
                         <div class="service-icon"><i class="fas fa-plane"></i></div>
-                        <h3 class="service2-title">Tourism Services</h3>
-                        <p class="service2-desc">Experience the breathtaking beauty of Turkey with our curated tourism packages. Personalized travel plans and premium accommodations for unforgettable journeys.</p>
+                        <h3 class="service2-title">الخدمات السياحية</h3>
+                        <p class="service2-desc">اختبر جمال تركيا الأخاذ مع باقاتنا السياحية المختارة بعناية. خطط سفر مخصصة وإقامات فاخرة لرحلات لا تُنسى.</p>
                         <button onclick="showPage('tourism')" class="service-link service2-link">
-                            <span>Explore Turkey</span>
-                            <i class="fas fa-arrow-right"></i>
+                            <span>استكشف تركيا</span>
+                            <i class="fas fa-arrow-left"></i>
                         </button>
                     </div>
                     <div class="service-card" data-service="student">
                         <div class="service-icon"><i class="fas fa-graduation-cap"></i></div>
-                        <h3 class="service3-title">Student Services</h3>
-                        <p class="service3-desc">Navigate Turkey's education system with expert guidance. From university applications to accommodation, we ensure your academic journey is seamless.</p>
+                        <h3 class="service3-title">الخدمات الطلابية</h3>
+                        <p class="service3-desc">تنقل في نظام التعليم التركي بإرشاد خبرائنا. من تقديم طلبات الجامعة إلى ترتيب السكن، نضمن رحلتك الأكاديمية سلسة وبلا متاعب.</p>
                         <button onclick="showPage('student')" class="service-link service3-link">
-                            <span>Start Your Journey</span>
-                            <i class="fas fa-arrow-right"></i>
+                            <span>ابدأ رحلتك</span>
+                            <i class="fas fa-arrow-left"></i>
                         </button>
                     </div>
                     <div class="service-card" data-service="medical">
                         <div class="service-icon"><i class="fas fa-heartbeat"></i></div>
-                        <h3 class="service4-title">Medical Services</h3>
-                        <p class="service4-desc">Access Turkey's world-class healthcare system with our premium medical tourism services. Top hospitals, specialized treatments, and comprehensive care.</p>
+                        <h3 class="service4-title">الخدمات العلاجية</h3>
+                        <p class="service4-desc">الوصول إلى نظام الرعاية الصحية العالمي في تركيا مع خدمات السياحة العلاجية المتميزة لدينا. أفضل المستشفيات، علاجات متخصصة، ورعاية شاملة.</p>
                         <button onclick="showPage('medical')" class="service-link service4-link">
-                            <span>Find Treatment</span>
-                            <i class="fas fa-arrow-right"></i>
+                            <span>ابحث عن العلاج</span>
+                            <i class="fas fa-arrow-left"></i>
                         </button>
                     </div>
                     <div class="service-card" data-service="business">
                         <div class="service-icon"><i class="fas fa-briefcase"></i></div>
-                        <h3 class="service5-title">Business Services</h3>
-                        <p class="service5-desc">Launch or expand your business in Turkey with our professional consulting. Company registration, market analysis, and strategic planning for success.</p>
+                        <h3 class="service5-title">خدمات الأعمال</h3>
+                        <p class="service5-desc">أطلق أو وسع عملك في تركيا مع استشاراتنا المهنية. تسجيل الشركات، تحليل الأسواق، والتخطيط الاستراتيجي للنجاح.</p>
                         <button onclick="showPage('business')" class="service-link service5-link">
-                            <span>Grow Your Business</span>
-                            <i class="fas fa-arrow-right"></i>
+                            <span>نَمِ بأعمالك</span>
+                            <i class="fas fa-arrow-left"></i>
                         </button>
                     </div>
                     <div class="service-card" data-service="other">
                         <div class="service-icon"><i class="fas fa-hands-helping"></i></div>
-                        <h3 class="service6-title">Additional Services</h3>
-                        <p class="service6-desc">Comprehensive support including legal services, translation, residency permits, insurance, and transportation to make your life in Turkey effortless.</p>
+                        <h3 class="service6-title">خدمات إضافية</h3>
+                        <p class="service6-desc">دعم شامل يشمل الخدمات القانونية، الترجمة، تصاريح الإقامة، التأمين، والنقل لجعل حياتك في تركيا خالية من المتاعب.</p>
                         <button onclick="showPage('other')" class="service-link service6-link">
-                            <span>View All Services</span>
-                            <i class="fas fa-arrow-right"></i>
+                            <span>عرض جميع الخدمات</span>
+                            <i class="fas fa-arrow-left"></i>
                         </button>
                     </div>
                 </div>
@@ -993,23 +993,23 @@
             <div class="container">
                 <div class="about-content">
                     <div class="about-text">
-                        <h2 class="about-title">Your Trusted Partner in Turkey</h2>
-                        <p class="about-p1">Wassl is your premier service provider, headquartered in Bolu with a nationwide reach. With years of specialized experience, we excel at connecting individuals and businesses with the premium services they need across Turkey.</p>
-                        <p class="about-p2">Whether you're seeking property investments, planning a memorable Turkish vacation, pursuing educational opportunities, requiring medical treatments, or expanding your business ventures, we deliver seamless, hassle-free experiences.</p>
-                        <p class="about-p3">Our dedicated team of industry professionals is committed to exceptional service, building lasting relationships, and ensuring your complete satisfaction with every interaction.</p>
+                        <h2 class="about-title">شريكك الموثوق في تركيا</h2>
+                        <p class="about-p1">وصل هو مزود الخدمات المتميز الخاص بك، بمقر رئيسي في بولو ووصول على مستوى تركيا. مع سنوات من الخبرة المتخصصة، نتفوق في ربط الأفراد والشركات بالخدمات المتميزة التي يحتاجونها عبر تركيا.</p>
+                        <p class="about-p2">سواء كنت تبحث عن استثمارات عقارية، تخطط لعطلة تركية لا تُنسى، تتطلع إلى فرص تعليمية، تحتاج إلى علاجات طبية، أو توسيع مشاريعك التجارية، نقدم تجارب سلسة وخالية من المتاعب.</p>
+                        <p class="about-p3">فريقنا المتفاني من محترفي الصناعة ملتزم بتقديم خدمة استثنائية، وبناء علاقات دائمة، وضمان رضاك التام مع كل تفاعل.</p>
                         
                         <div class="stats">
                             <div class="stat-item">
                                 <div class="stat-number">500+</div>
-                                <div class="stat-text">Happy Clients</div>
+                                <div class="stat-text">عملاء سعداء</div>
                             </div>
                             <div class="stat-item">
                                 <div class="stat-number">7+</div>
-                                <div class="stat-text">Years Experience</div>
+                                <div class="stat-text">سنوات خبرة</div>
                             </div>
                             <div class="stat-item">
                                 <div class="stat-number">24/7</div>
-                                <div class="stat-text">Customer Support</div>
+                                <div class="stat-text">دعم عملاء</div>
                             </div>
                         </div>
                     </div>
@@ -1024,47 +1024,47 @@
 
         <section class="appointments" id="appointments">
             <div class="container">
-                <h2 class="section-title appointments-title">Schedule Your Consultation</h2>
-                <p class="section-subtitle appointments-subtitle">Let's discuss how we can help you achieve your goals in Turkey</p>
+                <h2 class="section-title appointments-title">جدول استشارتك</h2>
+                <p class="section-subtitle appointments-subtitle">دعنا نناقش كيف يمكننا مساعدتك في تحقيق أهدافك في تركيا</p>
                 <form class="appointment-form" id="appointmentForm">
                     <div class="form-group">
-                        <label for="name" class="label-name">Full Name</label>
+                        <label for="name" class="label-name">الاسم الكامل</label>
                         <input type="text" id="name" name="name" required>
                     </div>
                     <div class="form-group">
-                        <label for="email" class="label-email">Email Address</label>
+                        <label for="email" class="label-email">البريد الإلكتروني</label>
                         <input type="email" id="email" name="email" required>
                     </div>
                     <div class="form-group">
-                        <label for="phone" class="label-phone">Phone Number</label>
+                        <label for="phone" class="label-phone">رقم الهاتف</label>
                         <input type="tel" id="phone" name="phone" required>
                     </div>
                     <div class="form-group">
-                        <label for="service" class="label-service">Service Needed</label>
+                        <label for="service" class="label-service">الخدمة المطلوبة</label>
                         <select id="service" name="service" required>
-                            <option value="" class="option-select">Select a service...</option>
-                            <option value="real-estate" class="option1">Real Estate Services</option>
-                            <option value="tourism" class="option2">Tourism Services</option>
-                            <option value="student" class="option3">Student Services</option>
-                            <option value="medical" class="option4">Medical Services</option>
-                            <option value="business" class="option5">Business Services</option>
-                            <option value="other" class="option6">Other Services</option>
+                            <option value="" class="option-select">اختر خدمة...</option>
+                            <option value="real-estate" class="option1">الخدمات العقارية</option>
+                            <option value="tourism" class="option2">الخدمات السياحية</option>
+                            <option value="student" class="option3">الخدمات الطلابية</option>
+                            <option value="medical" class="option4">الخدمات العلاجية</option>
+                            <option value="business" class="option5">خدمات الأعمال</option>
+                            <option value="other" class="option6">خدمات أخرى</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="date" class="label-date">Preferred Date</label>
+                        <label for="date" class="label-date">التاريخ المفضل</label>
                         <input type="date" id="date" name="date" required>
                     </div>
                     <div class="form-group">
-                        <label for="message" class="label-message">Your Requirements</label>
-                        <textarea id="message" name="message" placeholder="Tell us more about your specific needs and expectations..."></textarea>
+                        <label for="message" class="label-message">متطلباتك</label>
+                        <textarea id="message" name="message" placeholder="أخبرنا المزيد عن احتياجاتك وتوقعاتك المحددة..."></textarea>
                     </div>
                     <button type="submit" class="submit-btn btn-text">
-                        <span>Request Consultation</span>
+                        <span>طلب استشارة</span>
                         <i class="fas fa-paper-plane"></i>
                     </button>
                     <div class="success-message" id="successMessage">
-                        <span class="success-text">Thank you! Your consultation request has been received. We'll contact you soon to confirm your appointment.</span>
+                        <span class="success-text">شكراً لك! تم استلام طلب استشارتك. سنتصل بك قريباً لتأكيد موعدك.</span>
                     </div>
                 </form>
             </div>
@@ -1072,22 +1072,22 @@
 
         <section class="contact" id="contact">
             <div class="container">
-                <h2 class="section-title contact-title">Get In Touch</h2>
-                <p class="section-subtitle contact-subtitle">We're here to answer your questions and help you get started</p>
+                <h2 class="section-title contact-title">تواصل معنا</h2>
+                <p class="section-subtitle contact-subtitle">نحن هنا للإجابة على أسئلتك ومساعدتك في البدء</p>
                 <div class="contact-grid">
                     <div class="contact-item">
                         <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
-                        <h3 class="contact1-title">Our Location</h3>
-                        <p class="contact1-info">Bolu, Turkey</p>
+                        <h3 class="contact1-title">موقعنا</h3>
+                        <p class="contact1-info">بولو، تركيا</p>
                     </div>
                     <div class="contact-item">
                         <div class="contact-icon"><i class="fas fa-phone"></i></div>
-                        <h3 class="contact2-title">Call Us</h3>
+                        <h3 class="contact2-title">اتصل بنا</h3>
                         <p class="contact2-info">+90 538 213 6214</p>
                     </div>
                     <div class="contact-item">
                         <div class="contact-icon"><i class="fas fa-envelope"></i></div>
-                        <h3 class="contact3-title">Email Us</h3>
+                        <h3 class="contact3-title">راسلنا</h3>
                         <p class="contact3-info">wasslservices@gmail.com</p>
                     </div>
                 </div>
@@ -1099,68 +1099,68 @@
     <section id="real-estate-page" class="service-page">
         <div class="service-header">
             <div class="container">
-                <h1 class="service1-title">Real Estate Services</h1>
-                <p class="service1-subtitle">Find your dream property in Turkey with our premium real estate solutions</p>
+                <h1 class="service1-title">الخدمات العقارية</h1>
+                <p class="service1-subtitle">اعثر على عقار أحلامك في تركيا مع حلولنا العقارية المتميزة</p>
             </div>
         </div>
         <div class="container">
-            <button class="back-button" onclick="showPage('home')"><i class="fas fa-arrow-left"></i> <span class="back-text">Back to Home</span></button>
+            <button class="back-button" onclick="showPage('home')"><i class="fas fa-arrow-right"></i> <span class="back-text">العودة إلى الرئيسية</span></button>
             
             <div class="service-content">
-                <h2 class="real-estate-content-title1">Property Acquisition</h2>
-                <p class="real-estate-content-p1">We provide comprehensive home purchasing services that assist clients in finding their ideal properties, starting from assessing their specific requirements through to completing the transaction. Our team offers complete support throughout all stages of the process to ensure a successful and seamless experience.</p>
+                <h2 class="real-estate-content-title1">شراء العقارات</h2>
+                <p class="real-estate-content-p1">نقدم خدمات شراء منازل شاملة تساعد العملاء في العثور على عقاراتهم المثالية، بدءاً من تقييم متطلباتهم المحددة وصولاً إلى إتمام الصفقة. يقدم فريقنا دعماً كاملاً خلال جميع مراحل العملية لضمان تجربة ناجحة وسلسة.</p>
                 
-                <h2 class="real-estate-content-title2">Apartment Rentals</h2>
-                <p class="real-estate-content-p2">Our residential leasing services simplify your search for the perfect home. We offer diverse property options through multiple channels, ensuring choices that align with your specific needs. We connect you with potential sellers while providing essential guidance and consultation, securing optimal pricing for your property investment.</p>
+                <h2 class="real-estate-content-title2">إيجار الشقق</h2>
+                <p class="real-estate-content-p2">تبسط خدمات التأجير السكني لدينا بحثك عن المنزل المثالي. نقدم خيارات عقارية متنوعة عبر قنوات متعددة، مما يضمن خيارات تتماشى مع احتياجاتك المحددة. نربطك بالبائعين المحتملين مع تقديم التوجيه والاستشارة الأساسيين، مؤمنين أسعاراً مثالية لاستثمارك العقاري.</p>
                 
-                <h2 class="real-estate-content-title3">Tourist Accommodations</h2>
-                <p class="real-estate-content-p3">Our holiday rental services offer travelers unique accommodation experiences, allowing them to enjoy home-like comfort with all essential amenities, making their journeys more memorable and authentic.</p>
+                <h2 class="real-estate-content-title3">الإقامات السياحية</h2>
+                <p class="real-estate-content-p3">تقدم خدمات التأجير السياحي لدينا للمسافرين تجارب إقامة فريدة، مما يسمح لهم بالاستمتاع براحة المنزل مع جميع وسائل الراحة الأساسية، مما يجعل رحلاتهم أكثر إمتاعاً وأصالة.</p>
                 
-                <h2 class="real-estate-content-title4">Our Real Estate Expertise</h2>
+                <h2 class="real-estate-content-title4">خبرتنا العقارية</h2>
                 <ul class="real-estate-list">
-                    <li class="real-estate-list-item1">Residential property sales and purchases</li>
-                    <li class="real-estate-list-item2">Commercial real estate transactions</li>
-                    <li class="real-estate-list-item3">Long-term and short-term rental agreements</li>
-                    <li class="real-estate-list-item4">Vacation property management</li>
-                    <li class="real-estate-list-item5">Property valuation and market analysis</li>
-                    <li class="real-estate-list-item6">Legal documentation and contract processing</li>
+                    <li class="real-estate-list-item1">مبيعات وشراء العقارات السكنية</li>
+                    <li class="real-estate-list-item2">معاملات العقارات التجارية</li>
+                    <li class="real-estate-list-item3">اتفاقيات الإيجار طويلة وقصيرة الأجل</li>
+                    <li class="real-estate-list-item4">إدارة العقارات السياحية</li>
+                    <li class="real-estate-list-item5">تقييم العقارات وتحليل السوق</li>
+                    <li class="real-estate-list-item6">المستندات القانونية ومعالجة العقود</li>
                 </ul>
             </div>
             
             <div class="service-form">
-                <h2 class="real-estate-form-title">Real Estate Consultation Request</h2>
+                <h2 class="real-estate-form-title">طلب استشارة عقارية</h2>
                 <form id="realEstateForm">
                     <div class="form-group">
-                        <label for="property-type" class="real-estate-label1">Property Type</label>
+                        <label for="property-type" class="real-estate-label1">نوع العقار</label>
                         <select id="property-type" name="property-type" required>
-                            <option value="">Select property type</option>
-                            <option value="apartment">Apartment</option>
-                            <option value="villa">Villa</option>
-                            <option value="commercial">Commercial Property</option>
-                            <option value="land">Land</option>
+                            <option value="">اختر نوع العقار</option>
+                            <option value="apartment">شقة</option>
+                            <option value="villa">فيلا</option>
+                            <option value="commercial">عقار تجاري</option>
+                            <option value="land">أرض</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="transaction-type" class="real-estate-label2">Transaction Type</label>
+                        <label for="transaction-type" class="real-estate-label2">نوع المعاملة</label>
                         <select id="transaction-type" name="transaction-type" required>
-                            <option value="">Select transaction type</option>
-                            <option value="buy">Purchase</option>
-                            <option value="rent">Rental</option>
+                            <option value="">اختر نوع المعاملة</option>
+                            <option value="buy">شراء</option>
+                            <option value="rent">إيجار</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="location" class="real-estate-label3">Preferred Location</label>
-                        <input type="text" id="location" name="location" placeholder="e.g., Istanbul, Ankara, Bolu" required>
+                        <label for="location" class="real-estate-label3">الموقع المفضل</label>
+                        <input type="text" id="location" name="location" placeholder="مثال: إسطنبول، أنقرة، بولو" required>
                     </div>
                     <div class="form-group">
-                        <label for="budget" class="real-estate-label4">Budget Range</label>
-                        <input type="text" id="budget" name="budget" placeholder="e.g., $100,000 - $200,000" required>
+                        <label for="budget" class="real-estate-label4">نطاق الميزانية</label>
+                        <input type="text" id="budget" name="budget" placeholder="مثال: 100,000 - 200,000 $" required>
                     </div>
                     <div class="form-group">
-                        <label for="additional-requirements" class="real-estate-label5">Specific Requirements</label>
-                        <textarea id="additional-requirements" name="additional-requirements" placeholder="Please describe any specific features or requirements..."></textarea>
+                        <label for="additional-requirements" class="real-estate-label5">متطلبات محددة</label>
+                        <textarea id="additional-requirements" name="additional-requirements" placeholder="يرجى وصف أي ميزات أو متطلبات محددة..."></textarea>
                     </div>
-                    <button type="submit" class="submit-btn real-estate-submit">Submit Request</button>
+                    <button type="submit" class="submit-btn real-estate-submit">إرسال الطلب</button>
                 </form>
             </div>
         </div>
@@ -1170,74 +1170,74 @@
     <section id="tourism-page" class="service-page">
         <div class="service-header">
             <div class="container">
-                <h1 class="service2-title">Tourism Services</h1>
-                <p class="service2-subtitle">Discover the wonders of Turkey with our expertly crafted travel experiences</p>
+                <h1 class="service2-title">الخدمات السياحية</h1>
+                <p class="service2-subtitle">اكتشف عجائب تركيا مع تجارب السفر المصممة بخبرة</p>
             </div>
         </div>
         <div class="container">
-            <button class="back-button" onclick="showPage('home')"><i class="fas fa-arrow-left"></i> <span class="back-text">Back to Home</span></button>
+            <button class="back-button" onclick="showPage('home')"><i class="fas fa-arrow-right"></i> <span class="back-text">العودة إلى الرئيسية</span></button>
             
             <div class="service-content">
-                <h2 class="tourism-content-title1">Curated Travel Experiences</h2>
-                <p class="tourism-content-p1">We offer exclusive travel packages and personalized itineraries to help you explore Turkey's magnificent cities, historical sites, and natural wonders. Whether you're interested in ancient history, cultural immersion, or scenic beauty, we design the perfect journey tailored to your interests.</p>
+                <h2 class="tourism-content-title1">تجارب سفر مخصصة</h2>
+                <p class="tourism-content-p1">نقدم باقات سفر حصرية وخطوط سفر مخصصة لمساعدتك في استكشاف مدن تركيا الرائعة، والمواقع التاريخية، والعجائب الطبيعية. سواء كنت مهتماً بالتاريخ القديم، أو الانغماس الثقافي، أو الجمال الطبيعي، نصمم الرحلة المثالية المصممة خصيصاً لاهتماماتك.</p>
                 
-                <h2 class="tourism-content-title2">Transportation Solutions</h2>
-                <p class="tourism-content-p2">We provide comprehensive transportation services, including chauffeur-driven vehicles and self-drive options, ensuring comfortable and convenient travel throughout your Turkish adventure.</p>
+                <h2 class="tourism-content-title2">حلول النقل</h2>
+                <p class="tourism-content-p2">نوفر خدمات نقل شاملة، بما في ذلك مركبات مع سائق ومركبات للقيادة الذاتية، مما يضمن سفراً مريحاً ومريحاً خلال مغامرتك التركية.</p>
                 
-                <h2 class="tourism-content-title3">Accommodation Arrangements</h2>
-                <p class="tourism-content-p3">We handle all accommodation bookings to guarantee comfortable stays during your visit. From luxury resorts to charming boutique hotels, we find the perfect lodging to match your preferences and budget.</p>
+                <h2 class="tourism-content-title3">ترتيبات الإقامة</h2>
+                <p class="tourism-content-p3">نحن نتعامل مع جميع حجوزات الإقامة لضمان إقامة مريحة خلال زيارتك. من المنتجعات الفاخرة إلى الفنادق البوتيكية الساحرة، نجد مكان الإقامة المثالي ليناسب تفضيلاتك وميزانيتك.</p>
                 
-                <h2 class="tourism-content-title4">Our Tourism Services Include</h2>
+                <h2 class="tourism-content-title4">تشمل خدماتنا السياحية</h2>
                 <ul class="tourism-list">
-                    <li class="tourism-list-item1">Customized travel itineraries</li>
-                    <li class="tourism-list-item2">Hotel and resort reservations</li>
-                    <li class="tourism-list-item3">Domestic flight arrangements</li>
-                    <li class="tourism-list-item4">Guided tours with expert local guides</li>
-                    <li class="tourism-list-item5">Transportation services</li>
-                    <li class="tourism-list-item6">Special interest tours (historical, culinary, adventure)</li>
+                    <li class="tourism-list-item1">خطوط سفر مخصصة</li>
+                    <li class="tourism-list-item2">حجوزات الفنادق والمنتجعات</li>
+                    <li class="tourism-list-item3">ترتيبات الرحلات الجوية المحلية</li>
+                    <li class="tourism-list-item4">جولات إرشادية مع مرشدين محليين خبراء</li>
+                    <li class="tourism-list-item5">خدمات النقل</li>
+                    <li class="tourism-list-item6">جولات الاهتمامات الخاصة (تاريخية، طهي، مغامرة)</li>
                 </ul>
             </div>
             
             <div class="service-form">
-                <h2 class="tourism-form-title">Tourism Package Inquiry</h2>
+                <h2 class="tourism-form-title">استفسار عن باقة سياحية</h2>
                 <form id="tourismForm">
                     <div class="form-group">
-                        <label for="package-type" class="tourism-label1">Package Preference</label>
+                        <label for="package-type" class="tourism-label1">تفضيل الباقة</label>
                         <select id="package-type" name="package-type" required>
-                            <option value="">Select package type</option>
-                            <option value="special">Special Package</option>
-                            <option value="custom">Customized Package</option>
+                            <option value="">اختر نوع الباقة</option>
+                            <option value="special">باقة خاصة</option>
+                            <option value="custom">باقة مخصصة</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="city" class="tourism-label2">Destination City</label>
-                        <input type="text" id="city" name="city" placeholder="e.g., Istanbul, Cappadocia, Antalya" required>
+                        <label for="city" class="tourism-label2">مدينة الوجهة</label>
+                        <input type="text" id="city" name="city" placeholder="مثال: إسطنبول، كبادوكيا، أنطاليا" required>
                     </div>
                     <div class="form-group">
-                        <label for="days" class="tourism-label3">Duration of Stay</label>
-                        <input type="number" id="days" name="days" min="1" placeholder="Number of days" required>
+                        <label for="days" class="tourism-label3">مدة الإقامة</label>
+                        <input type="number" id="days" name="days" min="1" placeholder="عدد الأيام" required>
                     </div>
                     <div class="form-group">
-                        <label for="travelers" class="tourism-label4">Number of Travelers</label>
+                        <label for="travelers" class="tourism-label4">عدد المسافرين</label>
                         <input type="number" id="travelers" name="travelers" min="1" required>
                     </div>
                     <div class="form-group">
-                        <label for="transportation" class="tourism-label5">Transportation Preference</label>
+                        <label for="transportation" class="tourism-label5">تفضيل النقل</label>
                         <select id="transportation" name="transportation" required>
-                            <option value="">Select transportation</option>
-                            <option value="with-driver">Car with Driver</option>
-                            <option value="without-driver">Self-Drive Car</option>
+                            <option value="">اختر وسيلة النقل</option>
+                            <option value="with-driver">سيارة مع سائق</option>
+                            <option value="without-driver">سيارة ذاتية القيادة</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="hotel" class="tourism-label6">Accommodation Needs</label>
+                        <label for="hotel" class="tourism-label6">احتياجات الإقامة</label>
                         <select id="hotel" name="hotel" required>
-                            <option value="">Select accommodation option</option>
-                            <option value="need">Require Hotel Booking</option>
-                            <option value="have">Already Have Accommodation</option>
+                            <option value="">اختر خيار الإقامة</option>
+                            <option value="need">بحاجة لحجز فندق</option>
+                            <option value="have">لدي سكن مسبقاً</option>
                         </select>
                     </div>
-                    <button type="submit" class="submit-btn tourism-submit">Submit Inquiry</button>
+                    <button type="submit" class="submit-btn tourism-submit">إرسال الاستفسار</button>
                 </form>
             </div>
         </div>
@@ -1247,80 +1247,80 @@
     <section id="student-page" class="service-page">
         <div class="service-header">
             <div class="container">
-                <h1 class="service3-title">Student Services</h1>
-                <p class="service3-subtitle">Comprehensive educational support for international students in Turkey</p>
+                <h1 class="service3-title">الخدمات الطلابية</h1>
+                <p class="service3-subtitle">دعم تعليمي شامل للطلاب الدوليين في تركيا</p>
             </div>
         </div>
         <div class="container">
-            <button class="back-button" onclick="showPage('home')"><i class="fas fa-arrow-left"></i> <span class="back-text">Back to Home</span></button>
+            <button class="back-button" onclick="showPage('home')"><i class="fas fa-arrow-right"></i> <span class="back-text">العودة إلى الرئيسية</span></button>
             
             <div class="service-content">
-                <h2 class="student-content-title1">University Admissions Guidance</h2>
-                <p class="student-content-p1">We provide end-to-end support for students pursuing education in Turkey. Our services encompass the complete admission process from initial application through final enrollment at both public and private universities.</p>
+                <h2 class="student-content-title1">إرشاد القبول الجامعي</h2>
+                <p class="student-content-p1">نوفر دعماً شاملاً للطلاب الذين يتابعون التعليم في تركيا. تشمل خدماتنا عملية القبول الكاملة من التقديم الأولي حتى التسجيل النهائي في الجامعات الحكومية والخاصة.</p>
                 
-                <h2 class="student-content-title2">Academic Program Selection</h2>
-                <p class="student-content-p2">We assist students in identifying the ideal academic programs based on their interests, qualifications, and career aspirations. Our expertise covers institutions across Turkey, ensuring the best fit for each student's educational goals.</p>
+                <h2 class="student-content-title2">اختيار البرنامج الأكاديمي</h2>
+                <p class="student-content-p2">نساعد الطلاب في تحديد البرامج الأكاديمية المثالية بناءً على اهتماماتهم، مؤهلاتهم، وتطلعاتهم المهنية. تغطي خبرتنا المؤسسات عبر تركيا، مما يضمن أفضل ملاءمة لأهداف كل طالب تعليمية.</p>
                 
-                <h2 class="student-content-title3">Student Accommodation Solutions</h2>
-                <p class="student-content-p3">We facilitate finding appropriate student housing, whether on-campus university residences or off-campus apartments, to ensure a comfortable living experience throughout your academic journey.</p>
+                <h2 class="student-content-title3">حلول سكن الطلاب</h2>
+                <p class="student-content-p3">نسهل العثور على سكن طلابي مناسب، سواء في مساكن الجامعات داخل الحرم الجامعي أو الشقق خارج الحرم الجامعي، لضمان تجربة معيشة مريحة خلال رحلتك الأكاديمية.</p>
                 
-                <h2 class="student-content-title4">Our Student Services Include</h2>
+                <h2 class="student-content-title4">تشمل خدماتنا الطلابية</h2>
                 <ul class="student-list">
-                    <li class="student-list-item1">University and program selection</li>
-                    <li class="student-list-item2">Application preparation and submission</li>
-                    <li class="student-list-item3">Scholarship and financial aid guidance</li>
-                    <li class="student-list-item4">Student visa assistance</li>
-                    <li class="student-list-item5">Accommodation arrangements</li>
-                    <li class="student-list-item6">Airport pickup and orientation</li>
+                    <li class="student-list-item1">اختيار الجامعة والبرنامج</li>
+                    <li class="student-list-item2">إعداد الطلب وتقديمه</li>
+                    <li class="student-list-item3">إرشاد المنح الدراسية والمساعدات المالية</li>
+                    <li class="student-list-item4">مساعدة تأشيرة الطالب</li>
+                    <li class="student-list-item5">ترتيبات الإقامة</li>
+                    <li class="student-list-item6">الاستقبال في المطار والتوجيه</li>
                 </ul>
             </div>
             
             <div class="service-form">
-                <h2 class="student-form-title">Student Service Request</h2>
+                <h2 class="student-form-title">طلب خدمة طلابية</h2>
                 <form id="studentForm">
                     <div class="form-group">
-                        <label for="student-name" class="student-label1">Full Name</label>
+                        <label for="student-name" class="student-label1">الاسم الكامل</label>
                         <input type="text" id="student-name" name="student-name" required>
                     </div>
                     <div class="form-group">
-                        <label for="student-age" class="student-label2">Age</label>
+                        <label for="student-age" class="student-label2">العمر</label>
                         <input type="number" id="student-age" name="student-age" min="16" required>
                     </div>
                     <div class="form-group">
-                        <label for="student-gender" class="student-label3">Gender</label>
+                        <label for="student-gender" class="student-label3">الجنس</label>
                         <select id="student-gender" name="student-gender" required>
-                            <option value="">Select gender</option>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
+                            <option value="">اختر الجنس</option>
+                            <option value="male">ذكر</option>
+                            <option value="female">أنثى</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="student-city" class="student-label4">Preferred City</label>
+                        <label for="student-city" class="student-label4">المدينة المفضلة</label>
                         <input type="text" id="student-city" name="student-city" required>
                     </div>
                     <div class="form-group">
-                        <label for="university-type" class="student-label5">University Type Preference</label>
+                        <label for="university-type" class="student-label5">تفضيل نوع الجامعة</label>
                         <select id="university-type" name="university-type" required>
-                            <option value="">Select university type</option>
-                            <option value="public">Public University</option>
-                            <option value="private">Private University</option>
+                            <option value="">اختر نوع الجامعة</option>
+                            <option value="public">جامعة حكومية</option>
+                            <option value="private">جامعة خاصة</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="degree-type" class="student-label6">Desired Degree Level</label>
+                        <label for="degree-type" class="student-label6">المستوى الدراسي المطلوب</label>
                         <select id="degree-type" name="degree-type" required>
-                            <option value="">Select degree level</option>
-                            <option value="institute">Vocational Institute</option>
-                            <option value="bachelor">Bachelor's Degree</option>
-                            <option value="master">Master's Degree</option>
-                            <option value="phd">PhD</option>
+                            <option value="">اختر المستوى الدراسي</option>
+                            <option value="institute">معهد مهني</option>
+                            <option value="bachelor">بكالوريوس</option>
+                            <option value="master">ماجستير</option>
+                            <option value="phd">دكتوراه</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="major" class="student-label7">Intended Field of Study</label>
-                        <input type="text" id="major" name="major" placeholder="e.g., Business Administration, Engineering" required>
+                        <label for="major" class="student-label7">المجال الدراسي المقصود</label>
+                        <input type="text" id="major" name="major" placeholder="مثال: إدارة الأعمال، هندسة" required>
                     </div>
-                    <button type="submit" class="submit-btn student-submit">Submit Request</button>
+                    <button type="submit" class="submit-btn student-submit">إرسال الطلب</button>
                 </form>
             </div>
         </div>
@@ -1330,92 +1330,92 @@
     <section id="medical-page" class="service-page">
         <div class="service-header">
             <div class="container">
-                <h1 class="service4-title">Medical Services</h1>
-                <p class="service4-subtitle">Access Turkey's advanced healthcare system with our comprehensive medical tourism services</p>
+                <h1 class="service4-title">الخدمات العلاجية</h1>
+                <p class="service4-subtitle">الوصول إلى نظام الرعاية الصحية المتقدم في تركيا مع خدمات السياحة العلاجية الشاملة</p>
             </div>
         </div>
         <div class="container">
-            <button class="back-button" onclick="showPage('home')"><i class="fas fa-arrow-left"></i> <span class="back-text">Back to Home</span></button>
+            <button class="back-button" onclick="showPage('home')"><i class="fas fa-arrow-right"></i> <span class="back-text">العودة إلى الرئيسية</span></button>
             
             <div class="service-content">
-                <h2 class="medical-content-title1">Medical Treatments in Turkey</h2>
-                <p class="medical-content-p1">Turkey has emerged as a global leader in medical tourism, offering cutting-edge treatments at competitive prices. Our medical services encompass a wide range of specialties and procedures.</p>
+                <h2 class="medical-content-title1">العلاجات الطبية في تركيا</h2>
+                <p class="medical-content-p1">برزت تركيا كرائدة عالمية في السياحة العلاجية، تقدم علاجات متطورة بأسعار تنافسية. تشمل خدماتنا الطبية مجموعة واسعة من التخصصات والإجراءات.</p>
                 
-                <h2 class="medical-content-title2">Available Medical Services</h2>
+                <h2 class="medical-content-title2">الخدمات الطبية المتاحة</h2>
                 <ul class="medical-list">
-                    <li class="medical-list-item1">Women's Health and Obstetrics</li>
-                    <li class="medical-list-item2">Surgical Procedures of all specialties</li>
-                    <li class="medical-list-item3">Hair Transplantation and Restoration</li>
-                    <li class="medical-list-item4">Comprehensive Dental Procedures</li>
-                    <li class="medical-list-item5">Orthopedic surgeries and treatments</li>
-                    <li class="medical-list-item6">Cardiology and cardiac procedures</li>
-                    <li class="medical-list-item7">Oncology and cancer treatments</li>
-                    <li class="medical-list-item8">Plastic and reconstructive surgery</li>
-                    <li class="medical-list-item9">Fertility treatments and IVF</li>
+                    <li class="medical-list-item1">صحة المرأة والتوليد</li>
+                    <li class="medical-list-item2">الإجراءات الجراحية بجميع التخصصات</li>
+                    <li class="medical-list-item3">زراعة الشعر واستعادته</li>
+                    <li class="medical-list-item4">الإجراءات السنية الشاملة</li>
+                    <li class="medical-list-item5">جراحات وعلاجات العظام</li>
+                    <li class="medical-list-item6">أمراض القلب والإجراءات القلبية</li>
+                    <li class="medical-list-item7">علاجات الأورام والسرطان</li>
+                    <li class="medical-list-item8">جراحة التجميل والتقويم</li>
+                    <li class="medical-list-item9">علاجات الخصوبة وأطفال الأنابيب</li>
                 </ul>
                 
-                <h2 class="medical-content-title3">Comprehensive Patient Support</h2>
-                <p class="medical-content-p2">We provide complete assistance for medical tourists, including treatment coordination, accommodation arrangements, transportation services, and professional interpretation to ensure a comfortable and stress-free healthcare experience.</p>
+                <h2 class="medical-content-title3">دعم المريض الشامل</h2>
+                <p class="medical-content-p2">نوفر مساعدة كاملة لسياح العلاج، بما في ذلك تنسيق العلاج، ترتيبات الإقامة، خدمات النقل، والترجمة المهنية لضمان تجربة رعاية صحية مريحة وخالية من التوتر.</p>
             </div>
             
             <div class="service-form">
-                <h2 class="medical-form-title">Medical Service Consultation</h2>
+                <h2 class="medical-form-title">استشارة الخدمة الطبية</h2>
                 <form id="medicalForm">
                     <div class="form-group">
-                        <label for="patient-gender" class="medical-label1">Gender</label>
+                        <label for="patient-gender" class="medical-label1">الجنس</label>
                         <select id="patient-gender" name="patient-gender" required>
-                            <option value="">Select gender</option>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
+                            <option value="">اختر الجنس</option>
+                            <option value="male">ذكر</option>
+                            <option value="female">أنثى</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="patient-nationality" class="medical-label2">Nationality</label>
+                        <label for="patient-nationality" class="medical-label2">الجنسية</label>
                         <input type="text" id="patient-nationality" name="patient-nationality" required>
                     </div>
                     <div class="form-group">
-                        <label for="medical-condition" class="medical-label3">Medical Condition Description</label>
-                        <textarea id="medical-condition" name="medical-condition" placeholder="Please describe your medical condition and required treatments..." required></textarea>
+                        <label for="medical-condition" class="medical-label3">وصف الحالة الطبية</label>
+                        <textarea id="medical-condition" name="medical-condition" placeholder="يرجى وصف حالتك الطبية والعلاجات المطلوبة..." required></textarea>
                     </div>
                     <div class="form-group">
-                        <label for="medical-services" class="medical-label4">Required Medical Services</label>
+                        <label for="medical-services" class="medical-label4">الخدمات الطبية المطلوبة</label>
                         <select id="medical-services" name="medical-services" required>
-                            <option value="">Select medical service</option>
-                            <option value="womens-health">Women's Health and Obstetrics</option>
-                            <option value="surgery">Surgical Procedures</option>
-                            <option value="hair-transplant">Hair Transplantation</option>
-                            <option value="dental">Dental Procedures</option>
-                            <option value="other">Other Medical Service</option>
+                            <option value="">اختر الخدمة الطبية</option>
+                            <option value="womens-health">صحة المرأة والتوليد</option>
+                            <option value="surgery">الإجراءات الجراحية</option>
+                            <option value="hair-transplant">زراعة الشعر</option>
+                            <option value="dental">الإجراءات السنية</option>
+                            <option value="other">خدمة طبية أخرى</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="accommodation" class="medical-label5">Accommodation Requirements</label>
+                        <label for="accommodation" class="medical-label5">متطلبات الإقامة</label>
                         <select id="accommodation" name="accommodation" required>
-                            <option value="">Select accommodation option</option>
-                            <option value="hotel-room">Hotel Room</option>
-                            <option value="apartment">Serviced Apartment</option>
-                            <option value="not-needed">Accommodation Not Required</option>
+                            <option value="">اختر خيار الإقامة</option>
+                            <option value="hotel-room">غرفة فندق</option>
+                            <option value="apartment">شقة مفروشة</option>
+                            <option value="not-needed">لا حاجة للإقامة</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="medical-transportation" class="medical-label6">Transportation Needs</label>
+                        <label for="medical-transportation" class="medical-label6">احتياجات النقل</label>
                         <select id="medical-transportation" name="medical-transportation" required>
-                            <option value="">Select transportation</option>
-                            <option value="with-driver">Car with Driver</option>
-                            <option value="without-driver">Self-Drive Car</option>
-                            <option value="not-needed">Transportation Not Required</option>
+                            <option value="">اختر وسيلة النقل</option>
+                            <option value="with-driver">سيارة مع سائق</option>
+                            <option value="without-driver">سيارة ذاتية القيادة</option>
+                            <option value="not-needed">لا حاجة للنقل</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="translator" class="medical-label7">Translation Services</label>
+                        <label for="translator" class="medical-label7">خدمات الترجمة</label>
                         <select id="translator" name="translator" required>
-                            <option value="">Select translation option</option>
-                            <option value="male-translator">Male Translator Required</option>
-                            <option value="female-translator">Female Translator Required</option>
-                            <option value="not-needed">Translation Not Required</option>
+                            <option value="">اختر خيار الترجمة</option>
+                            <option value="male-translator">مترجم ذكر مطلوب</option>
+                            <option value="female-translator">مترجمة أنثى مطلوبة</option>
+                            <option value="not-needed">لا حاجة للترجمة</option>
                         </select>
                     </div>
-                    <button type="submit" class="submit-btn medical-submit">Submit Consultation Request</button>
+                    <button type="submit" class="submit-btn medical-submit">إرسال طلب الاستشارة</button>
                 </form>
             </div>
         </div>
@@ -1425,60 +1425,60 @@
     <section id="business-page" class="service-page">
         <div class="service-header">
             <div class="container">
-                <h1 class="service5-title">Business Services</h1>
-                <p class="service5-subtitle">Professional consulting for establishing and expanding your business in Turkey</p>
+                <h1 class="service5-title">خدمات الأعمال</h1>
+                <p class="service5-subtitle">استشارات مهنية لتأسيس وتوسيع عملك في تركيا</p>
             </div>
         </div>
         <div class="container">
-            <button class="back-button" onclick="showPage('home')"><i class="fas fa-arrow-left"></i> <span class="back-text">Back to Home</span></button>
+            <button class="back-button" onclick="showPage('home')"><i class="fas fa-arrow-right"></i> <span class="back-text">العودة إلى الرئيسية</span></button>
             
             <div class="service-content">
-                <h2 class="business-content-title1">Business Establishment and Expansion</h2>
-                <p class="business-content-p1">Are you planning to launch a commercial enterprise in Turkey, or do you already operate a company and wish to establish branches and explore new opportunities? We facilitate company formation and manage all government procedures on your behalf.</p>
+                <h2 class="business-content-title1">تأسيس الأعمال والتوسع</h2>
+                <p class="business-content-p1">هل تخطط لإطلاق مشروع تجاري في تركيا، أو هل لديك بالفعل شركة وتريد إنشاء فروع واستكشاف فرص جديدة؟ نحن نسهل تشكيل الشركة وندير جميع الإجراءات الحكومية نيابة عنك.</p>
                 
-                <p class="business-content-p2">Additionally, we supply all necessary information for comprehensive feasibility studies, detailed market analysis, optimal location selection, and strategic timing for your business initiatives.</p>
+                <p class="business-content-p2">بالإضافة إلى ذلك، نوفر جميع المعلومات اللازمة لدراسات الجدوى الشاملة، تحليل السوق التفصيلي، اختيار الموقع الأمثل، والتوقيت الاستراتيجي لمبادرات عملك.</p>
                 
-                <h2 class="business-content-title2">Our Business Services Portfolio</h2>
+                <h2 class="business-content-title2">محفظة خدماتنا التجارية</h2>
                 <ul class="business-list">
-                    <li class="business-list-item1">Company registration and legal establishment</li>
-                    <li class="business-list-item2">Commercial registration and licensing</li>
-                    <li class="business-list-item3">Comprehensive feasibility studies</li>
-                    <li class="business-list-item4">Market research and analysis</li>
-                    <li class="business-list-item5">Strategic location assessment</li>
-                    <li class="business-list-item6">Business expansion planning</li>
-                    <li class="business-list-item7">Financial modeling and projections</li>
-                    <li class="business-list-item8">Partnership and joint venture facilitation</li>
+                    <li class="business-list-item1">تسجيل الشركة والتأسيس القانوني</li>
+                    <li class="business-list-item2">التسجيل التجاري والترخيص</li>
+                    <li class="business-list-item3">دراسات الجدوى الشاملة</li>
+                    <li class="business-list-item4">بحث السوق والتحليل</li>
+                    <li class="business-list-item5">تقييم الموقع الاستراتيجي</li>
+                    <li class="business-list-item6">تخطيط التوسع التجاري</li>
+                    <li class="business-list-item7">النمذجة المالية والتوقعات</li>
+                    <li class="business-list-item8">تسهيل الشراكات والمشاريع المشتركة</li>
                 </ul>
             </div>
             
             <div class="service-form">
-                <h2 class="business-form-title">Business Service Consultation</h2>
+                <h2 class="business-form-title">استشارة الخدمة التجارية</h2>
                 <form id="businessForm">
                     <div class="form-group">
-                        <label for="company-name" class="business-label1">Company Name (if applicable)</label>
+                        <label for="company-name" class="business-label1">اسم الشركة (إن وجد)</label>
                         <input type="text" id="company-name" name="company-name">
                     </div>
                     <div class="form-group">
-                        <label for="service-type" class="business-label2">Required Service Type</label>
-                        <input type="text" id="service-type" name="service-type" placeholder="e.g., company registration, commercial license, feasibility study" required>
+                        <label for="service-type" class="business-label2">نوع الخدمة المطلوبة</label>
+                        <input type="text" id="service-type" name="service-type" placeholder="مثال: تسجيل شركة، ترخيص تجاري، دراسة جدوى" required>
                     </div>
                     <div class="form-group">
-                        <label for="additional-info" class="business-label3">Additional Information</label>
-                        <textarea id="additional-info" name="additional-info" placeholder="Please provide details about your business needs and objectives..."></textarea>
+                        <label for="additional-info" class="business-label3">معلومات إضافية</label>
+                        <textarea id="additional-info" name="additional-info" placeholder="يرجى تقديم تفاصيل عن احتياجاتك وأهدافك التجارية..."></textarea>
                     </div>
                     <div class="form-group">
-                        <label for="applicant-name" class="business-label4">Contact Person Name</label>
+                        <label for="applicant-name" class="business-label4">اسم شخص الاتصال</label>
                         <input type="text" id="applicant-name" name="applicant-name" required>
                     </div>
                     <div class="form-group">
-                        <label for="contact-email" class="business-label5">Business Email</label>
+                        <label for="contact-email" class="business-label5">البريد الإلكتروني للعمل</label>
                         <input type="email" id="contact-email" name="contact-email" required>
                     </div>
                     <div class="form-group">
-                        <label for="contact-phone" class="business-label6">Contact Number</label>
+                        <label for="contact-phone" class="business-label6">رقم الاتصال</label>
                         <input type="tel" id="contact-phone" name="contact-phone" required>
                     </div>
-                    <button type="submit" class="submit-btn business-submit">Submit Business Inquiry</button>
+                    <button type="submit" class="submit-btn business-submit">إرسال استفسار العمل</button>
                 </form>
             </div>
         </div>
@@ -1488,75 +1488,75 @@
     <section id="other-page" class="service-page">
         <div class="service-header">
             <div class="container">
-                <h1 class="service6-title">Additional Services</h1>
-                <p class="service6-subtitle">Comprehensive support services to facilitate your life in Turkey</p>
+                <h1 class="service6-title">خدمات إضافية</h1>
+                <p class="service6-subtitle">خدمات دعم شاملة لتسهيل حياتك في تركيا</p>
             </div>
         </div>
         <div class="container">
-            <button class="back-button" onclick="showPage('home')"><i class="fas fa-arrow-left"></i> <span class="back-text">Back to Home</span></button>
+            <button class="back-button" onclick="showPage('home')"><i class="fas fa-arrow-right"></i> <span class="back-text">العودة إلى الرئيسية</span></button>
             
             <div class="service-content">
-                <h2 class="other-content-title1">Legal Services</h2>
-                <p class="other-content-p1">We deliver comprehensive legal solutions including attorney representation and legal consultations to ensure you receive necessary support and expert advice for protecting your rights and achieving your objectives with complete professionalism.</p>
+                <h2 class="other-content-title1">الخدمات القانونية</h2>
+                <p class="other-content-p1">نقدم حلولاً قانونية شاملة بما في ذلك تمثيل المحاماة والاستشارات القانونية لضمان حصولك على الدعم الضروري والنصيحة الخبيرة لحماية حقوقك وتحقيق أهدافك بكامل الاحترافية.</p>
                 
-                <h2 class="other-content-title2">Translation and Notarization</h2>
-                <p class="other-content-p2">Our translation and notarization services facilitate the conversion of official documents into various languages with guaranteed translation accuracy through legal certification. We also provide personal interpreters to assist you in diverse situations and ensure effective communication.</p>
+                <h2 class="other-content-title2">الترجمة والمصادقة</h2>
+                <p class="other-content-p2">تسهل خدمات الترجمة والمصادقة لدينا تحويل المستندات الرسمية إلى لغات مختلفة مع ضمان دقة الترجمة من خلال التصديق القانوني. نوفر أيضاً مترجمين شخصيين لمساعدتك في مواقف متنوعة وضمان التواصل الفعال.</p>
                 
-                <h2 class="other-content-title3">Residency and Insurance Solutions</h2>
-                <p class="other-content-p3">Our residency application services include preparation of all required documentation, in addition to health insurance arrangements and population registration services, guaranteeing a straightforward and efficient experience for our clients.</p>
+                <h2 class="other-content-title3">حلول الإقامة والتأمين</h2>
+                <p class="other-content-p3">تشمل خدمات تقديم طلبات الإقامة لدينا إعداد جميع الوثائق المطلوبة، بالإضافة إلى ترتيبات التأمين الصحي وخدمات التسجيل السكاني، مضمناً تجربة مباشرة وفعالة لعملائنا.</p>
                 
-                <h2 class="other-content-title4">Transportation Services</h2>
-                <p class="other-content-p4">We offer comprehensive transportation solutions, including vehicle rentals with or without drivers, in addition to efficient goods transportation and personal item relocation services with exceptional reliability.</p>
+                <h2 class="other-content-title4">خدمات النقل</h2>
+                <p class="other-content-p4">نقدم حلول نقل شاملة، بما في ذلك تأجير المركبات مع أو بدون سائقين، بالإضافة إلى خدمات نقل البضائع الفعالة وخدمات نقل العناصر الشخصية بموثوقية استثنائية.</p>
                 
-                <h2 class="other-content-title5">Our Additional Services Include</h2>
+                <h2 class="other-content-title5">تشمل خدماتنا الإضافية</h2>
                 <ul class="other-list">
-                    <li class="other-list-item1">Legal consultation and representation</li>
-                    <li class="other-list-item2">Document translation and notarization</li>
-                    <li class="other-list-item3">Residency permit applications</li>
-                    <li class="other-list-item4">Health insurance arrangements</li>
-                    <li class="other-list-item5">Vehicle rental services</li>
-                    <li class="other-list-item6">Personal and commercial transportation</li>
-                    <li class="other-list-item7">Document authentication and legalization</li>
+                    <li class="other-list-item1">الاستشارة والتمثيل القانوني</li>
+                    <li class="other-list-item2">ترجمة المستندات والمصادقة</li>
+                    <li class="other-list-item3">طلبات تصريح الإقامة</li>
+                    <li class="other-list-item4">ترتيبات التأمين الصحي</li>
+                    <li class="other-list-item5">خدمات تأجير المركبات</li>
+                    <li class="other-list-item6">النقل الشخصي والتجاري</li>
+                    <li class="other-list-item7">مصادقة المستندات وإضفاء الصفة الرسمية</li>
                 </ul>
             </div>
             
             <div class="service-form">
-                <h2 class="other-form-title">Additional Service Request</h2>
+                <h2 class="other-form-title">طلب خدمة إضافية</h2>
                 <form id="otherForm">
                     <div class="form-group">
-                        <label for="other-service-type" class="other-label1">Service Category</label>
+                        <label for="other-service-type" class="other-label1">فئة الخدمة</label>
                         <select id="other-service-type" name="other-service-type" required>
-                            <option value="">Select service category</option>
-                            <option value="legal">Legal Services</option>
-                            <option value="translation">Translation and Notarization</option>
-                            <option value="residency">Residency and Insurance</option>
-                            <option value="transportation">Transportation Services</option>
-                            <option value="other">Other Service</option>
+                            <option value="">اختر فئة الخدمة</option>
+                            <option value="legal">الخدمات القانونية</option>
+                            <option value="translation">الترجمة والمصادقة</option>
+                            <option value="residency">الإقامة والتأمين</option>
+                            <option value="transportation">خدمات النقل</option>
+                            <option value="other">خدمة أخرى</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="other-service-details" class="other-label2">Service Specifications</label>
-                        <textarea id="other-service-details" name="other-service-details" placeholder="Please provide detailed information about the service you require..." required></textarea>
+                        <label for="other-service-details" class="other-label2">مواصفات الخدمة</label>
+                        <textarea id="other-service-details" name="other-service-details" placeholder="يرجى تقديم معلومات مفصلة عن الخدمة التي تحتاجها..." required></textarea>
                     </div>
                     <div class="form-group">
-                        <label for="other-name" class="other-label3">Your Full Name</label>
+                        <label for="other-name" class="other-label3">اسمك الكامل</label>
                         <input type="text" id="other-name" name="other-name" required>
                     </div>
                     <div class="form-group">
-                        <label for="other-email" class="other-label4">Email Address</label>
+                        <label for="other-email" class="other-label4">البريد الإلكتروني</label>
                         <input type="email" id="other-email" name="other-email" required>
                     </div>
                     <div class="form-group">
-                        <label for="other-phone" class="other-label5">Contact Number</label>
+                        <label for="other-phone" class="other-label5">رقم الاتصال</label>
                         <input type="tel" id="other-phone" name="other-phone" required>
                     </div>
-                    <button type="submit" class="submit-btn other-submit">Submit Service Request</button>
+                    <button type="submit" class="submit-btn other-submit">إرسال طلب الخدمة</button>
                 </form>
             </div>
         </div>
     </section>
 
-    <a href="https://wa.me/905382136214" target="_blank" class="whatsapp-fab" aria-label="Contact us on WhatsApp">
+    <a href="https://wa.me/905382136214" target="_blank" class="whatsapp-fab" aria-label="اتصل بنا على واتساب">
         <i class="fab fa-whatsapp"></i>
     </a>
 
@@ -1566,44 +1566,44 @@
                 <div class="footer-about">
                     <div class="footer-logo">
                         <i class="fas fa-handshake"></i>
-                        <span>Wassl</span>
+                        <span>وصل</span>
                     </div>
-                    <p class="footer-about-text">Your trusted gateway to comprehensive services in Turkey. We specialize in real estate, tourism, education, healthcare, and business solutions with excellence and reliability.</p>
+                    <p class="footer-about-text">بوابتك الموثوقة للخدمات الشاملة في تركيا. نحن متخصصون في العقارات، السياحة، التعليم، الرعاية الصحية، وحلول الأعمال بتميز وموثوقية.</p>
                     <div class="footer-links">
-                        <h3 class="footer-links-title">Quick Links</h3>
+                        <h3 class="footer-links-title">روابط سريعة</h3>
                         <ul>
-                            <li><a onclick="showPage('home')" class="footer-home">Home</a></li>
-                            <li><a onclick="showPage('services')" class="footer-services">Services</a></li>
-                            <li><a onclick="showPage('about')" class="footer-about">About Us</a></li>
-                            <li><a onclick="showPage('contact')" class="footer-contact">Contact</a></li>
+                            <li><a onclick="showPage('home')" class="footer-home">الرئيسية</a></li>
+                            <li><a onclick="showPage('services')" class="footer-services">الخدمات</a></li>
+                            <li><a onclick="showPage('about')" class="footer-about">من نحن</a></li>
+                            <li><a onclick="showPage('contact')" class="footer-contact">اتصل بنا</a></li>
                         </ul>
                     </div>
                 </div>
                 <div class="footer-services">
-                    <h3 class="footer-services-title">Our Services</h3>
+                    <h3 class="footer-services-title">خدماتنا</h3>
                     <ul>
-                        <li><a onclick="showPage('real-estate')" class="footer-real-estate">Real Estate</a></li>
-                        <li><a onclick="showPage('tourism')" class="footer-tourism">Tourism</a></li>
-                        <li><a onclick="showPage('student')" class="footer-student">Student Services</a></li>
-                        <li><a onclick="showPage('medical')" class="footer-medical">Medical Services</a></li>
-                        <li><a onclick="showPage('business')" class="footer-business">Business Services</a></li>
-                        <li><a onclick="showPage('other')" class="footer-other">Additional Services</a></li>
+                        <li><a onclick="showPage('real-estate')" class="footer-real-estate">العقارات</a></li>
+                        <li><a onclick="showPage('tourism')" class="footer-tourism">السياحة</a></li>
+                        <li><a onclick="showPage('student')" class="footer-student">الخدمات الطلابية</a></li>
+                        <li><a onclick="showPage('medical')" class="footer-medical">الخدمات العلاجية</a></li>
+                        <li><a onclick="showPage('business')" class="footer-business">خدمات الأعمال</a></li>
+                        <li><a onclick="showPage('other')" class="footer-other">خدمات إضافية</a></li>
                     </ul>
                 </div>
                 <div class="footer-contact">
-                    <h3 class="footer-contact-title">Contact Info</h3>
-                    <p><i class="fas fa-map-marker-alt"></i> <span class="footer-location">Bolu, Turkey</span></p>
+                    <h3 class="footer-contact-title">معلومات الاتصال</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> <span class="footer-location">بولو، تركيا</span></p>
                     <p><i class="fas fa-phone"></i> <span class="footer-phone">+90 538 213 6214</span></p>
                     <p><i class="fas fa-envelope"></i> <span class="footer-email">wasslservices@gmail.com</span></p>
                     <div style="margin-top: 1.5rem;">
                         <button class="lang-switch" onclick="toggleLanguage()" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3);">
-                            <i class="fas fa-globe"></i> <span class="footer-lang-text">العربية</span>
+                            <i class="fas fa-globe"></i> <span class="footer-lang-text">English</span>
                         </button>
                     </div>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p class="footer-text">&copy; 2025 Wassl. All rights reserved. | Based in Bolu, Serving all of Turkey</p>
+                <p class="footer-text">&copy; 2025 وصل. جميع الحقوق محفوظة. | متمركزون في بولو، نخدم جميع أنحاء تركيا</p>
             </div>
         </div>
     </footer>
