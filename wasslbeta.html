@@ -1,0 +1,2489 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wassl - Your Trusted Gateway in Turkey</title>
+    <meta name="description" content="Wassl offers comprehensive services including real estate, tourism, education, healthcare, and business solutions in Turkey">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0f4c81;
+            --primary-dark: #0a3a6b;
+            --primary-light: #1a6bb3;
+            --secondary: #d4af37;
+            --secondary-dark: #b8941f;
+            --accent: #e11d48;
+            --dark: #1e293b;
+            --dark-alt: #334155;
+            --light: #f8fafc;
+            --light-alt: #f1f5f9;
+            --white: #ffffff;
+            --text: #374151;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.1);
+            --radius: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            color: var(--text);
+            background-color: var(--light);
+            overflow-x: hidden;
+        }
+
+        [dir="rtl"] body {
+            font-family: 'Cairo', 'Arial', sans-serif;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: var(--white);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        header.scrolled {
+            padding: 5px 0;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 0;
+            position: relative;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .logo-icon {
+            color: var(--secondary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+            margin-right: 0; /* Removed margin to fix overlap */
+        }
+
+        [dir="rtl"] .nav-links {
+            margin-left: 0;
+        }
+
+        .nav-links a {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+            padding: 5px 0;
+        }
+
+        .nav-links a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--secondary);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a:hover:after {
+            width: 100%;
+        }
+
+        .lang-switch {
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            min-width: 100px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .lang-switch:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .lang-switch-desktop {
+            position: static; /* Changed from absolute to fix overlap */
+            margin-left: 1rem; /* Added margin for spacing */
+        }
+
+        [dir="rtl"] .lang-switch-desktop {
+            margin-left: 0;
+            margin-right: 1rem;
+        }
+
+        .lang-switch-li-mobile {
+            display: none;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            padding: 8rem 0 6rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.95;
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--secondary);
+            color: var(--dark);
+            padding: 1.2rem 2.5rem;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+            border: none;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.4);
+            background: var(--secondary-dark);
+        }
+
+        /* Services Section */
+        .services {
+            padding: 6rem 0;
+            background: var(--white);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.8rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: var(--text-light);
+            margin-bottom: 4rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .service-card {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            text-align: center;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .service-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .service-icon {
+            font-size: 3.5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            background: var(--light);
+            width: 90px;
+            height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin-left: auto;
+            margin-right: auto;
+            transition: var(--transition);
+        }
+
+        .service-card:hover .service-icon {
+            transform: scale(1.1);
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .service-card h3 {
+            color: var(--dark);
+            margin-bottom: 1.2rem;
+            font-size: 1.6rem;
+            font-weight: 600;
+        }
+
+        .service-card p {
+            color: var(--text);
+            line-height: 1.7;
+            flex-grow: 1;
+            margin-bottom: 1.8rem;
+        }
+
+        .service-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: var(--primary);
+            color: var(--white);
+            padding: 0.9rem 1.8rem;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 500;
+            transition: var(--transition);
+            margin-top: auto;
+            cursor: pointer;
+            border: 2px solid var(--primary);
+        }
+
+        .service-link:hover {
+            background: transparent;
+            color: var(--primary);
+        }
+
+        /* About Section */
+        .about {
+            padding: 6rem 0;
+            background: var(--light-alt);
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-text h2 {
+            font-size: 2.8rem;
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .about-text p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            color: var(--text);
+        }
+
+        .about-image {
+            text-align: center;
+            position: relative;
+        }
+
+        .about-image img {
+            max-width: 100%;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-text {
+            font-size: 1rem;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        /* Appointments Section */
+        .appointments {
+            padding: 6rem 0;
+            background: var(--white);
+        }
+
+        .appointment-form {
+            max-width: 700px;
+            margin: 0 auto;
+            background: var(--white);
+            padding: 3rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border);
+        }
+
+        .form-group {
+            margin-bottom: 1.8rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.6rem;
+            color: var(--dark);
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(15, 76, 129, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: var(--primary);
+            color: var(--white);
+            padding: 1.2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .submit-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .success-message {
+            display: none;
+            background: #10b981;
+            color: var(--white);
+            padding: 1.2rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 6rem 0;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            text-align: center;
+        }
+
+        .contact-item {
+            padding: 2.5rem 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius);
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+        }
+
+        .contact-item:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .contact-icon {
+            font-size: 3rem;
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-item h3 {
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+
+        .contact-item p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: var(--white);
+            padding: 4rem 0 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-about p {
+            margin-bottom: 1.5rem;
+            opacity: 0.8;
+            line-height: 1.7;
+        }
+
+        .footer-links h3,
+        .footer-services h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            color: var(--white);
+        }
+
+        .footer-links ul,
+        .footer-services ul {
+            list-style: none;
+        }
+
+        .footer-links li,
+        .footer-services li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a,
+        .footer-services a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover,
+        .footer-services a:hover {
+            color: var(--secondary);
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-text {
+            opacity: 0.7;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--dark);
+            cursor: pointer;
+            z-index: 1002;
+        }
+        
+        /* WhatsApp FAB */
+        .whatsapp-fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #25D366;
+            color: var(--white);
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.8rem;
+            text-decoration: none;
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+            z-index: 1001;
+            transition: var(--transition);
+        }
+        .whatsapp-fab:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.5);
+        }
+        
+        /* Service Pages */
+        .service-page {
+            display: none;
+            padding: 2rem 0 6rem;
+            min-height: 80vh;
+        }
+
+        .service-page.active {
+            display: block;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .service-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            padding: 4rem 0;
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .service-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .service-header p {
+            font-size: 1.3rem;
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        .service-content {
+            background: var(--white);
+            padding: 3rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 3rem;
+            border: 1px solid var(--border);
+        }
+
+        .service-content h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+            font-weight: 600;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--secondary);
+            display: inline-block;
+        }
+
+        .service-content p {
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .service-content ul {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+        }
+
+        .service-content li {
+            margin-bottom: 0.8rem;
+            position: relative;
+        }
+
+        .service-content li:before {
+            content: '✓';
+            color: var(--secondary);
+            font-weight: bold;
+            position: absolute;
+            left: -1.5rem;
+        }
+
+        .service-form {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .service-form h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--secondary);
+            color: var(--dark);
+            padding: 0.9rem 1.8rem;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 500;
+            transition: var(--transition);
+            margin-bottom: 2rem;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);
+        }
+
+        .back-button:hover {
+            background: var(--secondary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+            
+            .about-content {
+                gap: 3rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: var(--white);
+                flex-direction: column;
+                padding: 5rem 2rem;
+                box-shadow: var(--shadow-lg);
+                z-index: 1000;
+                overflow-y: auto;
+                margin: 0 !important;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero {
+                padding: 6rem 0 4rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .section-title {
+                font-size: 2.2rem;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .whatsapp-fab {
+                width: 55px;
+                height: 55px;
+                font-size: 2.2rem;
+                bottom: 20px;
+                right: 20px;
+            }
+            
+            .service-content, .service-form {
+                padding: 2rem;
+            }
+
+            .service-header h1 {
+                font-size: 2.5rem;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            /* Hide the desktop button on mobile */
+            .lang-switch-desktop {
+                display: none;
+            }
+
+            /* Show the mobile button's list item */
+            .lang-switch-li-mobile {
+                display: list-item;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .service-header h1 {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .service-content, .service-form {
+                padding: 1.5rem;
+            }
+            
+            .appointment-form {
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Main Navigation -->
+    <header id="main-header">
+        <div class="container">
+            <nav>
+                <a class="logo" onclick="showPage('home')">
+                    <i class="fas fa-handshake logo-icon"></i>
+                    <span>Wassl</span>
+                </a>
+                <button class="mobile-menu-btn" onclick="toggleMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <ul class="nav-links" id="navLinks">
+                    <li><a onclick="showPage('home')" class="nav-home">Home</a></li>
+                    <li><a onclick="showPage('services')" class="nav-services">Services</a></li>
+                    <li><a onclick="showPage('about')" class="nav-about">About</a></li>
+                    <li><a onclick="showPage('appointments')" class="nav-appointments">Appointments</a></li>
+                    <li><a onclick="showPage('contact')" class="nav-contact">Contact</a></li>
+                    <li class="lang-switch-li-mobile"><button class="lang-switch" onclick="toggleLanguage()"><i class="fas fa-globe"></i> العربية</button></li>
+                </ul>
+                <button class="lang-switch lang-switch-desktop" onclick="toggleLanguage()"><i class="fas fa-globe"></i> العربية</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Home Page -->
+    <section id="home-page" class="service-page active">
+        <div class="hero" id="home">
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="hero-title">Your Trusted Gateway in Turkey</h1>
+                    <p class="hero-subtitle">Comprehensive services for real estate, tourism, education, healthcare, and business solutions. Based in Bolu, serving all of Turkey with excellence and reliability.</p>
+                    <button onclick="showPage('appointments')" class="cta-button cta-text">
+                        <span>Get Started</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <section class="services" id="services">
+            <div class="container">
+                <h2 class="section-title services-title">Our Premium Services</h2>
+                <p class="section-subtitle services-subtitle">Comprehensive solutions tailored to your needs in Turkey, delivered with expertise and dedication</p>
+                <div class="services-grid">
+                    <div class="service-card" data-service="real-estate">
+                        <div class="service-icon"><i class="fas fa-building"></i></div>
+                        <h3 class="service1-title">Real Estate Services</h3>
+                        <p class="service1-desc">Find your dream property in Turkey's most desirable locations. We offer exclusive residential and commercial properties for sale and rent with premium service.</p>
+                        <button onclick="showPage('real-estate')" class="service-link service1-link">
+                            <span>Discover Properties</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                    <div class="service-card" data-service="tourism">
+                        <div class="service-icon"><i class="fas fa-plane"></i></div>
+                        <h3 class="service2-title">Tourism Services</h3>
+                        <p class="service2-desc">Experience the breathtaking beauty of Turkey with our curated tourism packages. Personalized travel plans and premium accommodations for unforgettable journeys.</p>
+                        <button onclick="showPage('tourism')" class="service-link service2-link">
+                            <span>Explore Turkey</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                    <div class="service-card" data-service="student">
+                        <div class="service-icon"><i class="fas fa-graduation-cap"></i></div>
+                        <h3 class="service3-title">Student Services</h3>
+                        <p class="service3-desc">Navigate Turkey's education system with expert guidance. From university applications to accommodation, we ensure your academic journey is seamless.</p>
+                        <button onclick="showPage('student')" class="service-link service3-link">
+                            <span>Start Your Journey</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                    <div class="service-card" data-service="medical">
+                        <div class="service-icon"><i class="fas fa-heartbeat"></i></div>
+                        <h3 class="service4-title">Medical Services</h3>
+                        <p class="service4-desc">Access Turkey's world-class healthcare system with our premium medical tourism services. Top hospitals, specialized treatments, and comprehensive care.</p>
+                        <button onclick="showPage('medical')" class="service-link service4-link">
+                            <span>Find Treatment</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                    <div class="service-card" data-service="business">
+                        <div class="service-icon"><i class="fas fa-briefcase"></i></div>
+                        <h3 class="service5-title">Business Services</h3>
+                        <p class="service5-desc">Launch or expand your business in Turkey with our professional consulting. Company registration, market analysis, and strategic planning for success.</p>
+                        <button onclick="showPage('business')" class="service-link service5-link">
+                            <span>Grow Your Business</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                    <div class="service-card" data-service="other">
+                        <div class="service-icon"><i class="fas fa-hands-helping"></i></div>
+                        <h3 class="service6-title">Additional Services</h3>
+                        <p class="service6-desc">Comprehensive support including legal services, translation, residency permits, insurance, and transportation to make your life in Turkey effortless.</p>
+                        <button onclick="showPage('other')" class="service-link service6-link">
+                            <span>View All Services</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="about" id="about">
+            <div class="container">
+                <div class="about-content">
+                    <div class="about-text">
+                        <h2 class="about-title">Your Trusted Partner in Turkey</h2>
+                        <p class="about-p1">Wassl is your premier service provider, headquartered in Bolu with a nationwide reach. With years of specialized experience, we excel at connecting individuals and businesses with the premium services they need across Turkey.</p>
+                        <p class="about-p2">Whether you're seeking property investments, planning a memorable Turkish vacation, pursuing educational opportunities, requiring medical treatments, or expanding your business ventures, we deliver seamless, hassle-free experiences.</p>
+                        <p class="about-p3">Our dedicated team of industry professionals is committed to exceptional service, building lasting relationships, and ensuring your complete satisfaction with every interaction.</p>
+                        
+                        <div class="stats">
+                            <div class="stat-item">
+                                <div class="stat-number">500+</div>
+                                <div class="stat-text">Happy Clients</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">7+</div>
+                                <div class="stat-text">Years Experience</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">24/7</div>
+                                <div class="stat-text">Customer Support</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="about-image">
+                        <div style="width: 100%; height: 400px; background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem;">
+                            <i class="fas fa-users" style="font-size: 5rem; opacity: 0.7;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="appointments" id="appointments">
+            <div class="container">
+                <h2 class="section-title appointments-title">Schedule Your Consultation</h2>
+                <p class="section-subtitle appointments-subtitle">Let's discuss how we can help you achieve your goals in Turkey</p>
+                <form class="appointment-form" id="appointmentForm">
+                    <div class="form-group">
+                        <label for="name" class="label-name">Full Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="label-email">Email Address</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone" class="label-phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="service" class="label-service">Service Needed</label>
+                        <select id="service" name="service" required>
+                            <option value="" class="option-select">Select a service...</option>
+                            <option value="real-estate" class="option1">Real Estate Services</option>
+                            <option value="tourism" class="option2">Tourism Services</option>
+                            <option value="student" class="option3">Student Services</option>
+                            <option value="medical" class="option4">Medical Services</option>
+                            <option value="business" class="option5">Business Services</option>
+                            <option value="other" class="option6">Other Services</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="date" class="label-date">Preferred Date</label>
+                        <input type="date" id="date" name="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message" class="label-message">Your Requirements</label>
+                        <textarea id="message" name="message" placeholder="Tell us more about your specific needs and expectations..."></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn btn-text">
+                        <span>Request Consultation</span>
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                    <div class="success-message" id="successMessage">
+                        <span class="success-text">Thank you! Your consultation request has been received. We'll contact you soon to confirm your appointment.</span>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <section class="contact" id="contact">
+            <div class="container">
+                <h2 class="section-title contact-title">Get In Touch</h2>
+                <p class="section-subtitle contact-subtitle">We're here to answer your questions and help you get started</p>
+                <div class="contact-grid">
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+                        <h3 class="contact1-title">Our Location</h3>
+                        <p class="contact1-info">Bolu, Turkey</p>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fas fa-phone"></i></div>
+                        <h3 class="contact2-title">Call Us</h3>
+                        <p class="contact2-info">+90 538 213 6214</p>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                        <h3 class="contact3-title">Email Us</h3>
+                        <p class="contact3-info">wasslservices@gmail.com</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+
+    <!-- Real Estate Services Page -->
+    <section id="real-estate-page" class="service-page">
+        <div class="service-header">
+            <div class="container">
+                <h1 class="service1-title">Real Estate Services</h1>
+                <p class="service1-subtitle">Find your dream property in Turkey with our premium real estate solutions</p>
+            </div>
+        </div>
+        <div class="container">
+            <button class="back-button" onclick="showPage('home')"><i class="fas fa-arrow-left"></i> <span class="back-text">Back to Home</span></button>
+            
+            <div class="service-content">
+                <h2 class="real-estate-content-title1">Property Acquisition</h2>
+                <p class="real-estate-content-p1">We provide comprehensive home purchasing services that assist clients in finding their ideal properties, starting from assessing their specific requirements through to completing the transaction. Our team offers complete support throughout all stages of the process to ensure a successful and seamless experience.</p>
+                
+                <h2 class="real-estate-content-title2">Apartment Rentals</h2>
+                <p class="real-estate-content-p2">Our residential leasing services simplify your search for the perfect home. We offer diverse property options through multiple channels, ensuring choices that align with your specific needs. We connect you with potential sellers while providing essential guidance and consultation, securing optimal pricing for your property investment.</p>
+                
+                <h2 class="real-estate-content-title3">Tourist Accommodations</h2>
+                <p class="real-estate-content-p3">Our holiday rental services offer travelers unique accommodation experiences, allowing them to enjoy home-like comfort with all essential amenities, making their journeys more memorable and authentic.</p>
+                
+                <h2 class="real-estate-content-title4">Our Real Estate Expertise</h2>
+                <ul class="real-estate-list">
+                    <li class="real-estate-list-item1">Residential property sales and purchases</li>
+                    <li class="real-estate-list-item2">Commercial real estate transactions</li>
+                    <li class="real-estate-list-item3">Long-term and short-term rental agreements</li>
+                    <li class="real-estate-list-item4">Vacation property management</li>
+                    <li class="real-estate-list-item5">Property valuation and market analysis</li>
+                    <li class="real-estate-list-item6">Legal documentation and contract processing</li>
+                </ul>
+            </div>
+            
+            <div class="service-form">
+                <h2 class="real-estate-form-title">Real Estate Consultation Request</h2>
+                <form id="realEstateForm">
+                    <div class="form-group">
+                        <label for="property-type" class="real-estate-label1">Property Type</label>
+                        <select id="property-type" name="property-type" required>
+                            <option value="">Select property type</option>
+                            <option value="apartment">Apartment</option>
+                            <option value="villa">Villa</option>
+                            <option value="commercial">Commercial Property</option>
+                            <option value="land">Land</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="transaction-type" class="real-estate-label2">Transaction Type</label>
+                        <select id="transaction-type" name="transaction-type" required>
+                            <option value="">Select transaction type</option>
+                            <option value="buy">Purchase</option>
+                            <option value="rent">Rental</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="location" class="real-estate-label3">Preferred Location</label>
+                        <input type="text" id="location" name="location" placeholder="e.g., Istanbul, Ankara, Bolu" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="budget" class="real-estate-label4">Budget Range</label>
+                        <input type="text" id="budget" name="budget" placeholder="e.g., $100,000 - $200,000" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="additional-requirements" class="real-estate-label5">Specific Requirements</label>
+                        <textarea id="additional-requirements" name="additional-requirements" placeholder="Please describe any specific features or requirements..."></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn real-estate-submit">Submit Request</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tourism Services Page -->
+    <section id="tourism-page" class="service-page">
+        <div class="service-header">
+            <div class="container">
+                <h1 class="service2-title">Tourism Services</h1>
+                <p class="service2-subtitle">Discover the wonders of Turkey with our expertly crafted travel experiences</p>
+            </div>
+        </div>
+        <div class="container">
+            <button class="back-button" onclick="showPage('home')"><i class="fas fa-arrow-left"></i> <span class="back-text">Back to Home</span></button>
+            
+            <div class="service-content">
+                <h2 class="tourism-content-title1">Curated Travel Experiences</h2>
+                <p class="tourism-content-p1">We offer exclusive travel packages and personalized itineraries to help you explore Turkey's magnificent cities, historical sites, and natural wonders. Whether you're interested in ancient history, cultural immersion, or scenic beauty, we design the perfect journey tailored to your interests.</p>
+                
+                <h2 class="tourism-content-title2">Transportation Solutions</h2>
+                <p class="tourism-content-p2">We provide comprehensive transportation services, including chauffeur-driven vehicles and self-drive options, ensuring comfortable and convenient travel throughout your Turkish adventure.</p>
+                
+                <h2 class="tourism-content-title3">Accommodation Arrangements</h2>
+                <p class="tourism-content-p3">We handle all accommodation bookings to guarantee comfortable stays during your visit. From luxury resorts to charming boutique hotels, we find the perfect lodging to match your preferences and budget.</p>
+                
+                <h2 class="tourism-content-title4">Our Tourism Services Include</h2>
+                <ul class="tourism-list">
+                    <li class="tourism-list-item1">Customized travel itineraries</li>
+                    <li class="tourism-list-item2">Hotel and resort reservations</li>
+                    <li class="tourism-list-item3">Domestic flight arrangements</li>
+                    <li class="tourism-list-item4">Guided tours with expert local guides</li>
+                    <li class="tourism-list-item5">Transportation services</li>
+                    <li class="tourism-list-item6">Special interest tours (historical, culinary, adventure)</li>
+                </ul>
+            </div>
+            
+            <div class="service-form">
+                <h2 class="tourism-form-title">Tourism Package Inquiry</h2>
+                <form id="tourismForm">
+                    <div class="form-group">
+                        <label for="package-type" class="tourism-label1">Package Preference</label>
+                        <select id="package-type" name="package-type" required>
+                            <option value="">Select package type</option>
+                            <option value="special">Special Package</option>
+                            <option value="custom">Customized Package</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="city" class="tourism-label2">Destination City</label>
+                        <input type="text" id="city" name="city" placeholder="e.g., Istanbul, Cappadocia, Antalya" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="days" class="tourism-label3">Duration of Stay</label>
+                        <input type="number" id="days" name="days" min="1" placeholder="Number of days" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="travelers" class="tourism-label4">Number of Travelers</label>
+                        <input type="number" id="travelers" name="travelers" min="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="transportation" class="tourism-label5">Transportation Preference</label>
+                        <select id="transportation" name="transportation" required>
+                            <option value="">Select transportation</option>
+                            <option value="with-driver">Car with Driver</option>
+                            <option value="without-driver">Self-Drive Car</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="hotel" class="tourism-label6">Accommodation Needs</label>
+                        <select id="hotel" name="hotel" required>
+                            <option value="">Select accommodation option</option>
+                            <option value="need">Require Hotel Booking</option>
+                            <option value="have">Already Have Accommodation</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="submit-btn tourism-submit">Submit Inquiry</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Student Services Page -->
+    <section id="student-page" class="service-page">
+        <div class="service-header">
+            <div class="container">
+                <h1 class="service3-title">Student Services</h1>
+                <p class="service3-subtitle">Comprehensive educational support for international students in Turkey</p>
+            </div>
+        </div>
+        <div class="container">
+            <button class="back-button" onclick="showPage('home')"><i class="fas fa-arrow-left"></i> <span class="back-text">Back to Home</span></button>
+            
+            <div class="service-content">
+                <h2 class="student-content-title1">University Admissions Guidance</h2>
+                <p class="student-content-p1">We provide end-to-end support for students pursuing education in Turkey. Our services encompass the complete admission process from initial application through final enrollment at both public and private universities.</p>
+                
+                <h2 class="student-content-title2">Academic Program Selection</h2>
+                <p class="student-content-p2">We assist students in identifying the ideal academic programs based on their interests, qualifications, and career aspirations. Our expertise covers institutions across Turkey, ensuring the best fit for each student's educational goals.</p>
+                
+                <h2 class="student-content-title3">Student Accommodation Solutions</h2>
+                <p class="student-content-p3">We facilitate finding appropriate student housing, whether on-campus university residences or off-campus apartments, to ensure a comfortable living experience throughout your academic journey.</p>
+                
+                <h2 class="student-content-title4">Our Student Services Include</h2>
+                <ul class="student-list">
+                    <li class="student-list-item1">University and program selection</li>
+                    <li class="student-list-item2">Application preparation and submission</li>
+                    <li class="student-list-item3">Scholarship and financial aid guidance</li>
+                    <li class="student-list-item4">Student visa assistance</li>
+                    <li class="student-list-item5">Accommodation arrangements</li>
+                    <li class="student-list-item6">Airport pickup and orientation</li>
+                </ul>
+            </div>
+            
+            <div class="service-form">
+                <h2 class="student-form-title">Student Service Request</h2>
+                <form id="studentForm">
+                    <div class="form-group">
+                        <label for="student-name" class="student-label1">Full Name</label>
+                        <input type="text" id="student-name" name="student-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="student-age" class="student-label2">Age</label>
+                        <input type="number" id="student-age" name="student-age" min="16" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="student-gender" class="student-label3">Gender</label>
+                        <select id="student-gender" name="student-gender" required>
+                            <option value="">Select gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="student-city" class="student-label4">Preferred City</label>
+                        <input type="text" id="student-city" name="student-city" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="university-type" class="student-label5">University Type Preference</label>
+                        <select id="university-type" name="university-type" required>
+                            <option value="">Select university type</option>
+                            <option value="public">Public University</option>
+                            <option value="private">Private University</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="degree-type" class="student-label6">Desired Degree Level</label>
+                        <select id="degree-type" name="degree-type" required>
+                            <option value="">Select degree level</option>
+                            <option value="institute">Vocational Institute</option>
+                            <option value="bachelor">Bachelor's Degree</option>
+                            <option value="master">Master's Degree</option>
+                            <option value="phd">PhD</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="major" class="student-label7">Intended Field of Study</label>
+                        <input type="text" id="major" name="major" placeholder="e.g., Business Administration, Engineering" required>
+                    </div>
+                    <button type="submit" class="submit-btn student-submit">Submit Request</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Medical Services Page -->
+    <section id="medical-page" class="service-page">
+        <div class="service-header">
+            <div class="container">
+                <h1 class="service4-title">Medical Services</h1>
+                <p class="service4-subtitle">Access Turkey's advanced healthcare system with our comprehensive medical tourism services</p>
+            </div>
+        </div>
+        <div class="container">
+            <button class="back-button" onclick="showPage('home')"><i class="fas fa-arrow-left"></i> <span class="back-text">Back to Home</span></button>
+            
+            <div class="service-content">
+                <h2 class="medical-content-title1">Medical Treatments in Turkey</h2>
+                <p class="medical-content-p1">Turkey has emerged as a global leader in medical tourism, offering cutting-edge treatments at competitive prices. Our medical services encompass a wide range of specialties and procedures.</p>
+                
+                <h2 class="medical-content-title2">Available Medical Services</h2>
+                <ul class="medical-list">
+                    <li class="medical-list-item1">Women's Health and Obstetrics</li>
+                    <li class="medical-list-item2">Surgical Procedures of all specialties</li>
+                    <li class="medical-list-item3">Hair Transplantation and Restoration</li>
+                    <li class="medical-list-item4">Comprehensive Dental Procedures</li>
+                    <li class="medical-list-item5">Orthopedic surgeries and treatments</li>
+                    <li class="medical-list-item6">Cardiology and cardiac procedures</li>
+                    <li class="medical-list-item7">Oncology and cancer treatments</li>
+                    <li class="medical-list-item8">Plastic and reconstructive surgery</li>
+                    <li class="medical-list-item9">Fertility treatments and IVF</li>
+                </ul>
+                
+                <h2 class="medical-content-title3">Comprehensive Patient Support</h2>
+                <p class="medical-content-p2">We provide complete assistance for medical tourists, including treatment coordination, accommodation arrangements, transportation services, and professional interpretation to ensure a comfortable and stress-free healthcare experience.</p>
+            </div>
+            
+            <div class="service-form">
+                <h2 class="medical-form-title">Medical Service Consultation</h2>
+                <form id="medicalForm">
+                    <div class="form-group">
+                        <label for="patient-gender" class="medical-label1">Gender</label>
+                        <select id="patient-gender" name="patient-gender" required>
+                            <option value="">Select gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="patient-nationality" class="medical-label2">Nationality</label>
+                        <input type="text" id="patient-nationality" name="patient-nationality" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="medical-condition" class="medical-label3">Medical Condition Description</label>
+                        <textarea id="medical-condition" name="medical-condition" placeholder="Please describe your medical condition and required treatments..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="medical-services" class="medical-label4">Required Medical Services</label>
+                        <select id="medical-services" name="medical-services" required>
+                            <option value="">Select medical service</option>
+                            <option value="womens-health">Women's Health and Obstetrics</option>
+                            <option value="surgery">Surgical Procedures</option>
+                            <option value="hair-transplant">Hair Transplantation</option>
+                            <option value="dental">Dental Procedures</option>
+                            <option value="other">Other Medical Service</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="accommodation" class="medical-label5">Accommodation Requirements</label>
+                        <select id="accommodation" name="accommodation" required>
+                            <option value="">Select accommodation option</option>
+                            <option value="hotel-room">Hotel Room</option>
+                            <option value="apartment">Serviced Apartment</option>
+                            <option value="not-needed">Accommodation Not Required</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="medical-transportation" class="medical-label6">Transportation Needs</label>
+                        <select id="medical-transportation" name="medical-transportation" required>
+                            <option value="">Select transportation</option>
+                            <option value="with-driver">Car with Driver</option>
+                            <option value="without-driver">Self-Drive Car</option>
+                            <option value="not-needed">Transportation Not Required</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="translator" class="medical-label7">Translation Services</label>
+                        <select id="translator" name="translator" required>
+                            <option value="">Select translation option</option>
+                            <option value="male-translator">Male Translator Required</option>
+                            <option value="female-translator">Female Translator Required</option>
+                            <option value="not-needed">Translation Not Required</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="submit-btn medical-submit">Submit Consultation Request</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Business Services Page -->
+    <section id="business-page" class="service-page">
+        <div class="service-header">
+            <div class="container">
+                <h1 class="service5-title">Business Services</h1>
+                <p class="service5-subtitle">Professional consulting for establishing and expanding your business in Turkey</p>
+            </div>
+        </div>
+        <div class="container">
+            <button class="back-button" onclick="showPage('home')"><i class="fas fa-arrow-left"></i> <span class="back-text">Back to Home</span></button>
+            
+            <div class="service-content">
+                <h2 class="business-content-title1">Business Establishment and Expansion</h2>
+                <p class="business-content-p1">Are you planning to launch a commercial enterprise in Turkey, or do you already operate a company and wish to establish branches and explore new opportunities? We facilitate company formation and manage all government procedures on your behalf.</p>
+                
+                <p class="business-content-p2">Additionally, we supply all necessary information for comprehensive feasibility studies, detailed market analysis, optimal location selection, and strategic timing for your business initiatives.</p>
+                
+                <h2 class="business-content-title2">Our Business Services Portfolio</h2>
+                <ul class="business-list">
+                    <li class="business-list-item1">Company registration and legal establishment</li>
+                    <li class="business-list-item2">Commercial registration and licensing</li>
+                    <li class="business-list-item3">Comprehensive feasibility studies</li>
+                    <li class="business-list-item4">Market research and analysis</li>
+                    <li class="business-list-item5">Strategic location assessment</li>
+                    <li class="business-list-item6">Business expansion planning</li>
+                    <li class="business-list-item7">Financial modeling and projections</li>
+                    <li class="business-list-item8">Partnership and joint venture facilitation</li>
+                </ul>
+            </div>
+            
+            <div class="service-form">
+                <h2 class="business-form-title">Business Service Consultation</h2>
+                <form id="businessForm">
+                    <div class="form-group">
+                        <label for="company-name" class="business-label1">Company Name (if applicable)</label>
+                        <input type="text" id="company-name" name="company-name">
+                    </div>
+                    <div class="form-group">
+                        <label for="service-type" class="business-label2">Required Service Type</label>
+                        <input type="text" id="service-type" name="service-type" placeholder="e.g., company registration, commercial license, feasibility study" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="additional-info" class="business-label3">Additional Information</label>
+                        <textarea id="additional-info" name="additional-info" placeholder="Please provide details about your business needs and objectives..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="applicant-name" class="business-label4">Contact Person Name</label>
+                        <input type="text" id="applicant-name" name="applicant-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-email" class="business-label5">Business Email</label>
+                        <input type="email" id="contact-email" name="contact-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-phone" class="business-label6">Contact Number</label>
+                        <input type="tel" id="contact-phone" name="contact-phone" required>
+                    </div>
+                    <button type="submit" class="submit-btn business-submit">Submit Business Inquiry</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Other Services Page -->
+    <section id="other-page" class="service-page">
+        <div class="service-header">
+            <div class="container">
+                <h1 class="service6-title">Additional Services</h1>
+                <p class="service6-subtitle">Comprehensive support services to facilitate your life in Turkey</p>
+            </div>
+        </div>
+        <div class="container">
+            <button class="back-button" onclick="showPage('home')"><i class="fas fa-arrow-left"></i> <span class="back-text">Back to Home</span></button>
+            
+            <div class="service-content">
+                <h2 class="other-content-title1">Legal Services</h2>
+                <p class="other-content-p1">We deliver comprehensive legal solutions including attorney representation and legal consultations to ensure you receive necessary support and expert advice for protecting your rights and achieving your objectives with complete professionalism.</p>
+                
+                <h2 class="other-content-title2">Translation and Notarization</h2>
+                <p class="other-content-p2">Our translation and notarization services facilitate the conversion of official documents into various languages with guaranteed translation accuracy through legal certification. We also provide personal interpreters to assist you in diverse situations and ensure effective communication.</p>
+                
+                <h2 class="other-content-title3">Residency and Insurance Solutions</h2>
+                <p class="other-content-p3">Our residency application services include preparation of all required documentation, in addition to health insurance arrangements and population registration services, guaranteeing a straightforward and efficient experience for our clients.</p>
+                
+                <h2 class="other-content-title4">Transportation Services</h2>
+                <p class="other-content-p4">We offer comprehensive transportation solutions, including vehicle rentals with or without drivers, in addition to efficient goods transportation and personal item relocation services with exceptional reliability.</p>
+                
+                <h2 class="other-content-title5">Our Additional Services Include</h2>
+                <ul class="other-list">
+                    <li class="other-list-item1">Legal consultation and representation</li>
+                    <li class="other-list-item2">Document translation and notarization</li>
+                    <li class="other-list-item3">Residency permit applications</li>
+                    <li class="other-list-item4">Health insurance arrangements</li>
+                    <li class="other-list-item5">Vehicle rental services</li>
+                    <li class="other-list-item6">Personal and commercial transportation</li>
+                    <li class="other-list-item7">Document authentication and legalization</li>
+                </ul>
+            </div>
+            
+            <div class="service-form">
+                <h2 class="other-form-title">Additional Service Request</h2>
+                <form id="otherForm">
+                    <div class="form-group">
+                        <label for="other-service-type" class="other-label1">Service Category</label>
+                        <select id="other-service-type" name="other-service-type" required>
+                            <option value="">Select service category</option>
+                            <option value="legal">Legal Services</option>
+                            <option value="translation">Translation and Notarization</option>
+                            <option value="residency">Residency and Insurance</option>
+                            <option value="transportation">Transportation Services</option>
+                            <option value="other">Other Service</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="other-service-details" class="other-label2">Service Specifications</label>
+                        <textarea id="other-service-details" name="other-service-details" placeholder="Please provide detailed information about the service you require..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="other-name" class="other-label3">Your Full Name</label>
+                        <input type="text" id="other-name" name="other-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="other-email" class="other-label4">Email Address</label>
+                        <input type="email" id="other-email" name="other-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="other-phone" class="other-label5">Contact Number</label>
+                        <input type="tel" id="other-phone" name="other-phone" required>
+                    </div>
+                    <button type="submit" class="submit-btn other-submit">Submit Service Request</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <a href="https://wa.me/905382136214" target="_blank" class="whatsapp-fab" aria-label="Contact us on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <i class="fas fa-handshake"></i>
+                        <span>Wassl</span>
+                    </div>
+                    <p class="footer-about-text">Your trusted gateway to comprehensive services in Turkey. We specialize in real estate, tourism, education, healthcare, and business solutions with excellence and reliability.</p>
+                    <div class="footer-links">
+                        <h3 class="footer-links-title">Quick Links</h3>
+                        <ul>
+                            <li><a onclick="showPage('home')" class="footer-home">Home</a></li>
+                            <li><a onclick="showPage('services')" class="footer-services">Services</a></li>
+                            <li><a onclick="showPage('about')" class="footer-about">About Us</a></li>
+                            <li><a onclick="showPage('contact')" class="footer-contact">Contact</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-services">
+                    <h3 class="footer-services-title">Our Services</h3>
+                    <ul>
+                        <li><a onclick="showPage('real-estate')" class="footer-real-estate">Real Estate</a></li>
+                        <li><a onclick="showPage('tourism')" class="footer-tourism">Tourism</a></li>
+                        <li><a onclick="showPage('student')" class="footer-student">Student Services</a></li>
+                        <li><a onclick="showPage('medical')" class="footer-medical">Medical Services</a></li>
+                        <li><a onclick="showPage('business')" class="footer-business">Business Services</a></li>
+                        <li><a onclick="showPage('other')" class="footer-other">Additional Services</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h3 class="footer-contact-title">Contact Info</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> <span class="footer-location">Bolu, Turkey</span></p>
+                    <p><i class="fas fa-phone"></i> <span class="footer-phone">+90 538 213 6214</span></p>
+                    <p><i class="fas fa-envelope"></i> <span class="footer-email">wasslservices@gmail.com</span></p>
+                    <div style="margin-top: 1.5rem;">
+                        <button class="lang-switch" onclick="toggleLanguage()" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3);">
+                            <i class="fas fa-globe"></i> <span class="footer-lang-text">العربية</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p class="footer-text">&copy; 2025 Wassl. All rights reserved. | Based in Bolu, Serving all of Turkey</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Enhanced translations with Arabic content for service pages
+        const translations = {
+            en: {
+                // Navigation
+                navHome: "Home",
+                navServices: "Services",
+                navAbout: "About",
+                navAppointments: "Appointments",
+                navContact: "Contact",
+                langBtn: "العربية",
+                
+                // Hero section
+                heroTitle: "Your Trusted Gateway in Turkey",
+                heroSubtitle: "Comprehensive services for real estate, tourism, education, healthcare, and business solutions. Based in Bolu, serving all of Turkey with excellence and reliability.",
+                ctaText: "Get Started",
+                
+                // Services section
+                servicesTitle: "Our Premium Services",
+                servicesSubtitle: "Comprehensive solutions tailored to your needs in Turkey, delivered with expertise and dedication",
+                service1Title: "Real Estate Services",
+                service1Desc: "Find your dream property in Turkey's most desirable locations. We offer exclusive residential and commercial properties for sale and rent with premium service.",
+                service1Link: "Discover Properties",
+                service2Title: "Tourism Services",
+                service2Desc: "Experience the breathtaking beauty of Turkey with our curated tourism packages. Personalized travel plans and premium accommodations for unforgettable journeys.",
+                service2Link: "Explore Turkey",
+                service3Title: "Student Services",
+                service3Desc: "Navigate Turkey's education system with expert guidance. From university applications to accommodation, we ensure your academic journey is seamless.",
+                service3Link: "Start Your Journey",
+                service4Title: "Medical Services",
+                service4Desc: "Access Turkey's world-class healthcare system with our premium medical tourism services. Top hospitals, specialized treatments, and comprehensive care.",
+                service4Link: "Find Treatment",
+                service5Title: "Business Services",
+                service5Desc: "Launch or expand your business in Turkey with our professional consulting. Company registration, market analysis, and strategic planning for success.",
+                service5Link: "Grow Your Business",
+                service6Title: "Additional Services",
+                service6Desc: "Comprehensive support including legal services, translation, residency permits, insurance, and transportation to make your life in Turkey effortless.",
+                service6Link: "View All Services",
+                
+                // About section
+                aboutTitle: "Your Trusted Partner in Turkey",
+                aboutP1: "Wassl is your premier service provider, headquartered in Bolu with a nationwide reach. With years of specialized experience, we excel at connecting individuals and businesses with the premium services they need across Turkey.",
+                aboutP2: "Whether you're seeking property investments, planning a memorable Turkish vacation, pursuing educational opportunities, requiring medical treatments, or expanding your business ventures, we deliver seamless, hassle-free experiences.",
+                aboutP3: "Our dedicated team of industry professionals is committed to exceptional service, building lasting relationships, and ensuring your complete satisfaction with every interaction.",
+                
+                // Appointments section
+                appointmentsTitle: "Schedule Your Consultation",
+                appointmentsSubtitle: "Let's discuss how we can help you achieve your goals in Turkey",
+                labelName: "Full Name",
+                labelEmail: "Email Address",
+                labelPhone: "Phone Number",
+                labelService: "Service Needed",
+                labelDate: "Preferred Date",
+                labelMessage: "Your Requirements",
+                optionSelect: "Select a service...",
+                option1: "Real Estate Services",
+                option2: "Tourism Services",
+                option3: "Student Services",
+                option4: "Medical Services",
+                option5: "Business Services",
+                option6: "Other Services",
+                btnText: "Request Consultation",
+                successText: "Thank you! Your consultation request has been received. We'll contact you soon to confirm your appointment.",
+                
+                // Contact section
+                contactTitle: "Get In Touch",
+                contactSubtitle: "We're here to answer your questions and help you get started",
+                contact1Title: "Our Location",
+                contact1Info: "Bolu, Turkey",
+                contact2Title: "Call Us",
+                contact2Info: "+90 538 213 6214",
+                contact3Title: "Email Us",
+                contact3Info: "wasslservices@gmail.com",
+                
+                // Footer
+                footerText: "© 2025 Wassl. All rights reserved. | Based in Bolu, Serving all of Turkey",
+                footerAboutText: "Your trusted gateway to comprehensive services in Turkey. We specialize in real estate, tourism, education, healthcare, and business solutions with excellence and reliability.",
+                footerLinksTitle: "Quick Links",
+                footerHome: "Home",
+                footerServices: "Services",
+                footerAbout: "About Us",
+                footerContact: "Contact",
+                footerServicesTitle: "Our Services",
+                footerRealEstate: "Real Estate",
+                footerTourism: "Tourism",
+                footerStudent: "Student Services",
+                footerMedical: "Medical Services",
+                footerBusiness: "Business Services",
+                footerOther: "Additional Services",
+                footerContactTitle: "Contact Info",
+                footerLocation: "Bolu, Turkey",
+                footerPhone: "+90 538 213 6214",
+                footerEmail: "wasslservices@gmail.com",
+                footerLangText: "العربية",
+                
+                // Service pages
+                backText: "Back to Home",
+                
+                // Real Estate Service Page
+                service1Subtitle: "Find your dream property in Turkey with our premium real estate solutions",
+                realEstateContentTitle1: "Property Acquisition",
+                realEstateContentP1: "We provide comprehensive home purchasing services that assist clients in finding their ideal properties, starting from assessing their specific requirements through to completing the transaction. Our team offers complete support throughout all stages of the process to ensure a successful and seamless experience.",
+                realEstateContentTitle2: "Apartment Rentals",
+                realEstateContentP2: "Our residential leasing services simplify your search for the perfect home. We offer diverse property options through multiple channels, ensuring choices that align with your specific needs. We connect you with potential sellers while providing essential guidance and consultation, securing optimal pricing for your property investment.",
+                realEstateContentTitle3: "Tourist Accommodations",
+                realEstateContentP3: "Our holiday rental services offer travelers unique accommodation experiences, allowing them to enjoy home-like comfort with all essential amenities, making their journeys more memorable and authentic.",
+                realEstateContentTitle4: "Our Real Estate Expertise",
+                realEstateListItem1: "Residential property sales and purchases",
+                realEstateListItem2: "Commercial real estate transactions",
+                realEstateListItem3: "Long-term and short-term rental agreements",
+                realEstateListItem4: "Vacation property management",
+                realEstateListItem5: "Property valuation and market analysis",
+                realEstateListItem6: "Legal documentation and contract processing",
+                realEstateFormTitle: "Real Estate Consultation Request",
+                realEstateLabel1: "Property Type",
+                realEstateLabel2: "Transaction Type",
+                realEstateLabel3: "Preferred Location",
+                realEstateLabel4: "Budget Range",
+                realEstateLabel5: "Specific Requirements",
+                realEstateSubmit: "Submit Request",
+                
+                // Tourism Service Page
+                service2Subtitle: "Discover the wonders of Turkey with our expertly crafted travel experiences",
+                tourismContentTitle1: "Curated Travel Experiences",
+                tourismContentP1: "We offer exclusive travel packages and personalized itineraries to help you explore Turkey's magnificent cities, historical sites, and natural wonders. Whether you're interested in ancient history, cultural immersion, or scenic beauty, we design the perfect journey tailored to your interests.",
+                tourismContentTitle2: "Transportation Solutions",
+                tourismContentP2: "We provide comprehensive transportation services, including chauffeur-driven vehicles and self-drive options, ensuring comfortable and convenient travel throughout your Turkish adventure.",
+                tourismContentTitle3: "Accommodation Arrangements",
+                tourismContentP3: "We handle all accommodation bookings to guarantee comfortable stays during your visit. From luxury resorts to charming boutique hotels, we find the perfect lodging to match your preferences and budget.",
+                tourismContentTitle4: "Our Tourism Services Include",
+                tourismListItem1: "Customized travel itineraries",
+                tourismListItem2: "Hotel and resort reservations",
+                tourismListItem3: "Domestic flight arrangements",
+                tourismListItem4: "Guided tours with expert local guides",
+                tourismListItem5: "Transportation services",
+                tourismListItem6: "Special interest tours (historical, culinary, adventure)",
+                tourismFormTitle: "Tourism Package Inquiry",
+                tourismLabel1: "Package Preference",
+                tourismLabel2: "Destination City",
+                tourismLabel3: "Duration of Stay",
+                tourismLabel4: "Number of Travelers",
+                tourismLabel5: "Transportation Preference",
+                tourismLabel6: "Accommodation Needs",
+                tourismSubmit: "Submit Inquiry",
+                
+                // Student Service Page
+                service3Subtitle: "Comprehensive educational support for international students in Turkey",
+                studentContentTitle1: "University Admissions Guidance",
+                studentContentP1: "We provide end-to-end support for students pursuing education in Turkey. Our services encompass the complete admission process from initial application through final enrollment at both public and private universities.",
+                studentContentTitle2: "Academic Program Selection",
+                studentContentP2: "We assist students in identifying the ideal academic programs based on their interests, qualifications, and career aspirations. Our expertise covers institutions across Turkey, ensuring the best fit for each student's educational goals.",
+                studentContentTitle3: "Student Accommodation Solutions",
+                studentContentP3: "We facilitate finding appropriate student housing, whether on-campus university residences or off-campus apartments, to ensure a comfortable living experience throughout your academic journey.",
+                studentContentTitle4: "Our Student Services Include",
+                studentListItem1: "University and program selection",
+                studentListItem2: "Application preparation and submission",
+                studentListItem3: "Scholarship and financial aid guidance",
+                studentListItem4: "Student visa assistance",
+                studentListItem5: "Accommodation arrangements",
+                studentListItem6: "Airport pickup and orientation",
+                studentFormTitle: "Student Service Request",
+                studentLabel1: "Full Name",
+                studentLabel2: "Age",
+                studentLabel3: "Gender",
+                studentLabel4: "Preferred City",
+                studentLabel5: "University Type Preference",
+                studentLabel6: "Desired Degree Level",
+                studentLabel7: "Intended Field of Study",
+                studentSubmit: "Submit Request",
+                
+                // Medical Service Page
+                service4Subtitle: "Access Turkey's advanced healthcare system with our comprehensive medical tourism services",
+                medicalContentTitle1: "Medical Treatments in Turkey",
+                medicalContentP1: "Turkey has emerged as a global leader in medical tourism, offering cutting-edge treatments at competitive prices. Our medical services encompass a wide range of specialties and procedures.",
+                medicalContentTitle2: "Available Medical Services",
+                medicalListItem1: "Women's Health and Obstetrics",
+                medicalListItem2: "Surgical Procedures of all specialties",
+                medicalListItem3: "Hair Transplantation and Restoration",
+                medicalListItem4: "Comprehensive Dental Procedures",
+                medicalListItem5: "Orthopedic surgeries and treatments",
+                medicalListItem6: "Cardiology and cardiac procedures",
+                medicalListItem7: "Oncology and cancer treatments",
+                medicalListItem8: "Plastic and reconstructive surgery",
+                medicalListItem9: "Fertility treatments and IVF",
+                medicalContentTitle3: "Comprehensive Patient Support",
+                medicalContentP2: "We provide complete assistance for medical tourists, including treatment coordination, accommodation arrangements, transportation services, and professional interpretation to ensure a comfortable and stress-free healthcare experience.",
+                medicalFormTitle: "Medical Service Consultation",
+                medicalLabel1: "Gender",
+                medicalLabel2: "Nationality",
+                medicalLabel3: "Medical Condition Description",
+                medicalLabel4: "Required Medical Services",
+                medicalLabel5: "Accommodation Requirements",
+                medicalLabel6: "Transportation Needs",
+                medicalLabel7: "Translation Services",
+                medicalSubmit: "Submit Consultation Request",
+                
+                // Business Service Page
+                service5Subtitle: "Professional consulting for establishing and expanding your business in Turkey",
+                businessContentTitle1: "Business Establishment and Expansion",
+                businessContentP1: "Are you planning to launch a commercial enterprise in Turkey, or do you already operate a company and wish to establish branches and explore new opportunities? We facilitate company formation and manage all government procedures on your behalf.",
+                businessContentP2: "Additionally, we supply all necessary information for comprehensive feasibility studies, detailed market analysis, optimal location selection, and strategic timing for your business initiatives.",
+                businessContentTitle2: "Our Business Services Portfolio",
+                businessListItem1: "Company registration and legal establishment",
+                businessListItem2: "Commercial registration and licensing",
+                businessListItem3: "Comprehensive feasibility studies",
+                businessListItem4: "Market research and analysis",
+                businessListItem5: "Strategic location assessment",
+                businessListItem6: "Business expansion planning",
+                businessListItem7: "Financial modeling and projections",
+                businessListItem8: "Partnership and joint venture facilitation",
+                businessFormTitle: "Business Service Consultation",
+                businessLabel1: "Company Name (if applicable)",
+                businessLabel2: "Required Service Type",
+                businessLabel3: "Additional Information",
+                businessLabel4: "Contact Person Name",
+                businessLabel5: "Business Email",
+                businessLabel6: "Contact Number",
+                businessSubmit: "Submit Business Inquiry",
+                
+                // Other Services Page
+                service6Subtitle: "Comprehensive support services to facilitate your life in Turkey",
+                otherContentTitle1: "Legal Services",
+                otherContentP1: "We deliver comprehensive legal solutions including attorney representation and legal consultations to ensure you receive necessary support and expert advice for protecting your rights and achieving your objectives with complete professionalism.",
+                otherContentTitle2: "Translation and Notarization",
+                otherContentP2: "Our translation and notarization services facilitate the conversion of official documents into various languages with guaranteed translation accuracy through legal certification. We also provide personal interpreters to assist you in diverse situations and ensure effective communication.",
+                otherContentTitle3: "Residency and Insurance Solutions",
+                otherContentP3: "Our residency application services include preparation of all required documentation, in addition to health insurance arrangements and population registration services, guaranteeing a straightforward and efficient experience for our clients.",
+                otherContentTitle4: "Transportation Services",
+                otherContentP4: "We offer comprehensive transportation solutions, including vehicle rentals with or without drivers, in addition to efficient goods transportation and personal item relocation services with exceptional reliability.",
+                otherContentTitle5: "Our Additional Services Include",
+                otherListItem1: "Legal consultation and representation",
+                otherListItem2: "Document translation and notarization",
+                otherListItem3: "Residency permit applications",
+                otherListItem4: "Health insurance arrangements",
+                otherListItem5: "Vehicle rental services",
+                otherListItem6: "Personal and commercial transportation",
+                otherListItem7: "Document authentication and legalization",
+                otherFormTitle: "Additional Service Request",
+                otherLabel1: "Service Category",
+                otherLabel2: "Service Specifications",
+                otherLabel3: "Your Full Name",
+                otherLabel4: "Email Address",
+                otherLabel5: "Contact Number",
+                otherSubmit: "Submit Service Request"
+            },
+            ar: {
+                // Navigation
+                navHome: "الرئيسية",
+                navServices: "الخدمات",
+                navAbout: "من نحن",
+                navAppointments: "المواعيد",
+                navContact: "اتصل بنا",
+                langBtn: "English",
+                
+                // Hero section
+                heroTitle: "بوابتك الموثوقة في تركيا",
+                heroSubtitle: "خدمات شاملة للعقارات، السياحة، التعليم، الرعاية الصحية، وحلول الأعمال. متمركزون في بولو، نخدم جميع أنحاء تركيا بتميز وموثوقية.",
+                ctaText: "ابدأ رحلتك",
+                
+                // Services section
+                servicesTitle: "خدماتنا المتميزة",
+                servicesSubtitle: "حلول شاملة مصممة خصيصاً لاحتياجاتك في تركيا، مقدمة بخبرة وتفانٍ",
+                service1Title: "الخدمات العقارية",
+                service1Desc: "اعثر على عقار أحلامك في أكثر المواقع المرغوبة في تركيا. نقدم عقارات سكنية وتجارية حصرية للبيع والإيجار مع خدمة متميزة.",
+                service1Link: "اكتشف العقارات",
+                service2Title: "الخدمات السياحية",
+                service2Desc: "اختبر جمال تركيا الأخاذ مع باقاتنا السياحية المختارة بعناية. خطط سفر مخصصة وإقامات فاخرة لرحلات لا تُنسى.",
+                service2Link: "استكشف تركيا",
+                service3Title: "الخدمات الطلابية",
+                service3Desc: "تنقل في نظام التعليم التركي بإرشاد خبرائنا. من تقديم طلبات الجامعة إلى ترتيب السكن، نضمن رحلتك الأكاديمية سلسة وبلا متاعب.",
+                service3Link: "ابدأ رحلتك",
+                service4Title: "الخدمات العلاجية",
+                service4Desc: "الوصول إلى نظام الرعاية الصحية العالمي في تركيا مع خدمات السياحة العلاجية المتميزة لدينا. أفضل المستشفيات، علاجات متخصصة، ورعاية شاملة.",
+                service4Link: "ابحث عن العلاج",
+                service5Title: "خدمات الأعمال",
+                service5Desc: "أطلق أو وسع عملك في تركيا مع استشاراتنا المهنية. تسجيل الشركات، تحليل الأسواق، والتخطيط الاستراتيجي للنجاح.",
+                service5Link: "نَمِ بأعمالك",
+                service6Title: "خدمات إضافية",
+                service6Desc: "دعم شامل يشمل الخدمات القانونية، الترجمة، تصاريح الإقامة، التأمين، والنقل لجعل حياتك في تركيا خالية من المتاعب.",
+                service6Link: "عرض جميع الخدمات",
+                
+                // About section
+                aboutTitle: "شريكك الموثوق في تركيا",
+                aboutP1: "وصل هو مزود الخدمات المتميز الخاص بك، بمقر رئيسي في بولو ووصول على مستوى تركيا. مع سنوات من الخبرة المتخصصة، نتفوق في ربط الأفراد والشركات بالخدمات المتميزة التي يحتاجونها عبر تركيا.",
+                aboutP2: "سواء كنت تبحث عن استثمارات عقارية، تخطط لعطلة تركية لا تُنسى، تتطلع إلى فرص تعليمية، تحتاج إلى علاجات طبية، أو توسيع مشاريعك التجارية، نقدم تجارب سلسة وخالية من المتاعب.",
+                aboutP3: "فريقنا المتفاني من محترفي الصناعة ملتزم بتقديم خدمة استثنائية، وبناء علاقات دائمة، وضمان رضاك التام مع كل تفاعل.",
+                
+                // Appointments section
+                appointmentsTitle: "جدول استشارتك",
+                appointmentsSubtitle: "دعنا نناقش كيف يمكننا مساعدتك في تحقيق أهدافك في تركيا",
+                labelName: "الاسم الكامل",
+                labelEmail: "البريد الإلكتروني",
+                labelPhone: "رقم الهاتف",
+                labelService: "الخدمة المطلوبة",
+                labelDate: "التاريخ المفضل",
+                labelMessage: "متطلباتك",
+                optionSelect: "اختر خدمة...",
+                option1: "الخدمات العقارية",
+                option2: "الخدمات السياحية",
+                option3: "الخدمات الطلابية",
+                option4: "الخدمات العلاجية",
+                option5: "خدمات الأعمال",
+                option6: "خدمات أخرى",
+                btnText: "طلب استشارة",
+                successText: "شكراً لك! تم استلام طلب استشارتك. سنتصل بك قريباً لتأكيد موعدك.",
+                
+                // Contact section
+                contactTitle: "تواصل معنا",
+                contactSubtitle: "نحن هنا للإجابة على أسئلتك ومساعدتك في البدء",
+                contact1Title: "موقعنا",
+                contact1Info: "بولو، تركيا",
+                contact2Title: "اتصل بنا",
+                contact2Info: "+90 538 213 6214",
+                contact3Title: "راسلنا",
+                contact3Info: "wasslservices@gmail.com",
+                
+                // Footer
+                footerText: "© 2025 وصل. جميع الحقوق محفوظة. | متمركزون في بولو، نخدم جميع أنحاء تركيا",
+                footerAboutText: "بوابتك الموثوقة للخدمات الشاملة في تركيا. نحن متخصصون في العقارات، السياحة، التعليم، الرعاية الصحية، وحلول الأعمال بتميز وموثوقية.",
+                footerLinksTitle: "روابط سريعة",
+                footerHome: "الرئيسية",
+                footerServices: "الخدمات",
+                footerAbout: "من نحن",
+                footerContact: "اتصل بنا",
+                footerServicesTitle: "خدماتنا",
+                footerRealEstate: "العقارات",
+                footerTourism: "السياحة",
+                footerStudent: "الخدمات الطلابية",
+                footerMedical: "الخدمات العلاجية",
+                footerBusiness: "خدمات الأعمال",
+                footerOther: "خدمات إضافية",
+                footerContactTitle: "معلومات الاتصال",
+                footerLocation: "بولو، تركيا",
+                footerPhone: "+90 538 213 6214",
+                footerEmail: "wasslservices@gmail.com",
+                footerLangText: "English",
+                
+                // Service pages
+                backText: "العودة إلى الرئيسية",
+                
+                // Real Estate Service Page
+                service1Subtitle: "اعثر على عقار أحلامك في تركيا مع حلولنا العقارية المتميزة",
+                realEstateContentTitle1: "شراء العقارات",
+                realEstateContentP1: "نقدم خدمات شراء منازل شاملة تساعد العملاء في العثور على عقاراتهم المثالية، بدءاً من تقييم متطلباتهم المحددة وصولاً إلى إتمام الصفقة. يقدم فريقنا دعماً كاملاً خلال جميع مراحل العملية لضمان تجربة ناجحة وسلسة.",
+                realEstateContentTitle2: "إيجار الشقق",
+                realEstateContentP2: "تبسط خدمات التأجير السكني لدينا بحثك عن المنزل المثالي. نقدم خيارات عقارية متنوعة عبر قنوات متعددة، مما يضمن خيارات تتماشى مع احتياجاتك المحددة. نربطك بالبائعين المحتملين مع تقديم التوجيه والاستشارة الأساسيين، مؤمنين أسعاراً مثالية لاستثمارك العقاري.",
+                realEstateContentTitle3: "الإقامات السياحية",
+                realEstateContentP3: "تقدم خدمات التأجير السياحي لدينا للمسافرين تجارب إقامة فريدة، مما يسمح لهم بالاستمتاع براحة المنزل مع جميع وسائل الراحة الأساسية، مما يجعل رحلاتهم أكثر إمتاعاً وأصالة.",
+                realEstateContentTitle4: "خبرتنا العقارية",
+                realEstateListItem1: "مبيعات وشراء العقارات السكنية",
+                realEstateListItem2: "معاملات العقارات التجارية",
+                realEstateListItem3: "اتفاقيات الإيجار طويلة وقصيرة الأجل",
+                realEstateListItem4: "إدارة العقارات السياحية",
+                realEstateListItem5: "تقييم العقارات وتحليل السوق",
+                realEstateListItem6: "المستندات القانونية ومعالجة العقود",
+                realEstateFormTitle: "طلب استشارة عقارية",
+                realEstateLabel1: "نوع العقار",
+                realEstateLabel2: "نوع المعاملة",
+                realEstateLabel3: "الموقع المفضل",
+                realEstateLabel4: "نطاق الميزانية",
+                realEstateLabel5: "متطلبات محددة",
+                realEstateSubmit: "إرسال الطلب",
+                
+                // Tourism Service Page
+                service2Subtitle: "اكتشف عجائب تركيا مع تجارب السفر المصممة بخبرة",
+                tourismContentTitle1: "تجارب سفر مخصصة",
+                tourismContentP1: "نقدم باقات سفر حصرية وخطوط سفر مخصصة لمساعدتك في استكشاف مدن تركيا الرائعة، والمواقع التاريخية، والعجائب الطبيعية. سواء كنت مهتماً بالتاريخ القديم، أو الانغماس الثقافي، أو الجمال الطبيعي، نصمم الرحلة المثالية المصممة خصيصاً لاهتماماتك.",
+                tourismContentTitle2: "حلول النقل",
+                tourismContentP2: "نوفر خدمات نقل شاملة، بما في ذلك مركبات مع سائق ومركبات للقيادة الذاتية، مما يضمن سفراً مريحاً ومريحاً خلال مغامرتك التركية.",
+                tourismContentTitle3: "ترتيبات الإقامة",
+                tourismContentP3: "نحن نتعامل مع جميع حجوزات الإقامة لضمان إقامة مريحة خلال زيارتك. من المنتجعات الفاخرة إلى الفنادق البوتيكية الساحرة، نجد مكان الإقامة المثالي ليناسب تفضيلاتك وميزانيتك.",
+                tourismContentTitle4: "تشمل خدماتنا السياحية",
+                tourismListItem1: "خطوط سفر مخصصة",
+                tourismListItem2: "حجوزات الفنادق والمنتجعات",
+                tourismListItem3: "ترتيبات الرحلات الجوية المحلية",
+                tourismListItem4: "جولات إرشادية مع مرشدين محليين خبراء",
+                tourismListItem5: "خدمات النقل",
+                tourismListItem6: "جولات الاهتمامات الخاصة (تاريخية، طهي، مغامرة)",
+                tourismFormTitle: "استفسار عن باقة سياحية",
+                tourismLabel1: "تفضيل الباقة",
+                tourismLabel2: "مدينة الوجهة",
+                tourismLabel3: "مدة الإقامة",
+                tourismLabel4: "عدد المسافرين",
+                tourismLabel5: "تفضيل النقل",
+                tourismLabel6: "احتياجات الإقامة",
+                tourismSubmit: "إرسال الاستفسار",
+                
+                // Student Service Page
+                service3Subtitle: "دعم تعليمي شامل للطلاب الدوليين في تركيا",
+                studentContentTitle1: "إرشاد القبول الجامعي",
+                studentContentP1: "نوفر دعماً شاملاً للطلاب الذين يتابعون التعليم في تركيا. تشمل خدماتنا عملية القبول الكاملة من التقديم الأولي حتى التسجيل النهائي في الجامعات الحكومية والخاصة.",
+                studentContentTitle2: "اختيار البرنامج الأكاديمي",
+                studentContentP2: "نساعد الطلاب في تحديد البرامج الأكاديمية المثالية بناءً على اهتماماتهم، مؤهلاتهم، وتطلعاتهم المهنية. تغطي خبرتنا المؤسسات عبر تركيا، مما يضمن أفضل ملاءمة لأهداف كل طالب تعليمية.",
+                studentContentTitle3: "حلول سكن الطلاب",
+                studentContentP3: "نسهل العثور على سكن طلابي مناسب، سواء في مساكن الجامعات داخل الحرم الجامعي أو الشقق خارج الحرم الجامعي، لضمان تجربة معيشة مريحة خلال رحلتك الأكاديمية.",
+                studentContentTitle4: "تشمل خدماتنا الطلابية",
+                studentListItem1: "اختيار الجامعة والبرنامج",
+                studentListItem2: "إعداد الطلب وتقديمه",
+                studentListItem3: "إرشاد المنح الدراسية والمساعدات المالية",
+                studentListItem4: "مساعدة تأشيرة الطالب",
+                studentListItem5: "ترتيبات الإقامة",
+                studentListItem6: "الاستقبال في المطار والتوجيه",
+                studentFormTitle: "طلب خدمة طلابية",
+                studentLabel1: "الاسم الكامل",
+                studentLabel2: "العمر",
+                studentLabel3: "الجنس",
+                studentLabel4: "المدينة المفضلة",
+                studentLabel5: "تفضيل نوع الجامعة",
+                studentLabel6: "المستوى الدراسي المطلوب",
+                studentLabel7: "المجال الدراسي المقصود",
+                studentSubmit: "إرسال الطلب",
+                
+                // Medical Service Page
+                service4Subtitle: "الوصول إلى نظام الرعاية الصحية المتقدم في تركيا مع خدمات السياحة العلاجية الشاملة",
+                medicalContentTitle1: "العلاجات الطبية في تركيا",
+                medicalContentP1: "برزت تركيا كرائدة عالمية في السياحة العلاجية، تقدم علاجات متطورة بأسعار تنافسية. تشمل خدماتنا الطبية مجموعة واسعة من التخصصات والإجراءات.",
+                medicalContentTitle2: "الخدمات الطبية المتاحة",
+                medicalListItem1: "صحة المرأة والتوليد",
+                medicalListItem2: "الإجراءات الجراحية بجميع التخصصات",
+                medicalListItem3: "زراعة الشعر واستعادته",
+                medicalListItem4: "الإجراءات السنية الشاملة",
+                medicalListItem5: "جراحات وعلاجات العظام",
+                medicalListItem6: "أمراض القلب والإجراءات القلبية",
+                medicalListItem7: "علاجات الأورام والسرطان",
+                medicalListItem8: "جراحة التجميل والتقويم",
+                medicalListItem9: "علاجات الخصوبة وأطفال الأنابيب",
+                medicalContentTitle3: "دعم المريض الشامل",
+                medicalContentP2: "نوفر مساعدة كاملة لسياح العلاج، بما في ذلك تنسيق العلاج، ترتيبات الإقامة، خدمات النقل، والترجمة المهنية لضمان تجربة رعاية صحية مريحة وخالية من التوتر.",
+                medicalFormTitle: "استشارة الخدمة الطبية",
+                medicalLabel1: "الجنس",
+                medicalLabel2: "الجنسية",
+                medicalLabel3: "وصف الحالة الطبية",
+                medicalLabel4: "الخدمات الطبية المطلوبة",
+                medicalLabel5: "متطلبات الإقامة",
+                medicalLabel6: "احتياجات النقل",
+                medicalLabel7: "خدمات الترجمة",
+                medicalSubmit: "إرسال طلب الاستشارة",
+                
+                // Business Service Page
+                service5Subtitle: "استشارات مهنية لتأسيس وتوسيع عملك في تركيا",
+                businessContentTitle1: "تأسيس الأعمال والتوسع",
+                businessContentP1: "هل تخطط لإطلاق مشروع تجاري في تركيا، أو هل لديك بالفعل شركة وتريد إنشاء فروع واستكشاف فرص جديدة؟ نحن نسهل تشكيل الشركة وندير جميع الإجراءات الحكومية نيابة عنك.",
+                businessContentP2: "بالإضافة إلى ذلك، نوفر جميع المعلومات اللازمة لدراسات الجدوى الشاملة، تحليل السوق التفصيلي، اختيار الموقع الأمثل، والتوقيت الاستراتيجي لمبادرات عملك.",
+                businessContentTitle2: "محفظة خدماتنا التجارية",
+                businessListItem1: "تسجيل الشركة والتأسيس القانوني",
+                businessListItem2: "التسجيل التجاري والترخيص",
+                businessListItem3: "دراسات الجدوى الشاملة",
+                businessListItem4: "بحث السوق والتحليل",
+                businessListItem5: "تقييم الموقع الاستراتيجي",
+                businessListItem6: "تخطيط التوسع التجاري",
+                businessListItem7: "النمذجة المالية والتوقعات",
+                businessListItem8: "تسهيل الشراكات والمشاريع المشتركة",
+                businessFormTitle: "استشارة الخدمة التجارية",
+                businessLabel1: "اسم الشركة (إن وجد)",
+                businessLabel2: "نوع الخدمة المطلوبة",
+                businessLabel3: "معلومات إضافية",
+                businessLabel4: "اسم شخص الاتصال",
+                businessLabel5: "البريد الإلكتروني للعمل",
+                businessLabel6: "رقم الاتصال",
+                businessSubmit: "إرسال استفسار العمل",
+                
+                // Other Services Page
+                service6Subtitle: "خدمات دعم شاملة لتسهيل حياتك في تركيا",
+                otherContentTitle1: "الخدمات القانونية",
+                otherContentP1: "نقدم حلولاً قانونية شاملة بما في ذلك تمثيل المحاماة والاستشارات القانونية لضمان حصولك على الدعم الضروري والنصيحة الخبيرة لحماية حقوقك وتحقيق أهدافك بكامل الاحترافية.",
+                otherContentTitle2: "الترجمة والمصادقة",
+                otherContentP2: "تسهل خدمات الترجمة والمصادقة لدينا تحويل المستندات الرسمية إلى لغات مختلفة مع ضمان دقة الترجمة من خلال التصديق القانوني. نوفر أيضاً مترجمين شخصيين لمساعدتك في مواقف متنوعة وضمان التواصل الفعال.",
+                otherContentTitle3: "حلول الإقامة والتأمين",
+                otherContentP3: "تشمل خدمات تقديم طلبات الإقامة لدينا إعداد جميع الوثائق المطلوبة، بالإضافة إلى ترتيبات التأمين الصحي وخدمات التسجيل السكاني، مضمناً تجربة مباشرة وفعالة لعملائنا.",
+                otherContentTitle4: "خدمات النقل",
+                otherContentP4: "نقدم حلول نقل شاملة، بما في ذلك تأجير المركبات مع أو بدون سائقين، بالإضافة إلى خدمات نقل البضائع الفعالة وخدمات نقل العناصر الشخصية بموثوقية استثنائية.",
+                otherContentTitle5: "تشمل خدماتنا الإضافية",
+                otherListItem1: "الاستشارة والتمثيل القانوني",
+                otherListItem2: "ترجمة المستندات والمصادقة",
+                otherListItem3: "طلبات تصريح الإقامة",
+                otherListItem4: "ترتيبات التأمين الصحي",
+                otherListItem5: "خدمات تأجير المركبات",
+                otherListItem6: "النقل الشخصي والتجاري",
+                otherListItem7: "مصادقة المستندات وإضفاء الصفة الرسمية",
+                otherFormTitle: "طلب خدمة إضافية",
+                otherLabel1: "فئة الخدمة",
+                otherLabel2: "مواصفات الخدمة",
+                otherLabel3: "اسمك الكامل",
+                otherLabel4: "البريد الإلكتروني",
+                otherLabel5: "رقم الاتصال",
+                otherSubmit: "إرسال طلب الخدمة"
+            }
+        };
+
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'ar' : 'en';
+            const html = document.documentElement;
+            const lang = translations[currentLang];
+
+            // Update language and direction
+            html.lang = currentLang;
+            html.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+
+            // Update all text content
+            updateTextContent('.nav-home', lang.navHome);
+            updateTextContent('.nav-services', lang.navServices);
+            updateTextContent('.nav-about', lang.navAbout);
+            updateTextContent('.nav-appointments', lang.navAppointments);
+            updateTextContent('.nav-contact', lang.navContact);
+            
+            document.querySelectorAll('.lang-switch').forEach(btn => {
+                const span = btn.querySelector('span') || btn;
+                if (span.tagName === 'SPAN') {
+                    span.textContent = lang.langBtn;
+                } else {
+                    btn.innerHTML = `<i class="fas fa-globe"></i> ${lang.langBtn}`;
+                }
+            });
+            
+            updateTextContent('.hero-title', lang.heroTitle);
+            updateTextContent('.hero-subtitle', lang.heroSubtitle);
+            updateButtonContent('.cta-text', lang.ctaText);
+            updateTextContent('.services-title', lang.servicesTitle);
+            updateTextContent('.services-subtitle', lang.servicesSubtitle);
+            
+            // Update service cards
+            updateTextContent('.service1-title', lang.service1Title);
+            updateTextContent('.service1-desc', lang.service1Desc);
+            updateButtonContent('.service1-link', lang.service1Link);
+            
+            updateTextContent('.service2-title', lang.service2Title);
+            updateTextContent('.service2-desc', lang.service2Desc);
+            updateButtonContent('.service2-link', lang.service2Link);
+            
+            updateTextContent('.service3-title', lang.service3Title);
+            updateTextContent('.service3-desc', lang.service3Desc);
+            updateButtonContent('.service3-link', lang.service3Link);
+            
+            updateTextContent('.service4-title', lang.service4Title);
+            updateTextContent('.service4-desc', lang.service4Desc);
+            updateButtonContent('.service4-link', lang.service4Link);
+            
+            updateTextContent('.service5-title', lang.service5Title);
+            updateTextContent('.service5-desc', lang.service5Desc);
+            updateButtonContent('.service5-link', lang.service5Link);
+            
+            updateTextContent('.service6-title', lang.service6Title);
+            updateTextContent('.service6-desc', lang.service6Desc);
+            updateButtonContent('.service6-link', lang.service6Link);
+            
+            // Update about section
+            updateTextContent('.about-title', lang.aboutTitle);
+            updateTextContent('.about-p1', lang.aboutP1);
+            updateTextContent('.about-p2', lang.aboutP2);
+            updateTextContent('.about-p3', lang.aboutP3);
+            
+            // Update appointments section
+            updateTextContent('.appointments-title', lang.appointmentsTitle);
+            updateTextContent('.appointments-subtitle', lang.appointmentsSubtitle);
+            updateTextContent('.label-name', lang.labelName);
+            updateTextContent('.label-email', lang.labelEmail);
+            updateTextContent('.label-phone', lang.labelPhone);
+            updateTextContent('.label-service', lang.labelService);
+            updateTextContent('.label-date', lang.labelDate);
+            updateTextContent('.label-message', lang.labelMessage);
+            updateTextContent('.option-select', lang.optionSelect);
+            updateTextContent('.option1', lang.option1);
+            updateTextContent('.option2', lang.option2);
+            updateTextContent('.option3', lang.option3);
+            updateTextContent('.option4', lang.option4);
+            updateTextContent('.option5', lang.option5);
+            updateTextContent('.option6', lang.option6);
+            updateButtonContent('.btn-text', lang.btnText);
+            updateTextContent('.success-text', lang.successText);
+            
+            // Update contact section
+            updateTextContent('.contact-title', lang.contactTitle);
+            updateTextContent('.contact-subtitle', lang.contactSubtitle);
+            updateTextContent('.contact1-title', lang.contact1Title);
+            updateTextContent('.contact1-info', lang.contact1Info);
+            updateTextContent('.contact2-title', lang.contact2Title);
+            updateTextContent('.contact2-info', lang.contact2Info);
+            updateTextContent('.contact3-title', lang.contact3Title);
+            updateTextContent('.contact3-info', lang.contact3Info);
+            
+            // Update footer
+            updateTextContent('.footer-text', lang.footerText);
+            updateTextContent('.footer-about-text', lang.footerAboutText);
+            updateTextContent('.footer-links-title', lang.footerLinksTitle);
+            updateTextContent('.footer-home', lang.footerHome);
+            updateTextContent('.footer-services', lang.footerServices);
+            updateTextContent('.footer-about', lang.footerAbout);
+            updateTextContent('.footer-contact', lang.footerContact);
+            updateTextContent('.footer-services-title', lang.footerServicesTitle);
+            updateTextContent('.footer-real-estate', lang.footerRealEstate);
+            updateTextContent('.footer-tourism', lang.footerTourism);
+            updateTextContent('.footer-student', lang.footerStudent);
+            updateTextContent('.footer-medical', lang.footerMedical);
+            updateTextContent('.footer-business', lang.footerBusiness);
+            updateTextContent('.footer-other', lang.footerOther);
+            updateTextContent('.footer-contact-title', lang.footerContactTitle);
+            updateTextContent('.footer-location', lang.footerLocation);
+            updateTextContent('.footer-phone', lang.footerPhone);
+            updateTextContent('.footer-email', lang.footerEmail);
+            updateTextContent('.footer-lang-text', lang.footerLangText);
+            
+            // Update service pages
+            updateTextContent('.back-text', lang.backText);
+            
+            // Update real estate service page
+            updateTextContent('.service1-subtitle', lang.service1Subtitle);
+            updateTextContent('.real-estate-content-title1', lang.realEstateContentTitle1);
+            updateTextContent('.real-estate-content-p1', lang.realEstateContentP1);
+            updateTextContent('.real-estate-content-title2', lang.realEstateContentTitle2);
+            updateTextContent('.real-estate-content-p2', lang.realEstateContentP2);
+            updateTextContent('.real-estate-content-title3', lang.realEstateContentTitle3);
+            updateTextContent('.real-estate-content-p3', lang.realEstateContentP3);
+            updateTextContent('.real-estate-content-title4', lang.realEstateContentTitle4);
+            updateTextContent('.real-estate-list-item1', lang.realEstateListItem1);
+            updateTextContent('.real-estate-list-item2', lang.realEstateListItem2);
+            updateTextContent('.real-estate-list-item3', lang.realEstateListItem3);
+            updateTextContent('.real-estate-list-item4', lang.realEstateListItem4);
+            updateTextContent('.real-estate-list-item5', lang.realEstateListItem5);
+            updateTextContent('.real-estate-list-item6', lang.realEstateListItem6);
+            updateTextContent('.real-estate-form-title', lang.realEstateFormTitle);
+            updateTextContent('.real-estate-label1', lang.realEstateLabel1);
+            updateTextContent('.real-estate-label2', lang.realEstateLabel2);
+            updateTextContent('.real-estate-label3', lang.realEstateLabel3);
+            updateTextContent('.real-estate-label4', lang.realEstateLabel4);
+            updateTextContent('.real-estate-label5', lang.realEstateLabel5);
+            updateButtonContent('.real-estate-submit', lang.realEstateSubmit);
+            
+            // Update tourism service page
+            updateTextContent('.service2-subtitle', lang.service2Subtitle);
+            updateTextContent('.tourism-content-title1', lang.tourismContentTitle1);
+            updateTextContent('.tourism-content-p1', lang.tourismContentP1);
+            updateTextContent('.tourism-content-title2', lang.tourismContentTitle2);
+            updateTextContent('.tourism-content-p2', lang.tourismContentP2);
+            updateTextContent('.tourism-content-title3', lang.tourismContentTitle3);
+            updateTextContent('.tourism-content-p3', lang.tourismContentP3);
+            updateTextContent('.tourism-content-title4', lang.tourismContentTitle4);
+            updateTextContent('.tourism-list-item1', lang.tourismListItem1);
+            updateTextContent('.tourism-list-item2', lang.tourismListItem2);
+            updateTextContent('.tourism-list-item3', lang.tourismListItem3);
+            updateTextContent('.tourism-list-item4', lang.tourismListItem4);
+            updateTextContent('.tourism-list-item5', lang.tourismListItem5);
+            updateTextContent('.tourism-list-item6', lang.tourismListItem6);
+            updateTextContent('.tourism-form-title', lang.tourismFormTitle);
+            updateTextContent('.tourism-label1', lang.tourismLabel1);
+            updateTextContent('.tourism-label2', lang.tourismLabel2);
+            updateTextContent('.tourism-label3', lang.tourismLabel3);
+            updateTextContent('.tourism-label4', lang.tourismLabel4);
+            updateTextContent('.tourism-label5', lang.tourismLabel5);
+            updateTextContent('.tourism-label6', lang.tourismLabel6);
+            updateButtonContent('.tourism-submit', lang.tourismSubmit);
+            
+            // Update student service page
+            updateTextContent('.service3-subtitle', lang.service3Subtitle);
+            updateTextContent('.student-content-title1', lang.studentContentTitle1);
+            updateTextContent('.student-content-p1', lang.studentContentP1);
+            updateTextContent('.student-content-title2', lang.studentContentTitle2);
+            updateTextContent('.student-content-p2', lang.studentContentP2);
+            updateTextContent('.student-content-title3', lang.studentContentTitle3);
+            updateTextContent('.student-content-p3', lang.studentContentP3);
+            updateTextContent('.student-content-title4', lang.studentContentTitle4);
+            updateTextContent('.student-list-item1', lang.studentListItem1);
+            updateTextContent('.student-list-item2', lang.studentListItem2);
+            updateTextContent('.student-list-item3', lang.studentListItem3);
+            updateTextContent('.student-list-item4', lang.studentListItem4);
+            updateTextContent('.student-list-item5', lang.studentListItem5);
+            updateTextContent('.student-list-item6', lang.studentListItem6);
+            updateTextContent('.student-form-title', lang.studentFormTitle);
+            updateTextContent('.student-label1', lang.studentLabel1);
+            updateTextContent('.student-label2', lang.studentLabel2);
+            updateTextContent('.student-label3', lang.studentLabel3);
+            updateTextContent('.student-label4', lang.studentLabel4);
+            updateTextContent('.student-label5', lang.studentLabel5);
+            updateTextContent('.student-label6', lang.studentLabel6);
+            updateTextContent('.student-label7', lang.studentLabel7);
+            updateButtonContent('.student-submit', lang.studentSubmit);
+            
+            // Update medical service page
+            updateTextContent('.service4-subtitle', lang.service4Subtitle);
+            updateTextContent('.medical-content-title1', lang.medicalContentTitle1);
+            updateTextContent('.medical-content-p1', lang.medicalContentP1);
+            updateTextContent('.medical-content-title2', lang.medicalContentTitle2);
+            updateTextContent('.medical-list-item1', lang.medicalListItem1);
+            updateTextContent('.medical-list-item2', lang.medicalListItem2);
+            updateTextContent('.medical-list-item3', lang.medicalListItem3);
+            updateTextContent('.medical-list-item4', lang.medicalListItem4);
+            updateTextContent('.medical-list-item5', lang.medicalListItem5);
+            updateTextContent('.medical-list-item6', lang.medicalListItem6);
+            updateTextContent('.medical-list-item7', lang.medicalListItem7);
+            updateTextContent('.medical-list-item8', lang.medicalListItem8);
+            updateTextContent('.medical-list-item9', lang.medicalListItem9);
+            updateTextContent('.medical-content-title3', lang.medicalContentTitle3);
+            updateTextContent('.medical-content-p2', lang.medicalContentP2);
+            updateTextContent('.medical-form-title', lang.medicalFormTitle);
+            updateTextContent('.medical-label1', lang.medicalLabel1);
+            updateTextContent('.medical-label2', lang.medicalLabel2);
+            updateTextContent('.medical-label3', lang.medicalLabel3);
+            updateTextContent('.medical-label4', lang.medicalLabel4);
+            updateTextContent('.medical-label5', lang.medicalLabel5);
+            updateTextContent('.medical-label6', lang.medicalLabel6);
+            updateTextContent('.medical-label7', lang.medicalLabel7);
+            updateButtonContent('.medical-submit', lang.medicalSubmit);
+            
+            // Update business service page
+            updateTextContent('.service5-subtitle', lang.service5Subtitle);
+            updateTextContent('.business-content-title1', lang.businessContentTitle1);
+            updateTextContent('.business-content-p1', lang.businessContentP1);
+            updateTextContent('.business-content-p2', lang.businessContentP2);
+            updateTextContent('.business-content-title2', lang.businessContentTitle2);
+            updateTextContent('.business-list-item1', lang.businessListItem1);
+            updateTextContent('.business-list-item2', lang.businessListItem2);
+            updateTextContent('.business-list-item3', lang.businessListItem3);
+            updateTextContent('.business-list-item4', lang.businessListItem4);
+            updateTextContent('.business-list-item5', lang.businessListItem5);
+            updateTextContent('.business-list-item6', lang.businessListItem6);
+            updateTextContent('.business-list-item7', lang.businessListItem7);
+            updateTextContent('.business-list-item8', lang.businessListItem8);
+            updateTextContent('.business-form-title', lang.businessFormTitle);
+            updateTextContent('.business-label1', lang.businessLabel1);
+            updateTextContent('.business-label2', lang.businessLabel2);
+            updateTextContent('.business-label3', lang.businessLabel3);
+            updateTextContent('.business-label4', lang.businessLabel4);
+            updateTextContent('.business-label5', lang.businessLabel5);
+            updateTextContent('.business-label6', lang.businessLabel6);
+            updateButtonContent('.business-submit', lang.businessSubmit);
+            
+            // Update other services page
+            updateTextContent('.service6-subtitle', lang.service6Subtitle);
+            updateTextContent('.other-content-title1', lang.otherContentTitle1);
+            updateTextContent('.other-content-p1', lang.otherContentP1);
+            updateTextContent('.other-content-title2', lang.otherContentTitle2);
+            updateTextContent('.other-content-p2', lang.otherContentP2);
+            updateTextContent('.other-content-title3', lang.otherContentTitle3);
+            updateTextContent('.other-content-p3', lang.otherContentP3);
+            updateTextContent('.other-content-title4', lang.otherContentTitle4);
+            updateTextContent('.other-content-p4', lang.otherContentP4);
+            updateTextContent('.other-content-title5', lang.otherContentTitle5);
+            updateTextContent('.other-list-item1', lang.otherListItem1);
+            updateTextContent('.other-list-item2', lang.otherListItem2);
+            updateTextContent('.other-list-item3', lang.otherListItem3);
+            updateTextContent('.other-list-item4', lang.otherListItem4);
+            updateTextContent('.other-list-item5', lang.otherListItem5);
+            updateTextContent('.other-list-item6', lang.otherListItem6);
+            updateTextContent('.other-list-item7', lang.otherListItem7);
+            updateTextContent('.other-form-title', lang.otherFormTitle);
+            updateTextContent('.other-label1', lang.otherLabel1);
+            updateTextContent('.other-label2', lang.otherLabel2);
+            updateTextContent('.other-label3', lang.otherLabel3);
+            updateTextContent('.other-label4', lang.otherLabel4);
+            updateTextContent('.other-label5', lang.otherLabel5);
+            updateButtonContent('.other-submit', lang.otherSubmit);
+        }
+
+        function updateTextContent(selector, text) {
+            const elements = document.querySelectorAll(selector);
+            elements.forEach(el => {
+                if (el) el.textContent = text;
+            });
+        }
+
+        function updateButtonContent(selector, text) {
+            const elements = document.querySelectorAll(selector);
+            elements.forEach(el => {
+                if (el) {
+                    const span = el.querySelector('span');
+                    if (span) {
+                        span.textContent = text;
+                    } else {
+                        el.textContent = text;
+                    }
+                }
+            });
+        }
+
+        function toggleMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
+
+        // Page Navigation
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.service-page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show the selected page
+            document.getElementById(`${pageId}-page`).classList.add('active');
+            
+            // Close mobile menu if open
+            document.getElementById('navLinks').classList.remove('active');
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('main-header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Form submission
+        document.getElementById('appointmentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                service: document.getElementById('service').value,
+                date: document.getElementById('date').value,
+                message: document.getElementById('message').value,
+                timestamp: new Date().toISOString()
+            };
+
+            // Store in memory (you can add server-side processing later)
+            console.log('Appointment booked:', formData);
+
+            // Show success message
+            document.getElementById('successMessage').style.display = 'block';
+            
+            // Reset form
+            this.reset();
+
+            // Hide success message after 5 seconds
+            setTimeout(() => {
+                document.getElementById('successMessage').style.display = 'none';
+            }, 5000);
+        });
+
+        // Set minimum date for appointment to today
+        document.getElementById('date').min = new Date().toISOString().split('T')[0];
+        
+        // Service form submissions
+        document.getElementById('realEstateForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert(currentLang === 'en' ? 'Real Estate service request submitted! We will contact you soon.' : 'تم تقديم طلب الخدمة العقارية! سنتصل بك قريباً.');
+            this.reset();
+        });
+        
+        document.getElementById('tourismForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert(currentLang === 'en' ? 'Tourism service request submitted! We will contact you soon.' : 'تم تقديم طلب الخدمة السياحية! سنتصل بك قريباً.');
+            this.reset();
+        });
+        
+        document.getElementById('studentForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert(currentLang === 'en' ? 'Student service request submitted! We will contact you soon.' : 'تم تقديم طلب الخدمة الطلابية! سنتصل بك قريباً.');
+            this.reset();
+        });
+        
+        document.getElementById('medicalForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert(currentLang === 'en' ? 'Medical service request submitted! We will contact you soon.' : 'تم تقديم طلب الخدمة العلاجية! سنتصل بك قريباً.');
+            this.reset();
+        });
+        
+        document.getElementById('businessForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert(currentLang === 'en' ? 'Business service request submitted! We will contact you soon.' : 'تم تقديم طلب الخدمة التجارية! سنتصل بك قريباً.');
+            this.reset();
+        });
+        
+        document.getElementById('otherForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert(currentLang === 'en' ? 'Other service request submitted! We will contact you soon.' : 'تم تقديم طلب الخدمة الإضافية! سنتصل بك قريباً.');
+            this.reset();
+        });
+    </script>
+</body>
+</html>
