@@ -2599,6 +2599,40 @@
             updateTextContent('.other-option3', langData.otherOption3);
             updateTextContent('.other-option4', langData.otherOption4);
             updateTextContent('.other-option5', langData.otherOption5);
+
+                        // Update placeholders
+            const locationInput = document.getElementById('location');
+            if (locationInput) locationInput.placeholder = langData.placeholderLocation;
+
+            const budgetInput = document.getElementById('budget');
+            if (budgetInput) budgetInput.placeholder = langData.placeholderBudget;
+
+            const additionalRequirements = document.getElementById('additional-requirements');
+            if (additionalRequirements) additionalRequirements.placeholder = langData.placeholderRequirements;
+
+            const daysInput = document.getElementById('days');
+            if (daysInput) daysInput.placeholder = langData.placeholderDays;
+
+            const cityInput = document.getElementById('city');
+            if (cityInput) cityInput.placeholder = langData.placeholderCity;
+
+            const majorInput = document.getElementById('major');
+            if (majorInput) majorInput.placeholder = langData.placeholderMajor;
+
+            const medicalCondition = document.getElementById('medical-condition');
+            if (medicalCondition) medicalCondition.placeholder = langData.placeholderMedicalCondition;
+
+            const serviceTypeInput = document.getElementById('service-type');
+            if (serviceTypeInput) serviceTypeInput.placeholder = langData.placeholderServiceType;
+
+            const additionalInfo = document.getElementById('additional-info');
+            if (additionalInfo) additionalInfo.placeholder = langData.placeholderAdditionalInfo;
+
+            const serviceDetails = document.getElementById('other-service-details');
+            if (serviceDetails) serviceDetails.placeholder = langData.placeholderServiceDetails;
+
+            const messageTextarea = document.getElementById('message');
+            if (messageTextarea) messageTextarea.placeholder = langData.placeholderMessage;
         }
 
         function toggleLanguage() {
