@@ -2680,121 +2680,68 @@
         });
 
         // Google Sheets Submission Function
-        // FIXED: Google Sheets Submission Function
-        async function submitToGoogleSheets(formData) {
-            const submitBtn = document.querySelector('#appointmentForm .submit-btn');
-            const submitText = document.querySelector('#submit-text');
-            const originalText = submitText.textContent;
+        // UNIVERSAL: Google Sheets Submission Function
+        async function submitToGoogleSheets(formElement, formId) {
+            const submitBtn = formElement.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
             
             // 1. UI Loading State
             submitBtn.disabled = true;
-            submitText.textContent = currentLang === 'en' ? 'Sending...' : 'جاري الإرسال...';
+            submitBtn.innerHTML = currentLang === 'en' ? 'Sending...' : 'جاري الإرسال...';
             
-            // 2. Format data for Google (URLSearchParams is the most stable method)
+            // 2. Automatically grab ALL fields from whichever form was clicked
+            const formData = new FormData(formElement);
             const params = new URLSearchParams();
-            for (const key in formData) {
-                params.append(key, formData[key]);
-            }
-            params.append('formSource', 'Main Appointment Form');
+            formData.forEach((value, key) => {
+                params.append(key, value);
+            });
+            params.append('formSource', formId); // Identifies if it's "studentForm", "medicalForm", etc.
 
             try {
-                // 3. Send the request
+                // 3. Send the data to your Google Script
                 await fetch(GOOGLE_SCRIPT_URL, {
                     method: 'POST',
                     body: params,
-                    mode: 'no-cors', // Critical: Allows GitHub to talk to Google
+                    mode: 'no-cors', // Essential for GitHub Pages
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
                     }
                 });
 
-                // 4. Optimistic Success: Since data is arriving in your sheet, 
-                // we skip trying to read the response and just return success.
-                return { success: true };
-                
+                // 4. Optimistic Success
+                if (formId === 'appointmentForm') {
+                    document.getElementById('successMessage').style.display = 'block';
+                    document.getElementById('errorMessage').style.display = 'none';
+                    setTimeout(() => { document.getElementById('successMessage').style.display = 'none'; }, 6000);
+                } else {
+                    alert(currentLang === 'en' ? 'Thank you! Your request was received.' : 'شكراً لك! تم استلام طلبك بنجاح.');
+                }
+                formElement.reset();
+
             } catch (error) {
                 console.error('Network Error:', error);
-                return { success: false };
+                if (formId === 'appointmentForm') {
+                    document.getElementById('errorMessage').style.display = 'block';
+                } else {
+                    alert(currentLang === 'en' ? 'Connection failed.' : 'فشل الاتصال.');
+                }
             } finally {
-                // 5. Reset UI button
                 submitBtn.disabled = false;
-                submitText.textContent = originalText;
+                submitBtn.innerHTML = originalText;
             }
         }
 
-        // FIXED: Main Appointment Form Submission
-        document.getElementById('appointmentForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const formData = {
-                name: document.getElementById('name').value.trim(),
-                email: document.getElementById('email').value.trim(),
-                phone: document.getElementById('phone').value.trim(),
-                service: document.getElementById('service').value,
-                date: document.getElementById('date').value,
-                message: document.getElementById('message').value.trim()
-            };
-
-            // Basic Validation
-            if (!formData.name || !formData.email || !formData.phone || !formData.service || !formData.date) {
-                alert(currentLang === 'en' ? 'Please fill in all required fields.' : 'يرجى ملء جميع الحقول المطلوبة.');
-                return;
+        // UNIVERSAL: Listen to ALL forms on the website
+        const allForms = ['appointmentForm', 'realEstateForm', 'tourismForm', 'studentForm', 'medicalForm', 'businessForm', 'otherForm'];
+        
+        allForms.forEach(formId => {
+            const form = document.getElementById(formId);
+            if (form) {
+                form.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    await submitToGoogleSheets(this, formId);
+                });
             }
-
-            // Call the fixed submission function
-            const result = await submitToGoogleSheets(formData);
-            
-            if (result.success) {
-                // Shows the GREEN box
-                document.getElementById('successMessage').style.display = 'block';
-                document.getElementById('errorMessage').style.display = 'none';
-                this.reset();
-                
-                setTimeout(() => {
-                    document.getElementById('successMessage').style.display = 'none';
-                }, 6000);
-            } else {
-                // Shows the RED error box only on total network failure
-                document.getElementById('errorMessage').style.display = 'block';
-                document.getElementById('successMessage').style.display = 'none';
-            }
-        });
-
-        // Service form submissions (these will still show alerts as before)
-        document.getElementById('realEstateForm')?.addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert(currentLang === 'en' ? 'Real Estate service request submitted! We will contact you soon.' : 'تم تقديم طلب الخدمة العقارية! سنتصل بك قريباً.');
-            this.reset();
-        });
-        
-        document.getElementById('tourismForm')?.addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert(currentLang === 'en' ? 'Tourism service request submitted! We will contact you soon.' : 'تم تقديم طلب الخدمة السياحية! سنتصل بك قريباً.');
-            this.reset();
-        });
-        
-        document.getElementById('studentForm')?.addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert(currentLang === 'en' ? 'Student service request submitted! We will contact you soon.' : 'تم تقديم طلب الخدمة الطلابية! سنتصل بك قريباً.');
-            this.reset();
-        });
-        
-        document.getElementById('medicalForm')?.addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert(currentLang === 'en' ? 'Medical service request submitted! We will contact you soon.' : 'تم تقديم طلب الخدمة العلاجية! سنتصل بك قريباً.');
-            this.reset();
-        });
-        
-        document.getElementById('businessForm')?.addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert(currentLang === 'en' ? 'Business service request submitted! We will contact you soon.' : 'تم تقديم طلب الخدمة التجارية! سنتصل بك قريباً.');
-            this.reset();
-        });
-        
-        document.getElementById('otherForm')?.addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert(currentLang === 'en' ? 'Other service request submitted! We will contact you soon.' : 'تم تقديم طلب الخدمة الإضافية! سنتصل بك قريباً.');
-            this.reset();
         });
 
         // Initialize the page
