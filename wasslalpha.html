@@ -1412,6 +1412,19 @@
                 <h2 class="medical-form-title">استشارة الخدمة الطبية</h2>
                 <form id="medicalForm">
                     <div class="form-group">
+                        <label class="label-name">الاسم الكامل</label>
+                        <input type="text" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="label-email">البريد الإلكتروني</label>
+                        <input type="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="label-phone">رقم الهاتف</label>
+                        <input type="tel" name="phone" required>
+                    </div>
+            
+                    <div class="form-group">
                         <label for="patient-gender" class="medical-label1">الجنس</label>
                         <select id="patient-gender" name="patient-gender" required>
                             <option value="" class="medical-option-select">اختر الجنس</option>
@@ -1505,6 +1518,19 @@
                 <h2 class="business-form-title">استشارة الخدمة التجارية</h2>
                 <form id="businessForm">
                     <div class="form-group">
+                        <label class="label-name">الاسم الكامل</label>
+                        <input type="text" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="label-email">البريد الإلكتروني للعمل</label>
+                        <input type="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="label-phone">رقم الاتصال</label>
+                        <input type="tel" name="phone" required>
+                    </div>
+                    
+                    <div class="form-group">
                         <label for="company-name" class="business-label1">اسم الشركة (إن وجد)</label>
                         <input type="text" id="company-name" name="company-name">
                     </div>
@@ -1516,18 +1542,7 @@
                         <label for="additional-info" class="business-label3">معلومات إضافية</label>
                         <textarea id="additional-info" name="additional-info" placeholder="يرجى تقديم تفاصيل عن احتياجاتك وأهدافك التجارية..."></textarea>
                     </div>
-                    <div class="form-group">
-                        <label for="applicant-name" class="business-label4">اسم شخص الاتصال</label>
-                        <input type="text" id="applicant-name" name="applicant-name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="contact-email" class="business-label5">البريد الإلكتروني للعمل</label>
-                        <input type="email" id="contact-email" name="contact-email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="contact-phone" class="business-label6">رقم الاتصال</label>
-                        <input type="tel" id="contact-phone" name="contact-phone" required>
-                    </div>
+                    
                     <button type="submit" class="submit-btn business-submit">إرسال استفسار العمل</button>
                 </form>
             </div>
@@ -1574,6 +1589,19 @@
                 <h2 class="other-form-title">طلب خدمة إضافية</h2>
                 <form id="otherForm">
                     <div class="form-group">
+                        <label class="label-name">اسمك الكامل</label>
+                        <input type="text" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="label-email">البريد الإلكتروني</label>
+                        <input type="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="label-phone">رقم الاتصال</label>
+                        <input type="tel" name="phone" required>
+                    </div>
+            
+                    <div class="form-group">
                         <label for="other-service-type" class="other-label1">فئة الخدمة</label>
                         <select id="other-service-type" name="other-service-type" required>
                             <option value="" class="other-option-select">اختر فئة الخدمة</option>
@@ -1588,18 +1616,7 @@
                         <label for="other-service-details" class="other-label2">مواصفات الخدمة</label>
                         <textarea id="other-service-details" name="other-service-details" placeholder="يرجى تقديم معلومات مفصلة عن الخدمة التي تحتاجها..." required></textarea>
                     </div>
-                    <div class="form-group">
-                        <label for="other-name" class="other-label3">اسمك الكامل</label>
-                        <input type="text" id="other-name" name="other-name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="other-email" class="other-label4">البريد الإلكتروني</label>
-                        <input type="email" id="other-email" name="other-email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="other-phone" class="other-label5">رقم الاتصال</label>
-                        <input type="tel" id="other-phone" name="other-phone" required>
-                    </div>
+                    
                     <button type="submit" class="submit-btn other-submit">إرسال طلب الخدمة</button>
                 </form>
             </div>
