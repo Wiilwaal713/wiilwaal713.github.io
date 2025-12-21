@@ -2249,7 +2249,7 @@
         let currentPage = 'home';
 
         // Google Sheets Configuration
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwq-HzbJo1HdXN_2EBO7o53cwL9YBVUtQky9BMbaI9bGZNWTrxns48XWbBg67iUtfC4NQ/exec'; // Replace with your actual URL
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwq-HzbJo1HdXN_2EBO7o53cwL9YBVUtQky9BMbaI9bGZNWTrxns48XWbBg67iUtfC4NQ/exec';
 
         // Initialize page on load
         function init() {
@@ -2680,54 +2680,52 @@
         });
 
         // Google Sheets Submission Function
+        // FIXED: Google Sheets Submission Function
         async function submitToGoogleSheets(formData) {
+            const submitBtn = document.querySelector('#appointmentForm .submit-btn');
+            const submitText = document.querySelector('#submit-text');
+            const originalText = submitText.textContent;
+            
+            // 1. UI Loading State
+            submitBtn.disabled = true;
+            submitText.textContent = currentLang === 'en' ? 'Sending...' : 'جاري الإرسال...';
+            
+            // 2. Format data for Google (URLSearchParams is the most stable method)
+            const params = new URLSearchParams();
+            for (const key in formData) {
+                params.append(key, formData[key]);
+            }
+            params.append('formSource', 'Main Appointment Form');
+
             try {
-                const submitBtn = document.querySelector('#appointmentForm .submit-btn');
-                const submitText = document.querySelector('#submit-text');
-                const originalText = submitText.textContent;
-                
-                // Disable button and show loading
-                submitBtn.disabled = true;
-                submitText.textContent = currentLang === 'en' ? 'Sending...' : 'جاري الإرسال...';
-                
-                // Create form data for submission
-                const data = new FormData();
-                for (const key in formData) {
-                    data.append(key, formData[key]);
-                }
-                
-                // Send to Google Apps Script
-                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                // 3. Send the request
+                await fetch(GOOGLE_SCRIPT_URL, {
                     method: 'POST',
-                    body: data
+                    body: params,
+                    mode: 'no-cors', // Critical: Allows GitHub to talk to Google
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
                 });
-                
-                const result = await response.json();
-                
-                // Re-enable button
-                submitBtn.disabled = false;
-                submitText.textContent = originalText;
-                
-                return result;
+
+                // 4. Optimistic Success: Since data is arriving in your sheet, 
+                // we skip trying to read the response and just return success.
+                return { success: true };
                 
             } catch (error) {
-                console.error('Error submitting to Google Sheets:', error);
-                
-                // Re-enable button
-                const submitBtn = document.querySelector('#appointmentForm .submit-btn');
-                const submitText = document.querySelector('#submit-text');
+                console.error('Network Error:', error);
+                return { success: false };
+            } finally {
+                // 5. Reset UI button
                 submitBtn.disabled = false;
-                submitText.textContent = currentLang === 'en' ? 'Request Consultation' : 'طلب استشارة';
-                
-                throw error;
+                submitText.textContent = originalText;
             }
         }
 
-        // Main Appointment Form Submission
+        // FIXED: Main Appointment Form Submission
         document.getElementById('appointmentForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            // Get form data
             const formData = {
                 name: document.getElementById('name').value.trim(),
                 email: document.getElementById('email').value.trim(),
@@ -2737,42 +2735,28 @@
                 message: document.getElementById('message').value.trim()
             };
 
-            // Validate required fields
+            // Basic Validation
             if (!formData.name || !formData.email || !formData.phone || !formData.service || !formData.date) {
                 alert(currentLang === 'en' ? 'Please fill in all required fields.' : 'يرجى ملء جميع الحقول المطلوبة.');
                 return;
             }
 
-            try {
-                // Submit to Google Sheets
-                const result = await submitToGoogleSheets(formData);
+            // Call the fixed submission function
+            const result = await submitToGoogleSheets(formData);
+            
+            if (result.success) {
+                // Shows the GREEN box
+                document.getElementById('successMessage').style.display = 'block';
+                document.getElementById('errorMessage').style.display = 'none';
+                this.reset();
                 
-                if (result.success) {
-                    // Show success message
-                    document.getElementById('successMessage').style.display = 'block';
-                    document.getElementById('errorMessage').style.display = 'none';
-                    
-                    // Reset form
-                    this.reset();
-                    
-                    // Hide success message after 5 seconds
-                    setTimeout(() => {
-                        document.getElementById('successMessage').style.display = 'none';
-                    }, 5000);
-                } else {
-                    // Show error message
-                    document.getElementById('errorMessage').style.display = 'block';
+                setTimeout(() => {
                     document.getElementById('successMessage').style.display = 'none';
-                    
-                    console.error('Google Sheets Error:', result.message);
-                }
-                
-            } catch (error) {
-                // Show error message
+                }, 6000);
+            } else {
+                // Shows the RED error box only on total network failure
                 document.getElementById('errorMessage').style.display = 'block';
                 document.getElementById('successMessage').style.display = 'none';
-                
-                console.error('Submission Error:', error);
             }
         });
 
