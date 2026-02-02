@@ -1,0 +1,2528 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wassl - بوابتك الموثوقة في تركيا</title>
+    <meta name="description" content="يقدم وصل خدمات شاملة تشمل العقارات، السياحة، التعليم، الرعاية الصحية، وحلول الأعمال في تركيا">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    
+    <style>
+        :root {
+            --primary: #0f4c81;
+            --primary-dark: #0a3a6b;
+            --primary-light: #1a6bb3;
+            --secondary: #d4af37;
+            --secondary-dark: #b8941f;
+            --accent: #e11d48;
+            --dark: #1e293b;
+            --dark-alt: #334155;
+            --light: #f8fafc;
+            --light-alt: #f1f5f9;
+            --white: #ffffff;
+            --text: #374151;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.1);
+            --radius: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', 'Arial', sans-serif;
+            line-height: 1.7;
+            color: var(--text);
+            background-color: var(--light);
+            overflow-x: hidden;
+        }
+
+        [dir="ltr"] body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: var(--white);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        header.scrolled {
+            padding: 5px 0;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 0;
+            position: relative;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .logo-icon {
+            color: var(--secondary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+            margin-left: 0;
+        }
+
+        [dir="ltr"] .nav-links {
+            margin-right: 0;
+        }
+
+        .nav-links a {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+            padding: 5px 0;
+        }
+
+        .nav-links a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            right: 0;
+            background-color: var(--secondary);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a:hover:after {
+            width: 100%;
+        }
+
+        /* Updated Auth Buttons */
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .auth-btn {
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .auth-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .auth-btn.secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .auth-btn.secondary:hover {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-greeting {
+            font-weight: 500;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .user-role-badge {
+            background: var(--secondary);
+            color: var(--dark);
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* Modals */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: var(--white);
+            border-radius: var(--radius);
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: translateY(20px);
+            transition: var(--transition);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .modal-overlay.active .modal {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            color: var(--dark);
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            color: var(--accent);
+        }
+
+        .modal-content {
+            padding: 1.5rem;
+        }
+
+        .modal-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .modal-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .modal-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Role Selection */
+        .role-selection {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .role-option {
+            padding: 1.5rem;
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .role-option:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .role-option.selected {
+            border-color: var(--primary);
+            background: var(--light);
+        }
+
+        .role-option i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 0.8rem;
+        }
+
+        .role-option h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .role-option p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        /* Product Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .product-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid var(--border);
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .product-image {
+            height: 200px;
+            background: var(--light-alt);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-content {
+            padding: 1.5rem;
+        }
+
+        .product-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .product-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .product-category {
+            display: inline-block;
+            background: var(--light);
+            color: var(--primary);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .product-description {
+            color: var(--text);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border);
+            padding-top: 1rem;
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .favorite-btn {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .favorite-btn:hover {
+            color: var(--accent);
+        }
+
+        .favorite-btn.favorited {
+            color: var(--accent);
+        }
+
+        .delete-btn {
+            background: var(--accent);
+            color: var(--white);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .delete-btn:hover {
+            background: #c10e38;
+        }
+
+        /* Dashboard */
+        .dashboard-section {
+            display: none;
+            padding: 2rem 0 6rem;
+            min-height: 80vh;
+        }
+
+        .dashboard-section.active {
+            display: block;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .dashboard-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            padding: 4rem 0;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .dashboard-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .dashboard-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 3rem;
+        }
+
+        .dashboard-sidebar {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .dashboard-stats {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .stat-card {
+            background: var(--light);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .dashboard-main {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.8rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: var(--text-light);
+            margin-bottom: 4rem;
+            max-width: 600px;
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+        /* Hero Section - Keep original styles */
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            padding: 8rem 0 6rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.95;
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--secondary);
+            color: var(--dark);
+            padding: 1.2rem 2.5rem;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+            border: none;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.4);
+            background: var(--secondary-dark);
+        }
+
+        /* Services Section */
+        .services {
+            padding: 6rem 0;
+            background: var(--white);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .service-card {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            text-align: center;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .service-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .service-icon {
+            font-size: 3.5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            background: var(--light);
+            width: 90px;
+            height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin-right: auto;
+            margin-left: auto;
+            transition: var(--transition);
+        }
+
+        .service-card:hover .service-icon {
+            transform: scale(1.1);
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .service-card h3 {
+            color: var(--dark);
+            margin-bottom: 1.2rem;
+            font-size: 1.6rem;
+            font-weight: 600;
+        }
+
+        .service-card p {
+            color: var(--text);
+            line-height: 1.7;
+            flex-grow: 1;
+            margin-bottom: 1.8rem;
+        }
+
+        .service-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: var(--primary);
+            color: var(--white);
+            padding: 0.9rem 1.8rem;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 500;
+            transition: var(--transition);
+            margin-top: auto;
+            cursor: pointer;
+            border: 2px solid var(--primary);
+        }
+
+        .service-link:hover {
+            background: transparent;
+            color: var(--primary);
+        }
+
+        /* About Section */
+        .about {
+            padding: 6rem 0;
+            background: var(--light-alt);
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-text h2 {
+            font-size: 2.8rem;
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .about-text p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            color: var(--text);
+        }
+
+        .about-image {
+            text-align: center;
+            position: relative;
+        }
+
+        .about-image img {
+            max-width: 100%;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-text {
+            font-size: 1rem;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        /* Appointments Section */
+        .appointments {
+            padding: 6rem 0;
+            background: var(--white);
+        }
+
+        .appointment-form {
+            max-width: 700px;
+            margin: 0 auto;
+            background: var(--white);
+            padding: 3rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border);
+        }
+
+        .form-group {
+            margin-bottom: 1.8rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.6rem;
+            color: var(--dark);
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(15, 76, 129, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: var(--primary);
+            color: var(--white);
+            padding: 1.2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .submit-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .submit-btn:disabled {
+            background: var(--text-light);
+            cursor: not-allowed;
+        }
+
+        .success-message {
+            display: none;
+            background: #10b981;
+            color: var(--white);
+            padding: 1.2rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+
+        .error-message {
+            display: none;
+            background: #ef4444;
+            color: var(--white);
+            padding: 1.2rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 6rem 0;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            text-align: center;
+        }
+
+        .contact-item {
+            padding: 2.5rem 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius);
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+        }
+
+        .contact-item:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .contact-icon {
+            font-size: 3rem;
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-item h3 {
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+
+        .contact-item p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: var(--white);
+            padding: 4rem 0 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-about p {
+            margin-bottom: 1.5rem;
+            opacity: 0.8;
+            line-height: 1.7;
+        }
+
+        .footer-links h3,
+        .footer-services h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            color: var(--white);
+        }
+
+        .footer-links ul,
+        .footer-services ul {
+            list-style: none;
+        }
+
+        .footer-links li,
+        .footer-services li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a,
+        .footer-services a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover,
+        .footer-services a:hover {
+            color: var(--secondary);
+            padding-right: 5px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-text {
+            opacity: 0.7;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--dark);
+            cursor: pointer;
+            z-index: 1002;
+        }
+        
+        /* WhatsApp FAB */
+        .whatsapp-fab {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background-color: #25D366;
+            color: var(--white);
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.8rem;
+            text-decoration: none;
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+            z-index: 1001;
+            transition: var(--transition);
+        }
+        .whatsapp-fab:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.5);
+        }
+        
+        /* Service Pages */
+        .service-page {
+            display: none;
+            padding: 2rem 0 6rem;
+            min-height: 80vh;
+        }
+
+        .service-page.active {
+            display: block;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .service-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            padding: 4rem 0;
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .service-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .service-header p {
+            font-size: 1.3rem;
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        .service-content {
+            background: var(--white);
+            padding: 3rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 3rem;
+            border: 1px solid var(--border);
+        }
+
+        .service-content h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+            font-weight: 600;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--secondary);
+            display: inline-block;
+        }
+
+        .service-content p {
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .service-content ul {
+            margin-bottom: 1.5rem;
+            padding-right: 1.5rem;
+        }
+
+        .service-content li {
+            margin-bottom: 0.8rem;
+            position: relative;
+        }
+
+        .service-content li:before {
+            content: '✓';
+            color: var(--secondary);
+            font-weight: bold;
+            position: absolute;
+            right: -1.5rem;
+        }
+
+        .service-form {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .service-form h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--secondary);
+            color: var(--dark);
+            padding: 0.9rem 1.8rem;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 500;
+            transition: var(--transition);
+            margin-bottom: 2rem;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);
+        }
+
+        .back-button:hover {
+            background: var(--secondary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-light);
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+            
+            .about-content {
+                gap: 3rem;
+            }
+            
+            .dashboard-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: fixed;
+                top: 0;
+                right: 0;
+                left: 0;
+                bottom: 0;
+                background: var(--white);
+                flex-direction: column;
+                padding: 5rem 2rem;
+                box-shadow: var(--shadow-lg);
+                z-index: 1000;
+                overflow-y: auto;
+                margin: 0 !important;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .auth-buttons {
+                display: none;
+            }
+
+            .mobile-auth {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+                margin-top: 2rem;
+            }
+
+            .hero {
+                padding: 6rem 0 4rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .section-title {
+                font-size: 2.2rem;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .whatsapp-fab {
+                width: 55px;
+                height: 55px;
+                font-size: 2.2rem;
+                bottom: 20px;
+                left: 20px;
+            }
+            
+            .service-content, .service-form {
+                padding: 2rem;
+            }
+
+            .service-header h1 {
+                font-size: 2.5rem;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .role-selection {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .service-header h1 {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .service-content, .service-form {
+                padding: 1.5rem;
+            }
+            
+            .appointment-form {
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Main Navigation -->
+    <header id="main-header">
+        <div class="container">
+            <nav>
+                <a class="logo" onclick="showPage('home')">
+                    <i class="fas fa-handshake logo-icon"></i>
+                    <span>وصل</span>
+                </a>
+                <button class="mobile-menu-btn" onclick="toggleMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <ul class="nav-links" id="navLinks">
+                    <li><a onclick="showPage('home')" class="nav-home">الرئيسية</a></li>
+                    <li><a onclick="scrollToSection('services')" class="nav-services">الخدمات</a></li>
+                    <li><a onclick="scrollToSection('about')" class="nav-about">من نحن</a></li>
+                    <li><a onclick="scrollToSection('appointments')" class="nav-appointments">المواعيد</a></li>
+                    <li><a onclick="scrollToSection('contact')" class="nav-contact">اتصل بنا</a></li>
+                    
+                    <!-- Dynamic Auth Links (Mobile) -->
+                    <div class="mobile-auth" id="mobileAuth">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </ul>
+                
+                <!-- Dynamic Auth Buttons (Desktop) -->
+                <div class="auth-buttons" id="authButtons">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Home Page -->
+    <section id="home-page" class="service-page active">
+        <div class="hero" id="home">
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="hero-title">بوابتك الموثوقة في تركيا</h1>
+                    <p class="hero-subtitle">خدمات شاملة للعقارات، السياحة، التعليم، الرعاية الصحية، وحلول الأعمال. متمركزون في بولو، نخدم جميع أنحاء تركيا بتميز وموثوقية.</p>
+                    <button onclick="scrollToSection('services')" class="cta-button cta-text">
+                        <span>ابدأ رحلتك</span>
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <section class="services" id="services">
+            <div class="container">
+                <h2 class="section-title services-title">خدماتنا المتميزة</h2>
+                <p class="section-subtitle services-subtitle">حلول شاملة مصممة خصيصاً لاحتياجاتك في تركيا، مقدمة بخبرة وتفانٍ</p>
+                <div class="services-grid">
+                    <div class="service-card" data-service="real-estate">
+                        <div class="service-icon"><i class="fas fa-building"></i></div>
+                        <h3 class="service1-title">الخدمات العقارية</h3>
+                        <p class="service1-desc">اعثر على عقار أحلامك في أكثر المواقع المرغوبة في تركيا. نقدم عقارات سكنية وتجارية حصرية للبيع والإيجار مع خدمة متميزة.</p>
+                        <button onclick="showPage('real-estate')" class="service-link service1-link">
+                            <span>اكتشف العقارات</span>
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                    </div>
+                    <div class="service-card" data-service="tourism">
+                        <div class="service-icon"><i class="fas fa-plane"></i></div>
+                        <h3 class="service2-title">الخدمات السياحية</h3>
+                        <p class="service2-desc">اختبر جمال تركيا الأخاذ مع باقاتنا السياحية المختارة بعناية. خطط سفر مخصصة وإقامات فاخرة لرحلات لا تُنسى.</p>
+                        <button onclick="showPage('tourism')" class="service-link service2-link">
+                            <span>استكشف تركيا</span>
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                    </div>
+                    <div class="service-card" data-service="student">
+                        <div class="service-icon"><i class="fas fa-graduation-cap"></i></div>
+                        <h3 class="service3-title">الخدمات الطلابية</h3>
+                        <p class="service3-desc">تنقل في نظام التعليم التركي بإرشاد خبرائنا. من تقديم طلبات الجامعة إلى ترتيب السكن، نضمن رحلتك الأكاديمية سلسة وبلا متاعب.</p>
+                        <button onclick="showPage('student')" class="service-link service3-link">
+                            <span>ابدأ رحلتك</span>
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                    </div>
+                    <div class="service-card" data-service="medical">
+                        <div class="service-icon"><i class="fas fa-heartbeat"></i></div>
+                        <h3 class="service4-title">الخدمات العلاجية</h3>
+                        <p class="service4-desc">الوصول إلى نظام الرعاية الصحية العالمي في تركيا مع خدمات السياحة العلاجية المتميزة لدينا. أفضل المستشفيات، علاجات متخصصة، ورعاية شاملة.</p>
+                        <button onclick="showPage('medical')" class="service-link service4-link">
+                            <span>ابحث عن العلاج</span>
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                    </div>
+                    <div class="service-card" data-service="business">
+                        <div class="service-icon"><i class="fas fa-briefcase"></i></div>
+                        <h3 class="service5-title">خدمات الأعمال</h3>
+                        <p class="service5-desc">أطلق أو وسع عملك في تركيا مع استشاراتنا المهنية. تسجيل الشركات، تحليل الأسواق، والتخطيط الاستراتيجي للنجاح.</p>
+                        <button onclick="showPage('business')" class="service-link service5-link">
+                            <span>نَمِ بأعمالك</span>
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                    </div>
+                    <div class="service-card" data-service="other">
+                        <div class="service-icon"><i class="fas fa-hands-helping"></i></div>
+                        <h3 class="service6-title">خدمات إضافية</h3>
+                        <p class="service6-desc">دعم شامل يشمل الخدمات القانونية، الترجمة، تصاريح الإقامة، التأمين، والنقل لجعل حياتك في تركيا خالية من المتاعب.</p>
+                        <button onclick="showPage('other')" class="service-link service6-link">
+                            <span>عرض جميع الخدمات</span>
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="about" id="about">
+            <div class="container">
+                <div class="about-content">
+                    <div class="about-text">
+                        <h2 class="about-title">شريكك الموثوق في تركيا</h2>
+                        <p class="about-p1">وصل هو مزود الخدمات المتميز الخاص بك، بمقر رئيسي في بولو ووصول على مستوى تركيا. مع سنوات من الخبرة المتخصصة، نتفوق في ربط الأفراد والشركات بالخدمات المتميزة التي يحتاجونها عبر تركيا.</p>
+                        <p class="about-p2">سواء كنت تبحث عن استثمارات عقارية، تخطط لعطلة تركية لا تُنسى، تتطلع إلى فرص تعليمية، تحتاج إلى علاجات طبية، أو توسيع مشاريعك التجارية، نقدم تجارب سلسة وخالية من المتاعب.</p>
+                        <p class="about-p3">فريقنا المتفاني من محترفي الصناعة ملتزم بتقديم خدمة استثنائية، وبناء علاقات دائمة، وضمان رضاك التام مع كل تفاعل.</p>
+                        
+                        <div class="stats">
+                            <div class="stat-item">
+                                <div class="stat-number">500+</div>
+                                <div class="stat-text">عملاء سعداء</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">7+</div>
+                                <div class="stat-text">سنوات خبرة</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">24/7</div>
+                                <div class="stat-text">دعم عملاء</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="about-image">
+                        <div style="width: 100%; height: 400px; background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem;">
+                            <i class="fas fa-users" style="font-size: 5rem; opacity: 0.7;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="appointments" id="appointments">
+            <div class="container">
+                <h2 class="section-title appointments-title">جدول استشارتك</h2>
+                <p class="section-subtitle appointments-subtitle">دعنا نناقش كيف يمكننا مساعدتك في تحقيق أهدافك في تركيا</p>
+                <form class="appointment-form" id="appointmentForm">
+                    <div class="form-group">
+                        <label for="name" class="label-name">الاسم الكامل</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="label-email">البريد الإلكتروني</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone" class="label-phone">رقم الهاتف</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="service" class="label-service">الخدمة المطلوبة</label>
+                        <select id="service" name="service" required>
+                            <option value="" class="option-select">اختر خدمة...</option>
+                            <option value="real-estate" class="option1">الخدمات العقارية</option>
+                            <option value="tourism" class="option2">الخدمات السياحية</option>
+                            <option value="student" class="option3">الخدمات الطلابية</option>
+                            <option value="medical" class="option4">الخدمات العلاجية</option>
+                            <option value="business" class="option5">خدمات الأعمال</option>
+                            <option value="other" class="option6">خدمات أخرى</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="date" class="label-date">التاريخ المفضل</label>
+                        <input type="date" id="date" name="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message" class="label-message">متطلباتك</label>
+                        <textarea id="message" name="message" placeholder="أخبرنا المزيد عن احتياجاتك وتوقعاتك المحددة..."></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn btn-text">
+                        <span id="submit-text">طلب استشارة</span>
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                    <div class="success-message" id="successMessage">
+                        <span class="success-text">شكراً لك! تم استلام طلب استشارتك. سنتصل بك قريباً لتأكيد موعدك.</span>
+                    </div>
+                    <div class="error-message" id="errorMessage">
+                        <span class="error-text">حدث خطأ أثناء إرسال الطلب. يرجى المحاولة مرة أخرى.</span>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <section class="contact" id="contact">
+            <div class="container">
+                <h2 class="section-title contact-title">تواصل معنا</h2>
+                <p class="section-subtitle contact-subtitle">نحن هنا للإجابة على أسئلتك ومساعدتك في البدء</p>
+                <div class="contact-grid">
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+                        <h3 class="contact1-title">موقعنا</h3>
+                        <p class="contact1-info">بولو، تركيا</p>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fas fa-phone"></i></div>
+                        <h3 class="contact2-title">اتصل بنا</h3>
+                        <p class="contact2-info">+90 538 213 6214</p>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                        <h3 class="contact3-title">راسلنا</h3>
+                        <p class="contact3-info">wasslservices@gmail.com</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+
+    <!-- Dashboard Page -->
+    <section id="dashboard-page" class="dashboard-section">
+        <div class="dashboard-header">
+            <div class="container">
+                <h1 id="dashboard-title">لوحة التحكم</h1>
+                <p id="dashboard-subtitle">إدارة خدماتك وتفاعلاتك</p>
+            </div>
+        </div>
+        <div class="container">
+            <div class="dashboard-content">
+                <div class="dashboard-sidebar">
+                    <div class="user-info">
+                        <h3 id="welcome-user">مرحباً،</h3>
+                        <div class="user-role-badge" id="user-role-badge">عميل</div>
+                    </div>
+                    
+                    <div class="dashboard-stats">
+                        <div class="stat-card">
+                            <div class="stat-number" id="products-count">0</div>
+                            <div class="stat-label">الخدمات المنشورة</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="favorites-count">0</div>
+                            <div class="stat-label">المفضلة</div>
+                        </div>
+                    </div>
+                    
+                    <button onclick="showAddProductModal()" class="auth-btn" id="add-product-btn" style="width: 100%; margin-top: 2rem;">
+                        <i class="fas fa-plus"></i>
+                        <span>إضافة خدمة جديدة</span>
+                    </button>
+                    
+                    <button onclick="showMyProducts()" class="auth-btn secondary" id="my-products-btn" style="width: 100%; margin-top: 1rem;">
+                        <i class="fas fa-list"></i>
+                        <span>خدماتي المنشورة</span>
+                    </button>
+                    
+                    <button onclick="showMyFavorites()" class="auth-btn secondary" id="my-favorites-btn" style="width: 100%; margin-top: 1rem;">
+                        <i class="fas fa-heart"></i>
+                        <span>قائمة المفضلة</span>
+                    </button>
+                </div>
+                
+                <div class="dashboard-main">
+                    <h2 id="dashboard-section-title">خدماتك المنشورة</h2>
+                    <div class="products-grid" id="dashboard-products">
+                        <!-- Products will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Service Pages with Dynamic Products -->
+    <section id="real-estate-page" class="service-page">
+        <div class="service-header">
+            <div class="container">
+                <h1 class="service1-title">الخدمات العقارية</h1>
+                <p class="service1-subtitle">اعثر على عقار أحلامك في تركيا مع حلولنا العقارية المتميزة</p>
+            </div>
+        </div>
+        <div class="container">
+            <button class="back-button" onclick="showPage('home')"><i class="fas fa-arrow-right"></i> <span class="back-text">العودة إلى الرئيسية</span></button>
+            
+            <div class="service-content">
+                <h2 class="real-estate-content-title1">شراء العقارات</h2>
+                <p class="real-estate-content-p1">نقدم خدمات شراء منازل شاملة تساعد العملاء في العثور على عقاراتهم المثالية، بدءاً من تقييم متطلباتهم المحددة وصولاً إلى إتمام الصفقة. يقدم فريقنا دعماً كاملاً خلال جميع مراحل العملية لضمان تجربة ناجحة وسلسة.</p>
+                
+                <h2 class="real-estate-content-title2">إيجار الشقق</h2>
+                <p class="real-estate-content-p2">تبسط خدمات التأجير السكني لدينا بحثك عن المنزل المثالي. نقدم خيارات عقارية متنوعة عبر قنوات متعددة، مما يضمن خيارات تتماشى مع احتياجاتك المحددة. نربطك بالبائعين المحتملين مع تقديم التوجيه والاستشارة الأساسيين، مؤمنين أسعاراً مثالية لاستثمارك العقاري.</p>
+                
+                <h2 class="real-estate-content-title3">الإقامات السياحية</h2>
+                <p class="real-estate-content-p3">تقدم خدمات التأجير السياحي لدينا للمسافرين تجارب إقامة فريدة، مما يسمح لهم بالاستمتاع براحة المنزل مع جميع وسائل الراحة الأساسية، مما يجعل رحلاتهم أكثر إمتاعاً وأصالة.</p>
+            </div>
+            
+            <!-- Dynamic Products Grid -->
+            <div id="real-estate-products-section">
+                <h2 style="margin-bottom: 2rem; color: var(--dark); font-size: 1.8rem;">الخدمات المتاحة</h2>
+                <div class="products-grid" id="real-estate-products">
+                    <!-- Products will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tourism Service Page -->
+    <section id="tourism-page" class="service-page">
+        <div class="service-header">
+            <div class="container">
+                <h1 class="service2-title">الخدمات السياحية</h1>
+                <p class="service2-subtitle">اكتشف عجائب تركيا مع تجارب السفر المصممة بخبرة</p>
+            </div>
+        </div>
+        <div class="container">
+            <button class="back-button" onclick="showPage('home')"><i class="fas fa-arrow-right"></i> <span class="back-text">العودة إلى الرئيسية</span></button>
+            
+            <div class="service-content">
+                <h2 class="tourism-content-title1">تجارب سفر مخصصة</h2>
+                <p class="tourism-content-p1">نقدم باقات سفر حصرية وخطوط سفر مخصصة لمساعدتك في استكشاف مدن تركيا الرائعة، والمواقع التاريخية، والعجائب الطبيعية. سواء كنت مهتماً بالتاريخ القديم، أو الانغماس الثقافي، أو الجمال الطبيعي، نصمم الرحلة المثالية المصممة خصيصاً لاهتماماتك.</p>
+            </div>
+            
+            <!-- Dynamic Products Grid -->
+            <div id="tourism-products-section">
+                <h2 style="margin-bottom: 2rem; color: var(--dark); font-size: 1.8rem;">الباقات السياحية المتاحة</h2>
+                <div class="products-grid" id="tourism-products">
+                    <!-- Products will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Other Service Pages (Student, Medical, Business, Other) -->
+    <!-- Each follows the same pattern with static content and dynamic products grid -->
+
+    <!-- Login Modal -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="login-title">تسجيل الدخول</h2>
+                <button class="modal-close" onclick="hideModal('loginModal')">&times;</button>
+            </div>
+            <div class="modal-content">
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="login-email">البريد الإلكتروني</label>
+                        <input type="email" id="login-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">كلمة المرور</label>
+                        <input type="password" id="login-password" required>
+                    </div>
+                    <button type="submit" class="submit-btn">
+                        <span>تسجيل الدخول</span>
+                    </button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <span>ليس لديك حساب؟</span>
+                <a onclick="showRegisterModal()" id="register-link">سجل الآن</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal-overlay" id="registerModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="register-title">إنشاء حساب جديد</h2>
+                <button class="modal-close" onclick="hideModal('registerModal')">&times;</button>
+            </div>
+            <div class="modal-content">
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label for="register-name">الاسم الكامل</label>
+                        <input type="text" id="register-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-email">البريد الإلكتروني</label>
+                        <input type="email" id="register-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password">كلمة المرور</label>
+                        <input type="password" id="register-password" required minlength="6">
+                    </div>
+                    
+                    <div class="role-selection">
+                        <div class="role-option" onclick="selectRole('customer')" id="role-customer">
+                            <i class="fas fa-user"></i>
+                            <h3>عميل</h3>
+                            <p>تصفح الخدمات وأضفها للمفضلة</p>
+                        </div>
+                        <div class="role-option" onclick="selectRole('business')" id="role-business">
+                            <i class="fas fa-briefcase"></i>
+                            <h3>مقدم خدمة</h3>
+                            <p>أنشر خدماتك وأدرجها في السوق</p>
+                        </div>
+                    </div>
+                    <input type="hidden" id="register-role" value="customer">
+                    
+                    <button type="submit" class="submit-btn">
+                        <span>إنشاء حساب</span>
+                    </button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <span>لديك حساب بالفعل؟</span>
+                <a onclick="showLoginModal()" id="login-link">تسجيل الدخول</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Product Modal -->
+    <div class="modal-overlay" id="addProductModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="add-product-title">إضافة خدمة جديدة</h2>
+                <button class="modal-close" onclick="hideModal('addProductModal')">&times;</button>
+            </div>
+            <div class="modal-content">
+                <form id="addProductForm">
+                    <div class="form-group">
+                        <label for="product-title">عنوان الخدمة</label>
+                        <input type="text" id="product-title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="product-description">وصف الخدمة</label>
+                        <textarea id="product-description" rows="4" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="product-price">السعر ($)</label>
+                        <input type="number" id="product-price" required min="0" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label for="product-category">الفئة</label>
+                        <select id="product-category" required>
+                            <option value="real-estate">العقارات</option>
+                            <option value="tourism">السياحة</option>
+                            <option value="student">الطلابية</option>
+                            <option value="medical">الطبية</option>
+                            <option value="business">الأعمال</option>
+                            <option value="other">خدمات أخرى</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="product-image">رابط الصورة (URL)</label>
+                        <input type="url" id="product-image" placeholder="https://example.com/image.jpg">
+                    </div>
+                    <button type="submit" class="submit-btn">
+                        <span>إضافة الخدمة</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <a href="https://wa.me/905382136214" target="_blank" class="whatsapp-fab" aria-label="اتصل بنا على واتساب">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <i class="fas fa-handshake"></i>
+                        <span>وصل</span>
+                    </div>
+                    <p class="footer-about-text">بوابتك الموثوقة للخدمات الشاملة في تركيا. نحن متخصصون في العقارات، السياحة، التعليم، الرعاية الصحية، وحلول الأعمال بتميز وموثوقية.</p>
+                </div>
+                <div class="footer-services">
+                    <h3 class="footer-services-title">خدماتنا</h3>
+                    <ul>
+                        <li><a onclick="showPage('real-estate')" class="footer-real-estate">العقارات</a></li>
+                        <li><a onclick="showPage('tourism')" class="footer-tourism">السياحة</a></li>
+                        <li><a onclick="showPage('student')" class="footer-student">الطلابية</a></li>
+                        <li><a onclick="showPage('medical')" class="footer-medical">الطبية</a></li>
+                        <li><a onclick="showPage('business')" class="footer-business">الأعمال</a></li>
+                        <li><a onclick="showPage('other')" class="footer-other">خدمات أخرى</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h3 class="footer-contact-title">معلومات الاتصال</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> <span class="footer-location">بولو، تركيا</span></p>
+                    <p><i class="fas fa-phone"></i> <span class="footer-phone">+90 538 213 6214</span></p>
+                    <p><i class="fas fa-envelope"></i> <span class="footer-email">wasslservices@gmail.com</span></p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p class="footer-text">&copy; 2025 وصل. جميع الحقوق محفوظة. | متمركزون في بولو، نخدم جميع أنحاء تركيا</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ============================================
+        // FIREBASE CONFIGURATION
+        // ============================================
+        // REPLACE THESE VALUES WITH YOUR FIREBASE CONFIG
+        // Get these from Firebase Console > Project Settings > General > Your apps
+        // ============================================
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY_HERE",
+            authDomain: "YOUR_AUTH_DOMAIN_HERE",
+            projectId: "YOUR_PROJECT_ID_HERE",
+            storageBucket: "YOUR_STORAGE_BUCKET_HERE",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID_HERE",
+            appId: "YOUR_APP_ID_HERE"
+        };
+        // ============================================
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Global variables
+        let currentUser = null;
+        let userRole = null;
+        let currentPage = 'home';
+
+        // DOM Elements
+        const authButtons = document.getElementById('authButtons');
+        const mobileAuth = document.getElementById('mobileAuth');
+        const loginModal = document.getElementById('loginModal');
+        const registerModal = document.getElementById('registerModal');
+        const addProductModal = document.getElementById('addProductModal');
+
+        // Initialize the app
+        function init() {
+            // Set minimum date for appointment
+            document.getElementById('date').min = new Date().toISOString().split('T')[0];
+            
+            // Set up auth state listener
+            auth.onAuthStateChanged(async (user) => {
+                if (user) {
+                    currentUser = user;
+                    await loadUserRole();
+                    updateAuthUI();
+                } else {
+                    currentUser = null;
+                    userRole = null;
+                    updateAuthUI();
+                }
+            });
+
+            // Load initial page
+            showPage('home');
+        }
+
+        // Load user role from Firestore
+        async function loadUserRole() {
+            if (!currentUser) return;
+            
+            try {
+                const userDoc = await db.collection('users').doc(currentUser.uid).get();
+                if (userDoc.exists) {
+                    userRole = userDoc.data().role;
+                } else {
+                    userRole = 'customer'; // Default role
+                }
+            } catch (error) {
+                console.error('Error loading user role:', error);
+                userRole = 'customer';
+            }
+        }
+
+        // Update authentication UI based on user state
+        function updateAuthUI() {
+            if (currentUser) {
+                // User is logged in
+                authButtons.innerHTML = `
+                    <div class="user-menu">
+                        <span class="user-greeting">
+                            <i class="fas fa-user"></i>
+                            ${currentUser.displayName || currentUser.email.split('@')[0]}
+                            <span class="user-role-badge">${userRole === 'business' ? 'مقدم خدمة' : 'عميل'}</span>
+                        </span>
+                        ${userRole === 'business' ? 
+                            `<button class="auth-btn" onclick="showPage('dashboard')">
+                                <i class="fas fa-tachometer-alt"></i>
+                                <span>لوحة التحكم</span>
+                            </button>` : ''}
+                        <button class="auth-btn secondary" onclick="signOut()">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>تسجيل الخروج</span>
+                        </button>
+                    </div>
+                `;
+
+                mobileAuth.innerHTML = `
+                    <div class="user-menu" style="flex-direction: column; align-items: flex-start;">
+                        <span class="user-greeting">
+                            <i class="fas fa-user"></i>
+                            ${currentUser.displayName || currentUser.email.split('@')[0]}
+                            <span class="user-role-badge">${userRole === 'business' ? 'مقدم خدمة' : 'عميل'}</span>
+                        </span>
+                        ${userRole === 'business' ? 
+                            `<button class="auth-btn" onclick="showPage('dashboard'); toggleMenu();" style="width: 100%; margin-top: 1rem;">
+                                <i class="fas fa-tachometer-alt"></i>
+                                <span>لوحة التحكم</span>
+                            </button>` : ''}
+                        <button class="auth-btn secondary" onclick="signOut(); toggleMenu();" style="width: 100%; margin-top: 1rem;">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>تسجيل الخروج</span>
+                        </button>
+                    </div>
+                `;
+            } else {
+                // User is not logged in
+                authButtons.innerHTML = `
+                    <button class="auth-btn" onclick="showLoginModal()">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>تسجيل الدخول</span>
+                    </button>
+                    <button class="auth-btn secondary" onclick="showRegisterModal()">
+                        <i class="fas fa-user-plus"></i>
+                        <span>إنشاء حساب</span>
+                    </button>
+                `;
+
+                mobileAuth.innerHTML = `
+                    <button class="auth-btn" onclick="showLoginModal(); toggleMenu();" style="width: 100%;">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>تسجيل الدخول</span>
+                    </button>
+                    <button class="auth-btn secondary" onclick="showRegisterModal(); toggleMenu();" style="width: 100%; margin-top: 1rem;">
+                        <i class="fas fa-user-plus"></i>
+                        <span>إنشاء حساب</span>
+                    </button>
+                `;
+            }
+        }
+
+        // Modal functions
+        function showModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function hideModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function showLoginModal() {
+            hideModal('registerModal');
+            showModal('loginModal');
+        }
+
+        function showRegisterModal() {
+            hideModal('loginModal');
+            showModal('registerModal');
+        }
+
+        function showAddProductModal() {
+            showModal('addProductModal');
+        }
+
+        // Role selection
+        function selectRole(role) {
+            document.getElementById('register-role').value = role;
+            
+            // Update UI
+            document.querySelectorAll('.role-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            if (role === 'customer') {
+                document.getElementById('role-customer').classList.add('selected');
+            } else {
+                document.getElementById('role-business').classList.add('selected');
+            }
+        }
+
+        // Authentication functions
+        async function signUp(name, email, password, role) {
+            try {
+                // Create user with Firebase Auth
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                
+                // Update profile with name
+                await userCredential.user.updateProfile({
+                    displayName: name
+                });
+
+                // Save user data to Firestore
+                await db.collection('users').doc(userCredential.user.uid).set({
+                    name: name,
+                    email: email,
+                    role: role,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                // Success
+                hideModal('registerModal');
+                showToast('تم إنشاء الحساب بنجاح!', 'success');
+                
+            } catch (error) {
+                console.error('Sign up error:', error);
+                showToast(error.message, 'error');
+            }
+        }
+
+        async function signIn(email, password) {
+            try {
+                await auth.signInWithEmailAndPassword(email, password);
+                hideModal('loginModal');
+                showToast('تم تسجيل الدخول بنجاح!', 'success');
+            } catch (error) {
+                console.error('Sign in error:', error);
+                showToast(error.message, 'error');
+            }
+        }
+
+        async function signOut() {
+            try {
+                await auth.signOut();
+                if (currentPage === 'dashboard') {
+                    showPage('home');
+                }
+                showToast('تم تسجيل الخروج بنجاح', 'success');
+            } catch (error) {
+                console.error('Sign out error:', error);
+                showToast(error.message, 'error');
+            }
+        }
+
+        // Product functions
+        async function addProduct(productData) {
+            if (!currentUser || userRole !== 'business') {
+                showToast('يجب أن تكون مقدم خدمة لإضافة منتجات', 'error');
+                return;
+            }
+
+            try {
+                const product = {
+                    ...productData,
+                    userId: currentUser.uid,
+                    userName: currentUser.displayName || currentUser.email,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    favorites: []
+                };
+
+                await db.collection('products').add(product);
+                hideModal('addProductModal');
+                showToast('تمت إضافة الخدمة بنجاح!', 'success');
+                
+                // Refresh products if on relevant page
+                if (currentPage === 'dashboard') {
+                    loadUserProducts();
+                } else if (currentPage === productData.category || currentPage === 'real-estate' || currentPage === 'tourism' || currentPage === 'student' || currentPage === 'medical' || currentPage === 'business' || currentPage === 'other') {
+                    loadProductsByCategory(currentPage);
+                }
+                
+            } catch (error) {
+                console.error('Error adding product:', error);
+                showToast(error.message, 'error');
+            }
+        }
+
+        async function deleteProduct(productId) {
+            if (!confirm('هل أنت متأكد من حذف هذه الخدمة؟')) return;
+
+            try {
+                // Check if user owns the product
+                const productDoc = await db.collection('products').doc(productId).get();
+                if (productDoc.exists && productDoc.data().userId === currentUser.uid) {
+                    await db.collection('products').doc(productId).delete();
+                    showToast('تم حذف الخدمة بنجاح', 'success');
+                    
+                    // Refresh products
+                    if (currentPage === 'dashboard') {
+                        loadUserProducts();
+                    } else {
+                        loadProductsByCategory(currentPage);
+                    }
+                } else {
+                    showToast('لا يمكنك حذف هذه الخدمة', 'error');
+                }
+            } catch (error) {
+                console.error('Error deleting product:', error);
+                showToast(error.message, 'error');
+            }
+        }
+
+        async function toggleFavorite(productId) {
+            if (!currentUser) {
+                showToast('يجب تسجيل الدخول لإضافة للمفضلة', 'error');
+                return;
+            }
+
+            try {
+                const productRef = db.collection('products').doc(productId);
+                const productDoc = await productRef.get();
+                
+                if (!productDoc.exists) return;
+
+                const product = productDoc.data();
+                const favorites = product.favorites || [];
+                const userIndex = favorites.indexOf(currentUser.uid);
+
+                if (userIndex > -1) {
+                    // Remove from favorites
+                    favorites.splice(userIndex, 1);
+                } else {
+                    // Add to favorites
+                    favorites.push(currentUser.uid);
+                }
+
+                await productRef.update({ favorites });
+                
+                // Refresh UI
+                if (currentPage === 'dashboard') {
+                    loadUserFavorites();
+                } else {
+                    loadProductsByCategory(currentPage);
+                }
+                
+            } catch (error) {
+                console.error('Error toggling favorite:', error);
+            }
+        }
+
+        // Load products by category
+        async function loadProductsByCategory(category) {
+            const containerId = `${category}-products`;
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            try {
+                const querySnapshot = await db.collection('products')
+                    .where('category', '==', category)
+                    .orderBy('createdAt', 'desc')
+                    .limit(20)
+                    .get();
+
+                if (querySnapshot.empty) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-box-open"></i>
+                            <h3>لا توجد خدمات متاحة حالياً</h3>
+                            <p>كن أول من يضيف خدمة في هذه الفئة</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                let html = '';
+                querySnapshot.forEach((doc) => {
+                    const product = doc.data();
+                    const isFavorite = currentUser && product.favorites && product.favorites.includes(currentUser.uid);
+                    const isOwner = currentUser && product.userId === currentUser.uid;
+                    
+                    html += `
+                        <div class="product-card">
+                            <div class="product-image">
+                                ${product.image ? 
+                                    `<img src="${product.image}" alt="${product.title}">` : 
+                                    `<i class="fas fa-image" style="font-size: 3rem; color: var(--text-light);"></i>`
+                                }
+                            </div>
+                            <div class="product-content">
+                                <div class="product-header">
+                                    <h3 class="product-title">${product.title}</h3>
+                                    ${isFavorite ? 
+                                        `<i class="fas fa-heart" style="color: var(--accent);"></i>` : ''}
+                                </div>
+                                <span class="product-category">${getCategoryName(product.category)}</span>
+                                <p class="product-description">${product.description}</p>
+                                <div class="product-footer">
+                                    <div class="product-price">$${parseFloat(product.price).toFixed(2)}</div>
+                                    <div class="product-actions">
+                                        ${!isOwner ? 
+                                            `<button class="favorite-btn ${isFavorite ? 'favorited' : ''}" 
+                                                onclick="toggleFavorite('${doc.id}')">
+                                                <i class="fas fa-heart"></i>
+                                            </button>` : ''}
+                                        ${isOwner ? 
+                                            `<button class="delete-btn" onclick="deleteProduct('${doc.id}')">
+                                                حذف
+                                            </button>` : ''}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                container.innerHTML = html;
+            } catch (error) {
+                console.error('Error loading products:', error);
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3>حدث خطأ في تحميل الخدمات</h3>
+                        <p>يرجى المحاولة مرة أخرى لاحقاً</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Load user's products (for business dashboard)
+        async function loadUserProducts() {
+            if (!currentUser || userRole !== 'business') return;
+
+            const container = document.getElementById('dashboard-products');
+            if (!container) return;
+
+            try {
+                const querySnapshot = await db.collection('products')
+                    .where('userId', '==', currentUser.uid)
+                    .orderBy('createdAt', 'desc')
+                    .get();
+
+                // Update stats
+                document.getElementById('products-count').textContent = querySnapshot.size;
+
+                if (querySnapshot.empty) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-box-open"></i>
+                            <h3>لم تقم بإضافة أي خدمات بعد</h3>
+                            <p>ابدأ بإضافة خدمتك الأولى الآن</p>
+                            <button class="auth-btn" onclick="showAddProductModal()" style="margin-top: 1rem;">
+                                <i class="fas fa-plus"></i>
+                                <span>إضافة خدمة جديدة</span>
+                            </button>
+                        </div>
+                    `;
+                    return;
+                }
+
+                let html = '';
+                querySnapshot.forEach((doc) => {
+                    const product = doc.data();
+                    
+                    html += `
+                        <div class="product-card">
+                            <div class="product-image">
+                                ${product.image ? 
+                                    `<img src="${product.image}" alt="${product.title}">` : 
+                                    `<i class="fas fa-image" style="font-size: 3rem; color: var(--text-light);"></i>`
+                                }
+                            </div>
+                            <div class="product-content">
+                                <div class="product-header">
+                                    <h3 class="product-title">${product.title}</h3>
+                                </div>
+                                <span class="product-category">${getCategoryName(product.category)}</span>
+                                <p class="product-description">${product.description}</p>
+                                <div class="product-footer">
+                                    <div class="product-price">$${parseFloat(product.price).toFixed(2)}</div>
+                                    <div class="product-actions">
+                                        <span style="color: var(--text-light); font-size: 0.9rem;">
+                                            <i class="fas fa-heart"></i> ${product.favorites ? product.favorites.length : 0}
+                                        </span>
+                                        <button class="delete-btn" onclick="deleteProduct('${doc.id}')">
+                                            حذف
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                container.innerHTML = html;
+                document.getElementById('dashboard-section-title').textContent = 'خدماتك المنشورة';
+            } catch (error) {
+                console.error('Error loading user products:', error);
+            }
+        }
+
+        // Load user's favorites
+        async function loadUserFavorites() {
+            if (!currentUser) return;
+
+            const container = document.getElementById('dashboard-products');
+            if (!container) return;
+
+            try {
+                // Get all products that have current user in favorites
+                const querySnapshot = await db.collection('products')
+                    .where('favorites', 'array-contains', currentUser.uid)
+                    .get();
+
+                // Update stats
+                document.getElementById('favorites-count').textContent = querySnapshot.size;
+
+                if (querySnapshot.empty) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-heart"></i>
+                            <h3>لا توجد خدمات في المفضلة</h3>
+                            <p>أضف خدماتك المفضلة لتظهر هنا</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                let html = '';
+                querySnapshot.forEach((doc) => {
+                    const product = doc.data();
+                    const isFavorite = true; // Since we're in favorites
+                    
+                    html += `
+                        <div class="product-card">
+                            <div class="product-image">
+                                ${product.image ? 
+                                    `<img src="${product.image}" alt="${product.title}">` : 
+                                    `<i class="fas fa-image" style="font-size: 3rem; color: var(--text-light);"></i>`
+                                }
+                            </div>
+                            <div class="product-content">
+                                <div class="product-header">
+                                    <h3 class="product-title">${product.title}</h3>
+                                    <i class="fas fa-heart" style="color: var(--accent);"></i>
+                                </div>
+                                <span class="product-category">${getCategoryName(product.category)}</span>
+                                <p class="product-description">${product.description}</p>
+                                <div class="product-footer">
+                                    <div class="product-price">$${parseFloat(product.price).toFixed(2)}</div>
+                                    <div class="product-actions">
+                                        <button class="favorite-btn favorited" onclick="toggleFavorite('${doc.id}')">
+                                            <i class="fas fa-heart"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                container.innerHTML = html;
+                document.getElementById('dashboard-section-title').textContent = 'قائمة المفضلة';
+            } catch (error) {
+                console.error('Error loading favorites:', error);
+            }
+        }
+
+        // Dashboard functions
+        function showMyProducts() {
+            loadUserProducts();
+        }
+
+        function showMyFavorites() {
+            if (!currentUser) {
+                showToast('يجب تسجيل الدخول لعرض المفضلة', 'error');
+                return;
+            }
+            loadUserFavorites();
+        }
+
+        // Helper functions
+        function getCategoryName(category) {
+            const categories = {
+                'real-estate': 'العقارات',
+                'tourism': 'السياحة',
+                'student': 'الطلابية',
+                'medical': 'الطبية',
+                'business': 'الأعمال',
+                'other': 'خدمات أخرى'
+            };
+            return categories[category] || category;
+        }
+
+        function showToast(message, type = 'info') {
+            // Create toast element
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: ${type === 'error' ? 'var(--accent)' : type === 'success' ? '#10b981' : 'var(--primary)'};
+                color: white;
+                padding: 1rem 2rem;
+                border-radius: var(--radius);
+                box-shadow: var(--shadow-lg);
+                z-index: 3000;
+                animation: slideDown 0.3s ease;
+            `;
+            
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            // Remove toast after 3 seconds
+            setTimeout(() => {
+                toast.style.animation = 'slideUp 0.3s ease';
+                setTimeout(() => {
+                    document.body.removeChild(toast);
+                }, 300);
+            }, 3000);
+        }
+
+        // Page navigation (original functions)
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.service-page, .dashboard-section').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show the selected page
+            const pageElement = document.getElementById(`${pageId}-page`);
+            if (pageElement) {
+                pageElement.classList.add('active');
+            }
+            
+            // Save the current page
+            currentPage = pageId;
+            
+            // Close mobile menu if open
+            document.getElementById('navLinks').classList.remove('active');
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+            
+            // Load products if it's a service page
+            if (['real-estate', 'tourism', 'student', 'medical', 'business', 'other'].includes(pageId)) {
+                loadProductsByCategory(pageId);
+            }
+            
+            // Load dashboard data if on dashboard
+            if (pageId === 'dashboard' && currentUser && userRole === 'business') {
+                loadUserProducts();
+                updateDashboardStats();
+            }
+        }
+
+        async function updateDashboardStats() {
+            if (!currentUser) return;
+            
+            try {
+                // Count user's products
+                const productsSnapshot = await db.collection('products')
+                    .where('userId', '==', currentUser.uid)
+                    .get();
+                document.getElementById('products-count').textContent = productsSnapshot.size;
+                
+                // Count user's favorites
+                const favoritesSnapshot = await db.collection('products')
+                    .where('favorites', 'array-contains', currentUser.uid)
+                    .get();
+                document.getElementById('favorites-count').textContent = favoritesSnapshot.size;
+                
+                // Update welcome message
+                document.getElementById('welcome-user').textContent = `مرحباً، ${currentUser.displayName || currentUser.email.split('@')[0]}`;
+                document.getElementById('user-role-badge').textContent = userRole === 'business' ? 'مقدم خدمة' : 'عميل';
+                
+            } catch (error) {
+                console.error('Error updating dashboard stats:', error);
+            }
+        }
+
+        function scrollToSection(sectionId) {
+            showPage('home');
+            setTimeout(() => {
+                const section = document.getElementById(sectionId);
+                if (section) {
+                    section.scrollIntoView({ behavior: 'smooth' });
+                }
+            }, 100);
+        }
+
+        function toggleMenu() {
+            document.getElementById('navLinks').classList.toggle('active');
+        }
+
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('main-header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Event Listeners
+        document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            await signIn(email, password);
+        });
+
+        document.getElementById('registerForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('register-name').value;
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+            const role = document.getElementById('register-role').value;
+            await signUp(name, email, password, role);
+        });
+
+        document.getElementById('addProductForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const productData = {
+                title: document.getElementById('product-title').value,
+                description: document.getElementById('product-description').value,
+                price: parseFloat(document.getElementById('product-price').value),
+                category: document.getElementById('product-category').value,
+                image: document.getElementById('product-image').value || null
+            };
+            await addProduct(productData);
+        });
+
+        // Close modals on overlay click
+        document.querySelectorAll('.modal-overlay').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    hideModal(this.id);
+                }
+            });
+        });
+
+        // Add CSS for toast animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideDown {
+                from { transform: translateX(-50%) translateY(-20px); opacity: 0; }
+                to { transform: translateX(-50%) translateY(0); opacity: 1; }
+            }
+            @keyframes slideUp {
+                from { transform: translateX(-50%) translateY(0); opacity: 1; }
+                to { transform: translateX(-50%) translateY(-20px); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
