@@ -2936,6 +2936,40 @@
 
         // Initialize the app
         document.addEventListener('DOMContentLoaded', init);
+        
+        // ... (Your API Keys and Config are up here) ...
+        // ... (Your login functions like signIn() are here) ...
+    
+        // --- PASTE YOUR NEW CODE HERE ---
+        async function handleSavePost(postId, newTitle, newImageFile) {
+            console.log("Starting save process...");
+            
+            // 1. GET USER ID
+            const user = firebase.auth().currentUser;
+            if (!user) {
+                 alert("Error: You must be logged in!");
+                 return;
+            }
+            const userId = user.uid; 
+    
+            // 2. HANDLE THE IMAGE (Storage)
+            const imagePath = `businesses/${userId}/${postId}/property.jpg`;
+            // Note: This assumes 'newImageFile' is a real file from an input box
+            if (newImageFile) {
+                await firebase.storage().ref(imagePath).put(newImageFile);
+            }
+    
+            // 3. HANDLE THE TEXT (Database)
+            await firebase.firestore().collection('posts').doc(postId).set({
+                owner_id: userId,
+                title: newTitle,
+                image_url: imagePath,
+                updated_at: new Date()
+            }, { merge: true });
+    
+            alert("Post saved successfully!");
+        }
+        // --- END OF NEW CODE ---
     </script>
 </body>
 </html>
