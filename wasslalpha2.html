@@ -2220,12 +2220,12 @@
             }
         }
 
-        // Update authentication UI
+        // Update authentication UI - FIXED DUPLICATE ISSUE
         function updateAuthUI() {
             const langData = translations[currentLang];
             
             if (currentUser) {
-                // User is logged in
+                // User is logged in - show user menu
                 authButtons.innerHTML = `
                     <div class="user-menu">
                         <span class="user-greeting">
@@ -2240,39 +2240,35 @@
                             </button>` : ''}
                         <button class="auth-btn secondary" onclick="signOut()">
                             <i class="fas fa-sign-out-alt"></i>
-                            <span>${langData.langBtn === 'English' ? 'تسجيل الخروج' : 'Logout'}</span>
+                            <span>${currentLang === 'ar' ? 'تسجيل الخروج' : 'Logout'}</span>
                         </button>
                     </div>
                 `;
 
                 mobileAuth.innerHTML = `
-                    <div class="user-menu" style="flex-direction: column; align-items: flex-start;">
-                        <span class="user-greeting">
+                    <div class="user-menu" style="flex-direction: column; align-items: flex-start; width: 100%;">
+                        <span class="user-greeting" style="margin-bottom: 1rem;">
                             <i class="fas fa-user"></i>
                             ${currentUser.displayName || currentUser.email.split('@')[0]}
                             <span class="user-role-badge">${userRole === 'business' ? langData.businessRole : langData.customerRole}</span>
                         </span>
                         ${userRole === 'business' ? 
-                            `<button class="auth-btn" onclick="showPage('dashboard'); toggleMenu();" style="width: 100%; margin-top: 1rem;">
+                            `<button class="auth-btn" onclick="showPage('dashboard'); toggleMenu();" style="width: 100%; margin-top: 0.5rem;">
                                 <i class="fas fa-tachometer-alt"></i>
                                 <span>${langData.dashboardTitle}</span>
                             </button>` : ''}
-                        <button class="auth-btn secondary" onclick="signOut(); toggleMenu();" style="width: 100%; margin-top: 1rem;">
+                        <button class="auth-btn secondary" onclick="signOut(); toggleMenu();" style="width: 100%; margin-top: 0.5rem;">
                             <i class="fas fa-sign-out-alt"></i>
-                            <span>${langData.langBtn === 'English' ? 'تسجيل الخروج' : 'Logout'}</span>
+                            <span>${currentLang === 'ar' ? 'تسجيل الخروج' : 'Logout'}</span>
                         </button>
                     </div>
                 `;
             } else {
-                // User is not logged in
+                // User is not logged in - show login/register buttons
                 authButtons.innerHTML = `
                     <button class="auth-btn" onclick="showLoginModal()">
                         <i class="fas fa-sign-in-alt"></i>
                         <span>${langData.loginBtn}</span>
-                    </button>
-                    <button class="auth-btn secondary" onclick="showRegisterModal()">
-                        <i class="fas fa-user-plus"></i>
-                        <span>${langData.registerBtn}</span>
                     </button>
                 `;
 
@@ -2281,7 +2277,7 @@
                         <i class="fas fa-sign-in-alt"></i>
                         <span>${langData.loginBtn}</span>
                     </button>
-                    <button class="auth-btn secondary" onclick="showRegisterModal(); toggleMenu();" style="width: 100%; margin-top: 1rem;">
+                    <button class="auth-btn secondary" onclick="showRegisterModal(); toggleMenu();" style="width: 100%; margin-top: 0.5rem;">
                         <i class="fas fa-user-plus"></i>
                         <span>${langData.registerBtn}</span>
                     </button>
@@ -2402,12 +2398,22 @@
             }
         }
 
-        // Product functions
+        // ============================================
+        // FIXED: addProduct function with loading spinner
+        // ============================================
         async function addProduct(productData) {
             if (!currentUser || userRole !== 'business') {
                 showToast(currentLang === 'ar' ? 'يجب أن تكون مقدم خدمة لإضافة منتجات' : 'Must be a business user to add products', 'error');
                 return;
             }
+
+            // GET BUTTON AND SHOW LOADING
+            const submitBtn = document.querySelector('#addProductForm button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = currentLang === 'ar' ? 
+                '<i class="fas fa-spinner fa-spin"></i> جاري الرفع...' : 
+                '<i class="fas fa-spinner fa-spin"></i> Uploading...';
 
             try {
                 let imageUrl = null;
@@ -2415,7 +2421,8 @@
                 // Upload image if exists
                 if (selectedImage) {
                     const storageRef = storage.ref();
-                    const imageRef = storageRef.child(`products/${Date.now()}_${selectedImage.name}`);
+                    // Added folder structure for better organization
+                    const imageRef = storageRef.child(`products/${currentUser.uid}/${Date.now()}_${selectedImage.name}`);
                     await imageRef.put(selectedImage);
                     imageUrl = await imageRef.getDownloadURL();
                 }
@@ -2428,14 +2435,10 @@
                     imageUrl: imageUrl
                 };
 
+                // ============================================
+                // FIXED: Removed auto-favorite code
+                // ============================================
                 await db.collection('products').add(product);
-                
-                // Create favorites collection entry
-                await db.collection('productFavorites').add({
-                    productId: product.id,
-                    userId: currentUser.uid,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
 
                 hideModal('addProductModal');
                 showToast(currentLang === 'ar' ? 'تمت إضافة الخدمة بنجاح!' : 'Service added successfully!', 'success');
@@ -2455,6 +2458,10 @@
             } catch (error) {
                 console.error('Error adding product:', error);
                 showToast(error.message, 'error');
+            } finally {
+                // RESET BUTTON
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
             }
         }
 
@@ -2528,7 +2535,10 @@
             if (!container) return;
 
             try {
-                // Create index first time you see the error
+                // ============================================
+                // NOTE: This query may require an index
+                // When you see the error in console, click the link to create the index
+                // ============================================
                 const querySnapshot = await db.collection('products')
                     .where('category', '==', category)
                     .orderBy('createdAt', 'desc')
@@ -2599,16 +2609,28 @@
             } catch (error) {
                 console.error('Error loading products:', error);
                 // First time error: Click the link in console to create index
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <h3>${currentLang === 'ar' ? 'جارٍ تحميل الخدمات...' : 'Loading services...'}</h3>
-                        <p>${currentLang === 'ar' ? 'قد يستغرق الأمر بضع ثوانٍ لأول مرة' : 'May take a few seconds for the first time'}</p>
-                    </div>
-                `;
-                
-                // Auto-retry after 2 seconds
-                setTimeout(() => loadProductsByCategory(category), 2000);
+                if (error.code === 'failed-precondition') {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <h3>${currentLang === 'ar' ? 'جارٍ إنشاء فهرس قاعدة البيانات' : 'Creating database index...'}</h3>
+                            <p>${currentLang === 'ar' ? 'قد يستغرق الأمر دقيقة لأول مرة' : 'May take a minute for the first time'}</p>
+                            <p style="font-size: 0.9rem; margin-top: 1rem;">
+                                ${currentLang === 'ar' ? 
+                                    'افتح وحدة التحكم في المتصفح (F12) وانقر على رابط إنشاء الفهرس' : 
+                                    'Open browser console (F12) and click the index creation link'}
+                            </p>
+                        </div>
+                    `;
+                } else {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <h3>${currentLang === 'ar' ? 'حدث خطأ في تحميل الخدمات' : 'Error loading services'}</h3>
+                            <p>${currentLang === 'ar' ? 'يرجى المحاولة مرة أخرى لاحقاً' : 'Please try again later'}</p>
+                        </div>
+                    `;
+                }
             }
         }
 
