@@ -12,6 +12,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
     
     <style>
         :root {
@@ -135,6 +136,43 @@
 
         .nav-links a:hover:after {
             width: 100%;
+        }
+
+        /* Language Switch */
+        .lang-switch {
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            min-width: 100px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .lang-switch:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .lang-switch-desktop {
+            position: static;
+            margin-right: 1rem;
+        }
+
+        [dir="ltr"] .lang-switch-desktop {
+            margin-right: 0;
+            margin-left: 1rem;
+        }
+
+        .lang-switch-li-mobile {
+            display: none;
         }
 
         /* Updated Auth Buttons */
@@ -539,6 +577,49 @@
             max-width: 600px;
             margin-right: auto;
             margin-left: auto;
+        }
+
+        /* File Upload */
+        .file-upload {
+            position: relative;
+            margin-bottom: 1.8rem;
+        }
+
+        .file-upload input[type="file"] {
+            display: none;
+        }
+
+        .file-upload-label {
+            display: block;
+            padding: 1rem;
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .file-upload-label:hover {
+            border-color: var(--primary);
+            background: var(--light);
+        }
+
+        .file-upload-label i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .file-preview {
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .file-preview img {
+            max-width: 100%;
+            max-height: 150px;
+            border-radius: 8px;
         }
 
         /* Hero Section - Keep original styles */
@@ -1162,6 +1243,39 @@
             color: var(--dark);
         }
 
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            z-index: 3000;
+            animation: slideDown 0.3s ease;
+        }
+
+        .toast.error {
+            background: var(--accent);
+        }
+
+        .toast.success {
+            background: #10b981;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateX(-50%) translateY(-20px); opacity: 0; }
+            to { transform: translateX(-50%) translateY(0); opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateX(-50%) translateY(0); opacity: 1; }
+            to { transform: translateX(-50%) translateY(-20px); opacity: 0; }
+        }
+
         /* Responsive */
         @media (max-width: 1024px) {
             .hero h1 {
@@ -1211,6 +1325,14 @@
                 flex-direction: column;
                 gap: 1rem;
                 margin-top: 2rem;
+            }
+
+            .lang-switch-desktop {
+                display: none;
+            }
+
+            .lang-switch-li-mobile {
+                display: list-item;
             }
 
             .hero {
@@ -1296,28 +1418,40 @@
             <nav>
                 <a class="logo" onclick="showPage('home')">
                     <i class="fas fa-handshake logo-icon"></i>
-                    <span>وصل</span>
+                    <span data-key="logo">وصل</span>
                 </a>
                 <button class="mobile-menu-btn" onclick="toggleMenu()">
                     <i class="fas fa-bars"></i>
                 </button>
                 <ul class="nav-links" id="navLinks">
-                    <li><a onclick="showPage('home')" class="nav-home">الرئيسية</a></li>
-                    <li><a onclick="scrollToSection('services')" class="nav-services">الخدمات</a></li>
-                    <li><a onclick="scrollToSection('about')" class="nav-about">من نحن</a></li>
-                    <li><a onclick="scrollToSection('appointments')" class="nav-appointments">المواعيد</a></li>
-                    <li><a onclick="scrollToSection('contact')" class="nav-contact">اتصل بنا</a></li>
+                    <li><a onclick="showPage('home')" class="nav-home" data-key="navHome">الرئيسية</a></li>
+                    <li><a onclick="scrollToSection('services')" class="nav-services" data-key="navServices">الخدمات</a></li>
+                    <li><a onclick="scrollToSection('about')" class="nav-about" data-key="navAbout">من نحن</a></li>
+                    <li><a onclick="scrollToSection('appointments')" class="nav-appointments" data-key="navAppointments">المواعيد</a></li>
+                    <li><a onclick="scrollToSection('contact')" class="nav-contact" data-key="navContact">اتصل بنا</a></li>
                     
                     <!-- Dynamic Auth Links (Mobile) -->
                     <div class="mobile-auth" id="mobileAuth">
                         <!-- Will be populated by JavaScript -->
                     </div>
+                    
+                    <li class="lang-switch-li-mobile">
+                        <button class="lang-switch" onclick="toggleLanguage()">
+                            <i class="fas fa-globe"></i> 
+                            <span data-key="langBtn">English</span>
+                        </button>
+                    </li>
                 </ul>
                 
                 <!-- Dynamic Auth Buttons (Desktop) -->
                 <div class="auth-buttons" id="authButtons">
                     <!-- Will be populated by JavaScript -->
                 </div>
+                
+                <button class="lang-switch lang-switch-desktop" onclick="toggleLanguage()">
+                    <i class="fas fa-globe"></i> 
+                    <span data-key="langBtn">English</span>
+                </button>
             </nav>
         </div>
     </header>
@@ -1327,10 +1461,10 @@
         <div class="hero" id="home">
             <div class="container">
                 <div class="hero-content">
-                    <h1 class="hero-title">بوابتك الموثوقة في تركيا</h1>
-                    <p class="hero-subtitle">خدمات شاملة للعقارات، السياحة، التعليم، الرعاية الصحية، وحلول الأعمال. متمركزون في بولو، نخدم جميع أنحاء تركيا بتميز وموثوقية.</p>
+                    <h1 class="hero-title" data-key="heroTitle">بوابتك الموثوقة في تركيا</h1>
+                    <p class="hero-subtitle" data-key="heroSubtitle">خدمات شاملة للعقارات، السياحة، التعليم، الرعاية الصحية، وحلول الأعمال. متمركزون في بولو، نخدم جميع أنحاء تركيا بتميز وموثوقية.</p>
                     <button onclick="scrollToSection('services')" class="cta-button cta-text">
-                        <span>ابدأ رحلتك</span>
+                        <span data-key="ctaText">ابدأ رحلتك</span>
                         <i class="fas fa-arrow-left"></i>
                     </button>
                 </div>
@@ -1339,60 +1473,60 @@
 
         <section class="services" id="services">
             <div class="container">
-                <h2 class="section-title services-title">خدماتنا المتميزة</h2>
-                <p class="section-subtitle services-subtitle">حلول شاملة مصممة خصيصاً لاحتياجاتك في تركيا، مقدمة بخبرة وتفانٍ</p>
+                <h2 class="section-title services-title" data-key="servicesTitle">خدماتنا المتميزة</h2>
+                <p class="section-subtitle services-subtitle" data-key="servicesSubtitle">حلول شاملة مصممة خصيصاً لاحتياجاتك في تركيا، مقدمة بخبرة وتفانٍ</p>
                 <div class="services-grid">
                     <div class="service-card" data-service="real-estate">
                         <div class="service-icon"><i class="fas fa-building"></i></div>
-                        <h3 class="service1-title">الخدمات العقارية</h3>
-                        <p class="service1-desc">اعثر على عقار أحلامك في أكثر المواقع المرغوبة في تركيا. نقدم عقارات سكنية وتجارية حصرية للبيع والإيجار مع خدمة متميزة.</p>
+                        <h3 class="service1-title" data-key="service1Title">الخدمات العقارية</h3>
+                        <p class="service1-desc" data-key="service1Desc">اعثر على عقار أحلامك في أكثر المواقع المرغوبة في تركيا. نقدم عقارات سكنية وتجارية حصرية للبيع والإيجار مع خدمة متميزة.</p>
                         <button onclick="showPage('real-estate')" class="service-link service1-link">
-                            <span>اكتشف العقارات</span>
+                            <span data-key="service1Link">اكتشف العقارات</span>
                             <i class="fas fa-arrow-left"></i>
                         </button>
                     </div>
                     <div class="service-card" data-service="tourism">
                         <div class="service-icon"><i class="fas fa-plane"></i></div>
-                        <h3 class="service2-title">الخدمات السياحية</h3>
-                        <p class="service2-desc">اختبر جمال تركيا الأخاذ مع باقاتنا السياحية المختارة بعناية. خطط سفر مخصصة وإقامات فاخرة لرحلات لا تُنسى.</p>
+                        <h3 class="service2-title" data-key="service2Title">الخدمات السياحية</h3>
+                        <p class="service2-desc" data-key="service2Desc">اختبر جمال تركيا الأخاذ مع باقاتنا السياحية المختارة بعناية. خطط سفر مخصصة وإقامات فاخرة لرحلات لا تُنسى.</p>
                         <button onclick="showPage('tourism')" class="service-link service2-link">
-                            <span>استكشف تركيا</span>
+                            <span data-key="service2Link">استكشف تركيا</span>
                             <i class="fas fa-arrow-left"></i>
                         </button>
                     </div>
                     <div class="service-card" data-service="student">
                         <div class="service-icon"><i class="fas fa-graduation-cap"></i></div>
-                        <h3 class="service3-title">الخدمات الطلابية</h3>
-                        <p class="service3-desc">تنقل في نظام التعليم التركي بإرشاد خبرائنا. من تقديم طلبات الجامعة إلى ترتيب السكن، نضمن رحلتك الأكاديمية سلسة وبلا متاعب.</p>
+                        <h3 class="service3-title" data-key="service3Title">الخدمات الطلابية</h3>
+                        <p class="service3-desc" data-key="service3Desc">تنقل في نظام التعليم التركي بإرشاد خبرائنا. من تقديم طلبات الجامعة إلى ترتيب السكن، نضمن رحلتك الأكاديمية سلسة وبلا متاعب.</p>
                         <button onclick="showPage('student')" class="service-link service3-link">
-                            <span>ابدأ رحلتك</span>
+                            <span data-key="service3Link">ابدأ رحلتك</span>
                             <i class="fas fa-arrow-left"></i>
                         </button>
                     </div>
                     <div class="service-card" data-service="medical">
                         <div class="service-icon"><i class="fas fa-heartbeat"></i></div>
-                        <h3 class="service4-title">الخدمات العلاجية</h3>
-                        <p class="service4-desc">الوصول إلى نظام الرعاية الصحية العالمي في تركيا مع خدمات السياحة العلاجية المتميزة لدينا. أفضل المستشفيات، علاجات متخصصة، ورعاية شاملة.</p>
+                        <h3 class="service4-title" data-key="service4Title">الخدمات العلاجية</h3>
+                        <p class="service4-desc" data-key="service4Desc">الوصول إلى نظام الرعاية الصحية العالمي في تركيا مع خدمات السياحة العلاجية المتميزة لدينا. أفضل المستشفيات، علاجات متخصصة، ورعاية شاملة.</p>
                         <button onclick="showPage('medical')" class="service-link service4-link">
-                            <span>ابحث عن العلاج</span>
+                            <span data-key="service4Link">ابحث عن العلاج</span>
                             <i class="fas fa-arrow-left"></i>
                         </button>
                     </div>
                     <div class="service-card" data-service="business">
                         <div class="service-icon"><i class="fas fa-briefcase"></i></div>
-                        <h3 class="service5-title">خدمات الأعمال</h3>
-                        <p class="service5-desc">أطلق أو وسع عملك في تركيا مع استشاراتنا المهنية. تسجيل الشركات، تحليل الأسواق، والتخطيط الاستراتيجي للنجاح.</p>
+                        <h3 class="service5-title" data-key="service5Title">خدمات الأعمال</h3>
+                        <p class="service5-desc" data-key="service5Desc">أطلق أو وسع عملك في تركيا مع استشاراتنا المهنية. تسجيل الشركات، تحليل الأسواق، والتخطيط الاستراتيجي للنجاح.</p>
                         <button onclick="showPage('business')" class="service-link service5-link">
-                            <span>نَمِ بأعمالك</span>
+                            <span data-key="service5Link">نَمِ بأعمالك</span>
                             <i class="fas fa-arrow-left"></i>
                         </button>
                     </div>
                     <div class="service-card" data-service="other">
                         <div class="service-icon"><i class="fas fa-hands-helping"></i></div>
-                        <h3 class="service6-title">خدمات إضافية</h3>
-                        <p class="service6-desc">دعم شامل يشمل الخدمات القانونية، الترجمة، تصاريح الإقامة، التأمين، والنقل لجعل حياتك في تركيا خالية من المتاعب.</p>
+                        <h3 class="service6-title" data-key="service6Title">خدمات إضافية</h3>
+                        <p class="service6-desc" data-key="service6Desc">دعم شامل يشمل الخدمات القانونية، الترجمة، تصاريح الإقامة، التأمين، والنقل لجعل حياتك في تركيا خالية من المتاعب.</p>
                         <button onclick="showPage('other')" class="service-link service6-link">
-                            <span>عرض جميع الخدمات</span>
+                            <span data-key="service6Link">عرض جميع الخدمات</span>
                             <i class="fas fa-arrow-left"></i>
                         </button>
                     </div>
@@ -1404,23 +1538,23 @@
             <div class="container">
                 <div class="about-content">
                     <div class="about-text">
-                        <h2 class="about-title">شريكك الموثوق في تركيا</h2>
-                        <p class="about-p1">وصل هو مزود الخدمات المتميز الخاص بك، بمقر رئيسي في بولو ووصول على مستوى تركيا. مع سنوات من الخبرة المتخصصة، نتفوق في ربط الأفراد والشركات بالخدمات المتميزة التي يحتاجونها عبر تركيا.</p>
-                        <p class="about-p2">سواء كنت تبحث عن استثمارات عقارية، تخطط لعطلة تركية لا تُنسى، تتطلع إلى فرص تعليمية، تحتاج إلى علاجات طبية، أو توسيع مشاريعك التجارية، نقدم تجارب سلسة وخالية من المتاعب.</p>
-                        <p class="about-p3">فريقنا المتفاني من محترفي الصناعة ملتزم بتقديم خدمة استثنائية، وبناء علاقات دائمة، وضمان رضاك التام مع كل تفاعل.</p>
+                        <h2 class="about-title" data-key="aboutTitle">شريكك الموثوق في تركيا</h2>
+                        <p class="about-p1" data-key="aboutP1">وصل هو مزود الخدمات المتميز الخاص بك، بمقر رئيسي في بولو ووصول على مستوى تركيا. مع سنوات من الخبرة المتخصصة، نتفوق في ربط الأفراد والشركات بالخدمات المتميزة التي يحتاجونها عبر تركيا.</p>
+                        <p class="about-p2" data-key="aboutP2">سواء كنت تبحث عن استثمارات عقارية، تخطط لعطلة تركية لا تُنسى، تتطلع إلى فرص تعليمية، تحتاج إلى علاجات طبية، أو توسيع مشاريعك التجارية، نقدم تجارب سلسة وخالية من المتاعب.</p>
+                        <p class="about-p3" data-key="aboutP3">فريقنا المتفاني من محترفي الصناعة ملتزم بتقديم خدمة استثنائية، وبناء علاقات دائمة، وضمان رضاك التام مع كل تفاعل.</p>
                         
                         <div class="stats">
                             <div class="stat-item">
                                 <div class="stat-number">500+</div>
-                                <div class="stat-text">عملاء سعداء</div>
+                                <div class="stat-text" data-key="statText1">عملاء سعداء</div>
                             </div>
                             <div class="stat-item">
                                 <div class="stat-number">7+</div>
-                                <div class="stat-text">سنوات خبرة</div>
+                                <div class="stat-text" data-key="statText2">سنوات خبرة</div>
                             </div>
                             <div class="stat-item">
                                 <div class="stat-number">24/7</div>
-                                <div class="stat-text">دعم عملاء</div>
+                                <div class="stat-text" data-key="statText3">دعم عملاء</div>
                             </div>
                         </div>
                     </div>
@@ -1435,50 +1569,50 @@
 
         <section class="appointments" id="appointments">
             <div class="container">
-                <h2 class="section-title appointments-title">جدول استشارتك</h2>
-                <p class="section-subtitle appointments-subtitle">دعنا نناقش كيف يمكننا مساعدتك في تحقيق أهدافك في تركيا</p>
+                <h2 class="section-title appointments-title" data-key="appointmentsTitle">جدول استشارتك</h2>
+                <p class="section-subtitle appointments-subtitle" data-key="appointmentsSubtitle">دعنا نناقش كيف يمكننا مساعدتك في تحقيق أهدافك في تركيا</p>
                 <form class="appointment-form" id="appointmentForm">
                     <div class="form-group">
-                        <label for="name" class="label-name">الاسم الكامل</label>
+                        <label for="name" class="label-name" data-key="labelName">الاسم الكامل</label>
                         <input type="text" id="name" name="name" required>
                     </div>
                     <div class="form-group">
-                        <label for="email" class="label-email">البريد الإلكتروني</label>
+                        <label for="email" class="label-email" data-key="labelEmail">البريد الإلكتروني</label>
                         <input type="email" id="email" name="email" required>
                     </div>
                     <div class="form-group">
-                        <label for="phone" class="label-phone">رقم الهاتف</label>
+                        <label for="phone" class="label-phone" data-key="labelPhone">رقم الهاتف</label>
                         <input type="tel" id="phone" name="phone" required>
                     </div>
                     <div class="form-group">
-                        <label for="service" class="label-service">الخدمة المطلوبة</label>
+                        <label for="service" class="label-service" data-key="labelService">الخدمة المطلوبة</label>
                         <select id="service" name="service" required>
-                            <option value="" class="option-select">اختر خدمة...</option>
-                            <option value="real-estate" class="option1">الخدمات العقارية</option>
-                            <option value="tourism" class="option2">الخدمات السياحية</option>
-                            <option value="student" class="option3">الخدمات الطلابية</option>
-                            <option value="medical" class="option4">الخدمات العلاجية</option>
-                            <option value="business" class="option5">خدمات الأعمال</option>
-                            <option value="other" class="option6">خدمات أخرى</option>
+                            <option value="" class="option-select" data-key="optionSelect">اختر خدمة...</option>
+                            <option value="real-estate" class="option1" data-key="option1">الخدمات العقارية</option>
+                            <option value="tourism" class="option2" data-key="option2">الخدمات السياحية</option>
+                            <option value="student" class="option3" data-key="option3">الخدمات الطلابية</option>
+                            <option value="medical" class="option4" data-key="option4">الخدمات العلاجية</option>
+                            <option value="business" class="option5" data-key="option5">خدمات الأعمال</option>
+                            <option value="other" class="option6" data-key="option6">خدمات أخرى</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="date" class="label-date">التاريخ المفضل</label>
+                        <label for="date" class="label-date" data-key="labelDate">التاريخ المفضل</label>
                         <input type="date" id="date" name="date" required>
                     </div>
                     <div class="form-group">
-                        <label for="message" class="label-message">متطلباتك</label>
+                        <label for="message" class="label-message" data-key="labelMessage">متطلباتك</label>
                         <textarea id="message" name="message" placeholder="أخبرنا المزيد عن احتياجاتك وتوقعاتك المحددة..."></textarea>
                     </div>
                     <button type="submit" class="submit-btn btn-text">
-                        <span id="submit-text">طلب استشارة</span>
+                        <span id="submit-text" data-key="btnText">طلب استشارة</span>
                         <i class="fas fa-paper-plane"></i>
                     </button>
                     <div class="success-message" id="successMessage">
-                        <span class="success-text">شكراً لك! تم استلام طلب استشارتك. سنتصل بك قريباً لتأكيد موعدك.</span>
+                        <span class="success-text" data-key="successText">شكراً لك! تم استلام طلب استشارتك. سنتصل بك قريباً لتأكيد موعدك.</span>
                     </div>
                     <div class="error-message" id="errorMessage">
-                        <span class="error-text">حدث خطأ أثناء إرسال الطلب. يرجى المحاولة مرة أخرى.</span>
+                        <span class="error-text" data-key="errorText">حدث خطأ أثناء إرسال الطلب. يرجى المحاولة مرة أخرى.</span>
                     </div>
                 </form>
             </div>
@@ -1486,23 +1620,23 @@
 
         <section class="contact" id="contact">
             <div class="container">
-                <h2 class="section-title contact-title">تواصل معنا</h2>
-                <p class="section-subtitle contact-subtitle">نحن هنا للإجابة على أسئلتك ومساعدتك في البدء</p>
+                <h2 class="section-title contact-title" data-key="contactTitle">تواصل معنا</h2>
+                <p class="section-subtitle contact-subtitle" data-key="contactSubtitle">نحن هنا للإجابة على أسئلتك ومساعدتك في البدء</p>
                 <div class="contact-grid">
                     <div class="contact-item">
                         <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
-                        <h3 class="contact1-title">موقعنا</h3>
-                        <p class="contact1-info">بولو، تركيا</p>
+                        <h3 class="contact1-title" data-key="contact1Title">موقعنا</h3>
+                        <p class="contact1-info" data-key="contact1Info">بولو، تركيا</p>
                     </div>
                     <div class="contact-item">
                         <div class="contact-icon"><i class="fas fa-phone"></i></div>
-                        <h3 class="contact2-title">اتصل بنا</h3>
-                        <p class="contact2-info">+90 538 213 6214</p>
+                        <h3 class="contact2-title" data-key="contact2Title">اتصل بنا</h3>
+                        <p class="contact2-info" data-key="contact2Info">+90 538 213 6214</p>
                     </div>
                     <div class="contact-item">
                         <div class="contact-icon"><i class="fas fa-envelope"></i></div>
-                        <h3 class="contact3-title">راسلنا</h3>
-                        <p class="contact3-info">wasslservices@gmail.com</p>
+                        <h3 class="contact3-title" data-key="contact3Title">راسلنا</h3>
+                        <p class="contact3-info" data-key="contact3Info">wasslservices@gmail.com</p>
                     </div>
                 </div>
             </div>
@@ -1513,47 +1647,47 @@
     <section id="dashboard-page" class="dashboard-section">
         <div class="dashboard-header">
             <div class="container">
-                <h1 id="dashboard-title">لوحة التحكم</h1>
-                <p id="dashboard-subtitle">إدارة خدماتك وتفاعلاتك</p>
+                <h1 id="dashboard-title" data-key="dashboardTitle">لوحة التحكم</h1>
+                <p id="dashboard-subtitle" data-key="dashboardSubtitle">إدارة خدماتك وتفاعلاتك</p>
             </div>
         </div>
         <div class="container">
             <div class="dashboard-content">
                 <div class="dashboard-sidebar">
                     <div class="user-info">
-                        <h3 id="welcome-user">مرحباً،</h3>
+                        <h3 id="welcome-user" data-key="welcomeUser">مرحباً،</h3>
                         <div class="user-role-badge" id="user-role-badge">عميل</div>
                     </div>
                     
                     <div class="dashboard-stats">
                         <div class="stat-card">
                             <div class="stat-number" id="products-count">0</div>
-                            <div class="stat-label">الخدمات المنشورة</div>
+                            <div class="stat-label" data-key="productsCount">الخدمات المنشورة</div>
                         </div>
                         <div class="stat-card">
                             <div class="stat-number" id="favorites-count">0</div>
-                            <div class="stat-label">المفضلة</div>
+                            <div class="stat-label" data-key="favoritesCount">المفضلة</div>
                         </div>
                     </div>
                     
                     <button onclick="showAddProductModal()" class="auth-btn" id="add-product-btn" style="width: 100%; margin-top: 2rem;">
                         <i class="fas fa-plus"></i>
-                        <span>إضافة خدمة جديدة</span>
+                        <span data-key="addProductBtn">إضافة خدمة جديدة</span>
                     </button>
                     
                     <button onclick="showMyProducts()" class="auth-btn secondary" id="my-products-btn" style="width: 100%; margin-top: 1rem;">
                         <i class="fas fa-list"></i>
-                        <span>خدماتي المنشورة</span>
+                        <span data-key="myProductsBtn">خدماتي المنشورة</span>
                     </button>
                     
                     <button onclick="showMyFavorites()" class="auth-btn secondary" id="my-favorites-btn" style="width: 100%; margin-top: 1rem;">
                         <i class="fas fa-heart"></i>
-                        <span>قائمة المفضلة</span>
+                        <span data-key="myFavoritesBtn">قائمة المفضلة</span>
                     </button>
                 </div>
                 
                 <div class="dashboard-main">
-                    <h2 id="dashboard-section-title">خدماتك المنشورة</h2>
+                    <h2 id="dashboard-section-title" data-key="myProducts">خدماتك المنشورة</h2>
                     <div class="products-grid" id="dashboard-products">
                         <!-- Products will be loaded here -->
                     </div>
@@ -1562,31 +1696,28 @@
         </div>
     </section>
 
-    <!-- Service Pages with Dynamic Products -->
+    <!-- Real Estate Service Page -->
     <section id="real-estate-page" class="service-page">
         <div class="service-header">
             <div class="container">
-                <h1 class="service1-title">الخدمات العقارية</h1>
-                <p class="service1-subtitle">اعثر على عقار أحلامك في تركيا مع حلولنا العقارية المتميزة</p>
+                <h1 class="service1-title" data-key="service1Title">الخدمات العقارية</h1>
+                <p class="service1-subtitle" data-key="service1Subtitle">اعثر على عقار أحلامك في تركيا مع حلولنا العقارية المتميزة</p>
             </div>
         </div>
         <div class="container">
-            <button class="back-button" onclick="showPage('home')"><i class="fas fa-arrow-right"></i> <span class="back-text">العودة إلى الرئيسية</span></button>
+            <button class="back-button" onclick="showPage('home')">
+                <i class="fas fa-arrow-right"></i> 
+                <span class="back-text" data-key="backText">العودة إلى الرئيسية</span>
+            </button>
             
             <div class="service-content">
-                <h2 class="real-estate-content-title1">شراء العقارات</h2>
-                <p class="real-estate-content-p1">نقدم خدمات شراء منازل شاملة تساعد العملاء في العثور على عقاراتهم المثالية، بدءاً من تقييم متطلباتهم المحددة وصولاً إلى إتمام الصفقة. يقدم فريقنا دعماً كاملاً خلال جميع مراحل العملية لضمان تجربة ناجحة وسلسة.</p>
-                
-                <h2 class="real-estate-content-title2">إيجار الشقق</h2>
-                <p class="real-estate-content-p2">تبسط خدمات التأجير السكني لدينا بحثك عن المنزل المثالي. نقدم خيارات عقارية متنوعة عبر قنوات متعددة، مما يضمن خيارات تتماشى مع احتياجاتك المحددة. نربطك بالبائعين المحتملين مع تقديم التوجيه والاستشارة الأساسيين، مؤمنين أسعاراً مثالية لاستثمارك العقاري.</p>
-                
-                <h2 class="real-estate-content-title3">الإقامات السياحية</h2>
-                <p class="real-estate-content-p3">تقدم خدمات التأجير السياحي لدينا للمسافرين تجارب إقامة فريدة، مما يسمح لهم بالاستمتاع براحة المنزل مع جميع وسائل الراحة الأساسية، مما يجعل رحلاتهم أكثر إمتاعاً وأصالة.</p>
+                <h2 class="real-estate-content-title1" data-key="realEstateContentTitle1">شراء العقارات</h2>
+                <p class="real-estate-content-p1" data-key="realEstateContentP1">نقدم خدمات شراء منازل شاملة تساعد العملاء في العثور على عقاراتهم المثالية، بدءاً من تقييم متطلباتهم المحددة وصولاً إلى إتمام الصفقة. يقدم فريقنا دعماً كاملاً خلال جميع مراحل العملية لضمان تجربة ناجحة وسلسة.</p>
             </div>
             
             <!-- Dynamic Products Grid -->
             <div id="real-estate-products-section">
-                <h2 style="margin-bottom: 2rem; color: var(--dark); font-size: 1.8rem;">الخدمات المتاحة</h2>
+                <h2 style="margin-bottom: 2rem; color: var(--dark); font-size: 1.8rem;" data-key="availableServices">الخدمات المتاحة</h2>
                 <div class="products-grid" id="real-estate-products">
                     <!-- Products will be loaded here -->
                 </div>
@@ -1598,21 +1729,24 @@
     <section id="tourism-page" class="service-page">
         <div class="service-header">
             <div class="container">
-                <h1 class="service2-title">الخدمات السياحية</h1>
-                <p class="service2-subtitle">اكتشف عجائب تركيا مع تجارب السفر المصممة بخبرة</p>
+                <h1 class="service2-title" data-key="service2Title">الخدمات السياحية</h1>
+                <p class="service2-subtitle" data-key="service2Subtitle">اكتشف عجائب تركيا مع تجارب السفر المصممة بخبرة</p>
             </div>
         </div>
         <div class="container">
-            <button class="back-button" onclick="showPage('home')"><i class="fas fa-arrow-right"></i> <span class="back-text">العودة إلى الرئيسية</span></button>
+            <button class="back-button" onclick="showPage('home')">
+                <i class="fas fa-arrow-right"></i> 
+                <span class="back-text" data-key="backText">العودة إلى الرئيسية</span>
+            </button>
             
             <div class="service-content">
-                <h2 class="tourism-content-title1">تجارب سفر مخصصة</h2>
-                <p class="tourism-content-p1">نقدم باقات سفر حصرية وخطوط سفر مخصصة لمساعدتك في استكشاف مدن تركيا الرائعة، والمواقع التاريخية، والعجائب الطبيعية. سواء كنت مهتماً بالتاريخ القديم، أو الانغماس الثقافي، أو الجمال الطبيعي، نصمم الرحلة المثالية المصممة خصيصاً لاهتماماتك.</p>
+                <h2 class="tourism-content-title1" data-key="tourismContentTitle1">تجارب سفر مخصصة</h2>
+                <p class="tourism-content-p1" data-key="tourismContentP1">نقدم باقات سفر حصرية وخطوط سفر مخصصة لمساعدتك في استكشاف مدن تركيا الرائعة، والمواقع التاريخية، والعجائب الطبيعية. سواء كنت مهتماً بالتاريخ القديم، أو الانغماس الثقافي، أو الجمال الطبيعي، نصمم الرحلة المثالية المصممة خصيصاً لاهتماماتك.</p>
             </div>
             
             <!-- Dynamic Products Grid -->
             <div id="tourism-products-section">
-                <h2 style="margin-bottom: 2rem; color: var(--dark); font-size: 1.8rem;">الباقات السياحية المتاحة</h2>
+                <h2 style="margin-bottom: 2rem; color: var(--dark); font-size: 1.8rem;" data-key="availablePackages">الباقات السياحية المتاحة</h2>
                 <div class="products-grid" id="tourism-products">
                     <!-- Products will be loaded here -->
                 </div>
@@ -1620,34 +1754,31 @@
         </div>
     </section>
 
-    <!-- Other Service Pages (Student, Medical, Business, Other) -->
-    <!-- Each follows the same pattern with static content and dynamic products grid -->
-
     <!-- Login Modal -->
     <div class="modal-overlay" id="loginModal">
         <div class="modal">
             <div class="modal-header">
-                <h2 id="login-title">تسجيل الدخول</h2>
+                <h2 id="login-title" data-key="loginTitle">تسجيل الدخول</h2>
                 <button class="modal-close" onclick="hideModal('loginModal')">&times;</button>
             </div>
             <div class="modal-content">
                 <form id="loginForm">
                     <div class="form-group">
-                        <label for="login-email">البريد الإلكتروني</label>
+                        <label for="login-email" data-key="labelEmail">البريد الإلكتروني</label>
                         <input type="email" id="login-email" required>
                     </div>
                     <div class="form-group">
-                        <label for="login-password">كلمة المرور</label>
+                        <label for="login-password" data-key="labelPassword">كلمة المرور</label>
                         <input type="password" id="login-password" required>
                     </div>
                     <button type="submit" class="submit-btn">
-                        <span>تسجيل الدخول</span>
+                        <span data-key="loginBtn">تسجيل الدخول</span>
                     </button>
                 </form>
             </div>
             <div class="modal-footer">
-                <span>ليس لديك حساب؟</span>
-                <a onclick="showRegisterModal()" id="register-link">سجل الآن</a>
+                <span data-key="noAccount">ليس لديك حساب؟</span>
+                <a onclick="showRegisterModal()" id="register-link" data-key="registerLink">سجل الآن</a>
             </div>
         </div>
     </div>
@@ -1656,46 +1787,46 @@
     <div class="modal-overlay" id="registerModal">
         <div class="modal">
             <div class="modal-header">
-                <h2 id="register-title">إنشاء حساب جديد</h2>
+                <h2 id="register-title" data-key="registerTitle">إنشاء حساب جديد</h2>
                 <button class="modal-close" onclick="hideModal('registerModal')">&times;</button>
             </div>
             <div class="modal-content">
                 <form id="registerForm">
                     <div class="form-group">
-                        <label for="register-name">الاسم الكامل</label>
+                        <label for="register-name" data-key="labelName">الاسم الكامل</label>
                         <input type="text" id="register-name" required>
                     </div>
                     <div class="form-group">
-                        <label for="register-email">البريد الإلكتروني</label>
+                        <label for="register-email" data-key="labelEmail">البريد الإلكتروني</label>
                         <input type="email" id="register-email" required>
                     </div>
                     <div class="form-group">
-                        <label for="register-password">كلمة المرور</label>
+                        <label for="register-password" data-key="labelPassword">كلمة المرور</label>
                         <input type="password" id="register-password" required minlength="6">
                     </div>
                     
                     <div class="role-selection">
                         <div class="role-option" onclick="selectRole('customer')" id="role-customer">
                             <i class="fas fa-user"></i>
-                            <h3>عميل</h3>
-                            <p>تصفح الخدمات وأضفها للمفضلة</p>
+                            <h3 data-key="customerRole">عميل</h3>
+                            <p data-key="customerDesc">تصفح الخدمات وأضفها للمفضلة</p>
                         </div>
                         <div class="role-option" onclick="selectRole('business')" id="role-business">
                             <i class="fas fa-briefcase"></i>
-                            <h3>مقدم خدمة</h3>
-                            <p>أنشر خدماتك وأدرجها في السوق</p>
+                            <h3 data-key="businessRole">مقدم خدمة</h3>
+                            <p data-key="businessDesc">أنشر خدماتك وأدرجها في السوق</p>
                         </div>
                     </div>
                     <input type="hidden" id="register-role" value="customer">
                     
                     <button type="submit" class="submit-btn">
-                        <span>إنشاء حساب</span>
+                        <span data-key="registerBtn">إنشاء حساب</span>
                     </button>
                 </form>
             </div>
             <div class="modal-footer">
-                <span>لديك حساب بالفعل؟</span>
-                <a onclick="showLoginModal()" id="login-link">تسجيل الدخول</a>
+                <span data-key="haveAccount">لديك حساب بالفعل؟</span>
+                <a onclick="showLoginModal()" id="login-link" data-key="loginLink">تسجيل الدخول</a>
             </div>
         </div>
     </div>
@@ -1704,40 +1835,45 @@
     <div class="modal-overlay" id="addProductModal">
         <div class="modal">
             <div class="modal-header">
-                <h2 id="add-product-title">إضافة خدمة جديدة</h2>
+                <h2 id="add-product-title" data-key="addProductTitle">إضافة خدمة جديدة</h2>
                 <button class="modal-close" onclick="hideModal('addProductModal')">&times;</button>
             </div>
             <div class="modal-content">
                 <form id="addProductForm">
                     <div class="form-group">
-                        <label for="product-title">عنوان الخدمة</label>
+                        <label for="product-title" data-key="productTitle">عنوان الخدمة</label>
                         <input type="text" id="product-title" required>
                     </div>
                     <div class="form-group">
-                        <label for="product-description">وصف الخدمة</label>
+                        <label for="product-description" data-key="productDescription">وصف الخدمة</label>
                         <textarea id="product-description" rows="4" required></textarea>
                     </div>
                     <div class="form-group">
-                        <label for="product-price">السعر ($)</label>
+                        <label for="product-price" data-key="productPrice">السعر ($)</label>
                         <input type="number" id="product-price" required min="0" step="0.01">
                     </div>
                     <div class="form-group">
-                        <label for="product-category">الفئة</label>
+                        <label for="product-category" data-key="productCategory">الفئة</label>
                         <select id="product-category" required>
-                            <option value="real-estate">العقارات</option>
-                            <option value="tourism">السياحة</option>
-                            <option value="student">الطلابية</option>
-                            <option value="medical">الطبية</option>
-                            <option value="business">الأعمال</option>
-                            <option value="other">خدمات أخرى</option>
+                            <option value="real-estate" data-key="option1">العقارات</option>
+                            <option value="tourism" data-key="option2">السياحة</option>
+                            <option value="student" data-key="option3">الطلابية</option>
+                            <option value="medical" data-key="option4">الطبية</option>
+                            <option value="business" data-key="option5">الأعمال</option>
+                            <option value="other" data-key="option6">خدمات أخرى</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label for="product-image">رابط الصورة (URL)</label>
-                        <input type="url" id="product-image" placeholder="https://example.com/image.jpg">
+                    <div class="file-upload">
+                        <label class="file-upload-label" for="product-image">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <span data-key="uploadImage">انقر لرفع صورة</span>
+                            <span style="font-size: 0.9rem; color: var(--text-light);" data-key="maxSize">(الحد الأقصى: 5MB)</span>
+                        </label>
+                        <input type="file" id="product-image" accept="image/*" onchange="previewImage(event)">
+                        <div class="file-preview" id="file-preview"></div>
                     </div>
                     <button type="submit" class="submit-btn">
-                        <span>إضافة الخدمة</span>
+                        <span data-key="addProductBtn">إضافة الخدمة</span>
                     </button>
                 </form>
             </div>
@@ -1748,40 +1884,6 @@
         <i class="fab fa-whatsapp"></i>
     </a>
 
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-about">
-                    <div class="footer-logo">
-                        <i class="fas fa-handshake"></i>
-                        <span>وصل</span>
-                    </div>
-                    <p class="footer-about-text">بوابتك الموثوقة للخدمات الشاملة في تركيا. نحن متخصصون في العقارات، السياحة، التعليم، الرعاية الصحية، وحلول الأعمال بتميز وموثوقية.</p>
-                </div>
-                <div class="footer-services">
-                    <h3 class="footer-services-title">خدماتنا</h3>
-                    <ul>
-                        <li><a onclick="showPage('real-estate')" class="footer-real-estate">العقارات</a></li>
-                        <li><a onclick="showPage('tourism')" class="footer-tourism">السياحة</a></li>
-                        <li><a onclick="showPage('student')" class="footer-student">الطلابية</a></li>
-                        <li><a onclick="showPage('medical')" class="footer-medical">الطبية</a></li>
-                        <li><a onclick="showPage('business')" class="footer-business">الأعمال</a></li>
-                        <li><a onclick="showPage('other')" class="footer-other">خدمات أخرى</a></li>
-                    </ul>
-                </div>
-                <div class="footer-contact">
-                    <h3 class="footer-contact-title">معلومات الاتصال</h3>
-                    <p><i class="fas fa-map-marker-alt"></i> <span class="footer-location">بولو، تركيا</span></p>
-                    <p><i class="fas fa-phone"></i> <span class="footer-phone">+90 538 213 6214</span></p>
-                    <p><i class="fas fa-envelope"></i> <span class="footer-email">wasslservices@gmail.com</span></p>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p class="footer-text">&copy; 2025 وصل. جميع الحقوق محفوظة. | متمركزون في بولو، نخدم جميع أنحاء تركيا</p>
-            </div>
-        </div>
-    </footer>
-
     <script>
         // ============================================
         // FIREBASE CONFIGURATION
@@ -1790,24 +1892,253 @@
         // Get these from Firebase Console > Project Settings > General > Your apps
         // ============================================
         const firebaseConfig = {
-            apiKey: "YOUR_API_KEY_HERE",
-            authDomain: "YOUR_AUTH_DOMAIN_HERE",
-            projectId: "YOUR_PROJECT_ID_HERE",
-            storageBucket: "YOUR_STORAGE_BUCKET_HERE",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID_HERE",
-            appId: "YOUR_APP_ID_HERE"
+            apiKey: "AIzaSyBABsnWbbD-tbI3z-T2l_bc4TliRrEZ2lM",
+            authDomain: "wassl-d24f7.firebaseapp.com",
+            projectId: "wassl-d24f7",
+            storageBucket: "wassl-d24f7.appspot.com",
+            messagingSenderId: "932001515178",
+            appId: "1:932001515178:web:bb84aec2505d6560e05222"
         };
         // ============================================
 
         // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
+        const app = firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
+        const storage = firebase.storage();
+
+        // Translations object (simplified for demo)
+        const translations = {
+            en: {
+                // Navigation
+                navHome: "Home",
+                navServices: "Services",
+                navAbout: "About Us",
+                navAppointments: "Appointments",
+                navContact: "Contact Us",
+                langBtn: "العربية",
+                
+                // Hero
+                heroTitle: "Your Trusted Gateway in Turkey",
+                heroSubtitle: "Comprehensive services for real estate, tourism, education, healthcare, and business solutions. Based in Bolu, serving all of Turkey with excellence and reliability.",
+                ctaText: "Start Your Journey",
+                
+                // Auth
+                loginTitle: "Login",
+                registerTitle: "Create Account",
+                loginBtn: "Login",
+                registerBtn: "Create Account",
+                noAccount: "Don't have an account?",
+                haveAccount: "Already have an account?",
+                registerLink: "Register Now",
+                loginLink: "Login",
+                
+                // User Roles
+                customerRole: "Customer",
+                businessRole: "Business",
+                customerDesc: "Browse services and add to favorites",
+                businessDesc: "Publish and manage your services",
+                
+                // Dashboard
+                dashboardTitle: "Dashboard",
+                dashboardSubtitle: "Manage your services and interactions",
+                welcomeUser: "Welcome,",
+                productsCount: "Published Services",
+                favoritesCount: "Favorites",
+                addProductBtn: "Add New Service",
+                myProductsBtn: "My Published Services",
+                myFavoritesBtn: "Favorites List",
+                myProducts: "Your Published Services",
+                availableServices: "Available Services",
+                availablePackages: "Available Packages",
+                backText: "Back to Home",
+                
+                // Services
+                servicesTitle: "Our Premium Services",
+                servicesSubtitle: "Comprehensive solutions tailored to your needs in Turkey",
+                service1Title: "Real Estate Services",
+                service2Title: "Tourism Services",
+                service3Title: "Student Services",
+                service4Title: "Medical Services",
+                service5Title: "Business Services",
+                service6Title: "Additional Services",
+                service1Link: "Discover Properties",
+                service2Link: "Explore Turkey",
+                service3Link: "Start Your Journey",
+                service4Link: "Find Treatment",
+                service5Link: "Grow Your Business",
+                service6Link: "View All Services",
+                
+                // About
+                aboutTitle: "Your Trusted Partner in Turkey",
+                statText1: "Happy Clients",
+                statText2: "Years Experience",
+                statText3: "Customer Support",
+                
+                // Appointments
+                appointmentsTitle: "Schedule Your Consultation",
+                appointmentsSubtitle: "Let's discuss how we can help you achieve your goals in Turkey",
+                labelName: "Full Name",
+                labelEmail: "Email Address",
+                labelPhone: "Phone Number",
+                labelService: "Service Needed",
+                labelDate: "Preferred Date",
+                labelMessage: "Your Requirements",
+                labelPassword: "Password",
+                optionSelect: "Select a service...",
+                option1: "Real Estate Services",
+                option2: "Tourism Services",
+                option3: "Student Services",
+                option4: "Medical Services",
+                option5: "Business Services",
+                option6: "Other Services",
+                btnText: "Request Consultation",
+                successText: "Thank you! Your consultation request has been received.",
+                errorText: "An error occurred. Please try again.",
+                
+                // Contact
+                contactTitle: "Get In Touch",
+                contactSubtitle: "We're here to answer your questions and help you get started",
+                contact1Title: "Our Location",
+                contact1Info: "Bolu, Turkey",
+                contact2Title: "Call Us",
+                contact2Info: "+90 538 213 6214",
+                contact3Title: "Email Us",
+                contact3Info: "wasslservices@gmail.com",
+                
+                // Product Form
+                productTitle: "Service Title",
+                productDescription: "Service Description",
+                productPrice: "Price ($)",
+                productCategory: "Category",
+                uploadImage: "Click to upload image",
+                maxSize: "(Max: 5MB)",
+                
+                // Service Pages
+                service1Subtitle: "Find your dream property in Turkey with our premium real estate solutions",
+                service2Subtitle: "Discover the wonders of Turkey with our expertly crafted travel experiences",
+                realEstateContentTitle1: "Property Acquisition",
+                tourismContentTitle1: "Custom Travel Experiences"
+            },
+            ar: {
+                // Navigation
+                navHome: "الرئيسية",
+                navServices: "الخدمات",
+                navAbout: "من نحن",
+                navAppointments: "المواعيد",
+                navContact: "اتصل بنا",
+                langBtn: "English",
+                
+                // Hero
+                heroTitle: "بوابتك الموثوقة في تركيا",
+                heroSubtitle: "خدمات شاملة للعقارات، السياحة، التعليم، الرعاية الصحية، وحلول الأعمال. متمركزون في بولو، نخدم جميع أنحاء تركيا بتميز وموثوقية.",
+                ctaText: "ابدأ رحلتك",
+                
+                // Auth
+                loginTitle: "تسجيل الدخول",
+                registerTitle: "إنشاء حساب جديد",
+                loginBtn: "تسجيل الدخول",
+                registerBtn: "إنشاء حساب",
+                noAccount: "ليس لديك حساب؟",
+                haveAccount: "لديك حساب بالفعل؟",
+                registerLink: "سجل الآن",
+                loginLink: "تسجيل الدخول",
+                
+                // User Roles
+                customerRole: "عميل",
+                businessRole: "مقدم خدمة",
+                customerDesc: "تصفح الخدمات وأضفها للمفضلة",
+                businessDesc: "أنشر خدماتك وأدرجها في السوق",
+                
+                // Dashboard
+                dashboardTitle: "لوحة التحكم",
+                dashboardSubtitle: "إدارة خدماتك وتفاعلاتك",
+                welcomeUser: "مرحباً،",
+                productsCount: "الخدمات المنشورة",
+                favoritesCount: "المفضلة",
+                addProductBtn: "إضافة خدمة جديدة",
+                myProductsBtn: "خدماتي المنشورة",
+                myFavoritesBtn: "قائمة المفضلة",
+                myProducts: "خدماتك المنشورة",
+                availableServices: "الخدمات المتاحة",
+                availablePackages: "الباقات السياحية المتاحة",
+                backText: "العودة إلى الرئيسية",
+                
+                // Services
+                servicesTitle: "خدماتنا المتميزة",
+                servicesSubtitle: "حلول شاملة مصممة خصيصاً لاحتياجاتك في تركيا",
+                service1Title: "الخدمات العقارية",
+                service2Title: "الخدمات السياحية",
+                service3Title: "الخدمات الطلابية",
+                service4Title: "الخدمات العلاجية",
+                service5Title: "خدمات الأعمال",
+                service6Title: "خدمات إضافية",
+                service1Link: "اكتشف العقارات",
+                service2Link: "استكشف تركيا",
+                service3Link: "ابدأ رحلتك",
+                service4Link: "ابحث عن العلاج",
+                service5Link: "نَمِ بأعمالك",
+                service6Link: "عرض جميع الخدمات",
+                
+                // About
+                aboutTitle: "شريكك الموثوق في تركيا",
+                statText1: "عملاء سعداء",
+                statText2: "سنوات خبرة",
+                statText3: "دعم عملاء",
+                
+                // Appointments
+                appointmentsTitle: "جدول استشارتك",
+                appointmentsSubtitle: "دعنا نناقش كيف يمكننا مساعدتك في تحقيق أهدافك في تركيا",
+                labelName: "الاسم الكامل",
+                labelEmail: "البريد الإلكتروني",
+                labelPhone: "رقم الهاتف",
+                labelService: "الخدمة المطلوبة",
+                labelDate: "التاريخ المفضل",
+                labelMessage: "متطلباتك",
+                labelPassword: "كلمة المرور",
+                optionSelect: "اختر خدمة...",
+                option1: "الخدمات العقارية",
+                option2: "الخدمات السياحية",
+                option3: "الخدمات الطلابية",
+                option4: "الخدمات العلاجية",
+                option5: "خدمات الأعمال",
+                option6: "خدمات أخرى",
+                btnText: "طلب استشارة",
+                successText: "شكراً لك! تم استلام طلب استشارتك.",
+                errorText: "حدث خطأ. يرجى المحاولة مرة أخرى.",
+                
+                // Contact
+                contactTitle: "تواصل معنا",
+                contactSubtitle: "نحن هنا للإجابة على أسئلتك ومساعدتك في البدء",
+                contact1Title: "موقعنا",
+                contact1Info: "بولو، تركيا",
+                contact2Title: "اتصل بنا",
+                contact2Info: "+90 538 213 6214",
+                contact3Title: "راسلنا",
+                contact3Info: "wasslservices@gmail.com",
+                
+                // Product Form
+                productTitle: "عنوان الخدمة",
+                productDescription: "وصف الخدمة",
+                productPrice: "السعر ($)",
+                productCategory: "الفئة",
+                uploadImage: "انقر لرفع صورة",
+                maxSize: "(الحد الأقصى: 5MB)",
+                
+                // Service Pages
+                service1Subtitle: "اعثر على عقار أحلامك في تركيا مع حلولنا العقارية المتميزة",
+                service2Subtitle: "اكتشف عجائب تركيا مع تجارب السفر المصممة بخبرة",
+                realEstateContentTitle1: "شراء العقارات",
+                tourismContentTitle1: "تجارب سفر مخصصة"
+            }
+        };
 
         // Global variables
         let currentUser = null;
         let userRole = null;
         let currentPage = 'home';
+        let currentLang = 'ar';
+        let selectedImage = null;
 
         // DOM Elements
         const authButtons = document.getElementById('authButtons');
@@ -1834,8 +2165,42 @@
                 }
             });
 
+            // Load language preference
+            const savedLang = localStorage.getItem('wassl-lang') || 'ar';
+            setLanguage(savedLang);
+            
             // Load initial page
             showPage('home');
+        }
+
+        // Language functions
+        function setLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('wassl-lang', lang);
+            
+            // Set direction
+            document.documentElement.lang = lang;
+            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+            
+            // Update all elements with data-key
+            document.querySelectorAll('[data-key]').forEach(element => {
+                const key = element.getAttribute('data-key');
+                if (translations[lang] && translations[lang][key]) {
+                    if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+                        element.placeholder = translations[lang][key];
+                    } else {
+                        element.textContent = translations[lang][key];
+                    }
+                }
+            });
+            
+            // Update auth UI
+            updateAuthUI();
+        }
+
+        function toggleLanguage() {
+            const newLang = currentLang === 'en' ? 'ar' : 'en';
+            setLanguage(newLang);
         }
 
         // Load user role from Firestore
@@ -1847,7 +2212,7 @@
                 if (userDoc.exists) {
                     userRole = userDoc.data().role;
                 } else {
-                    userRole = 'customer'; // Default role
+                    userRole = 'customer';
                 }
             } catch (error) {
                 console.error('Error loading user role:', error);
@@ -1855,8 +2220,10 @@
             }
         }
 
-        // Update authentication UI based on user state
+        // Update authentication UI
         function updateAuthUI() {
+            const langData = translations[currentLang];
+            
             if (currentUser) {
                 // User is logged in
                 authButtons.innerHTML = `
@@ -1864,16 +2231,16 @@
                         <span class="user-greeting">
                             <i class="fas fa-user"></i>
                             ${currentUser.displayName || currentUser.email.split('@')[0]}
-                            <span class="user-role-badge">${userRole === 'business' ? 'مقدم خدمة' : 'عميل'}</span>
+                            <span class="user-role-badge">${userRole === 'business' ? langData.businessRole : langData.customerRole}</span>
                         </span>
                         ${userRole === 'business' ? 
                             `<button class="auth-btn" onclick="showPage('dashboard')">
                                 <i class="fas fa-tachometer-alt"></i>
-                                <span>لوحة التحكم</span>
+                                <span>${langData.dashboardTitle}</span>
                             </button>` : ''}
                         <button class="auth-btn secondary" onclick="signOut()">
                             <i class="fas fa-sign-out-alt"></i>
-                            <span>تسجيل الخروج</span>
+                            <span>${langData.langBtn === 'English' ? 'تسجيل الخروج' : 'Logout'}</span>
                         </button>
                     </div>
                 `;
@@ -1883,16 +2250,16 @@
                         <span class="user-greeting">
                             <i class="fas fa-user"></i>
                             ${currentUser.displayName || currentUser.email.split('@')[0]}
-                            <span class="user-role-badge">${userRole === 'business' ? 'مقدم خدمة' : 'عميل'}</span>
+                            <span class="user-role-badge">${userRole === 'business' ? langData.businessRole : langData.customerRole}</span>
                         </span>
                         ${userRole === 'business' ? 
                             `<button class="auth-btn" onclick="showPage('dashboard'); toggleMenu();" style="width: 100%; margin-top: 1rem;">
                                 <i class="fas fa-tachometer-alt"></i>
-                                <span>لوحة التحكم</span>
+                                <span>${langData.dashboardTitle}</span>
                             </button>` : ''}
                         <button class="auth-btn secondary" onclick="signOut(); toggleMenu();" style="width: 100%; margin-top: 1rem;">
                             <i class="fas fa-sign-out-alt"></i>
-                            <span>تسجيل الخروج</span>
+                            <span>${langData.langBtn === 'English' ? 'تسجيل الخروج' : 'Logout'}</span>
                         </button>
                     </div>
                 `;
@@ -1901,22 +2268,22 @@
                 authButtons.innerHTML = `
                     <button class="auth-btn" onclick="showLoginModal()">
                         <i class="fas fa-sign-in-alt"></i>
-                        <span>تسجيل الدخول</span>
+                        <span>${langData.loginBtn}</span>
                     </button>
                     <button class="auth-btn secondary" onclick="showRegisterModal()">
                         <i class="fas fa-user-plus"></i>
-                        <span>إنشاء حساب</span>
+                        <span>${langData.registerBtn}</span>
                     </button>
                 `;
 
                 mobileAuth.innerHTML = `
                     <button class="auth-btn" onclick="showLoginModal(); toggleMenu();" style="width: 100%;">
                         <i class="fas fa-sign-in-alt"></i>
-                        <span>تسجيل الدخول</span>
+                        <span>${langData.loginBtn}</span>
                     </button>
                     <button class="auth-btn secondary" onclick="showRegisterModal(); toggleMenu();" style="width: 100%; margin-top: 1rem;">
                         <i class="fas fa-user-plus"></i>
-                        <span>إنشاء حساب</span>
+                        <span>${langData.registerBtn}</span>
                     </button>
                 `;
             }
@@ -1965,18 +2332,39 @@
             }
         }
 
+        // Image preview
+        function previewImage(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            if (file.size > 5 * 1024 * 1024) { // 5MB limit
+                showToast(currentLang === 'ar' ? 'حجم الصورة كبير جداً (الحد الأقصى 5MB)' : 'Image too large (max 5MB)', 'error');
+                event.target.value = '';
+                return;
+            }
+            
+            selectedImage = file;
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                const preview = document.getElementById('file-preview');
+                preview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+            }
+            
+            reader.readAsDataURL(file);
+        }
+
         // Authentication functions
         async function signUp(name, email, password, role) {
             try {
-                // Create user with Firebase Auth
                 const userCredential = await auth.createUserWithEmailAndPassword(email, password);
                 
-                // Update profile with name
+                // Update profile
                 await userCredential.user.updateProfile({
                     displayName: name
                 });
 
-                // Save user data to Firestore
+                // Save to Firestore
                 await db.collection('users').doc(userCredential.user.uid).set({
                     name: name,
                     email: email,
@@ -1984,12 +2372,10 @@
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
 
-                // Success
                 hideModal('registerModal');
-                showToast('تم إنشاء الحساب بنجاح!', 'success');
+                showToast(currentLang === 'ar' ? 'تم إنشاء الحساب بنجاح!' : 'Account created successfully!', 'success');
                 
             } catch (error) {
-                console.error('Sign up error:', error);
                 showToast(error.message, 'error');
             }
         }
@@ -1998,9 +2384,8 @@
             try {
                 await auth.signInWithEmailAndPassword(email, password);
                 hideModal('loginModal');
-                showToast('تم تسجيل الدخول بنجاح!', 'success');
+                showToast(currentLang === 'ar' ? 'تم تسجيل الدخول بنجاح!' : 'Logged in successfully!', 'success');
             } catch (error) {
-                console.error('Sign in error:', error);
                 showToast(error.message, 'error');
             }
         }
@@ -2011,9 +2396,8 @@
                 if (currentPage === 'dashboard') {
                     showPage('home');
                 }
-                showToast('تم تسجيل الخروج بنجاح', 'success');
+                showToast(currentLang === 'ar' ? 'تم تسجيل الخروج' : 'Logged out', 'success');
             } catch (error) {
-                console.error('Sign out error:', error);
                 showToast(error.message, 'error');
             }
         }
@@ -2021,27 +2405,50 @@
         // Product functions
         async function addProduct(productData) {
             if (!currentUser || userRole !== 'business') {
-                showToast('يجب أن تكون مقدم خدمة لإضافة منتجات', 'error');
+                showToast(currentLang === 'ar' ? 'يجب أن تكون مقدم خدمة لإضافة منتجات' : 'Must be a business user to add products', 'error');
                 return;
             }
 
             try {
+                let imageUrl = null;
+                
+                // Upload image if exists
+                if (selectedImage) {
+                    const storageRef = storage.ref();
+                    const imageRef = storageRef.child(`products/${Date.now()}_${selectedImage.name}`);
+                    await imageRef.put(selectedImage);
+                    imageUrl = await imageRef.getDownloadURL();
+                }
+
                 const product = {
                     ...productData,
                     userId: currentUser.uid,
                     userName: currentUser.displayName || currentUser.email,
                     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    favorites: []
+                    imageUrl: imageUrl
                 };
 
                 await db.collection('products').add(product);
-                hideModal('addProductModal');
-                showToast('تمت إضافة الخدمة بنجاح!', 'success');
                 
-                // Refresh products if on relevant page
+                // Create favorites collection entry
+                await db.collection('productFavorites').add({
+                    productId: product.id,
+                    userId: currentUser.uid,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                hideModal('addProductModal');
+                showToast(currentLang === 'ar' ? 'تمت إضافة الخدمة بنجاح!' : 'Service added successfully!', 'success');
+                
+                // Reset form
+                document.getElementById('addProductForm').reset();
+                document.getElementById('file-preview').innerHTML = '';
+                selectedImage = null;
+                
+                // Refresh products
                 if (currentPage === 'dashboard') {
                     loadUserProducts();
-                } else if (currentPage === productData.category || currentPage === 'real-estate' || currentPage === 'tourism' || currentPage === 'student' || currentPage === 'medical' || currentPage === 'business' || currentPage === 'other') {
+                } else if (['real-estate', 'tourism', 'student', 'medical', 'business', 'other'].includes(currentPage)) {
                     loadProductsByCategory(currentPage);
                 }
                 
@@ -2052,57 +2459,57 @@
         }
 
         async function deleteProduct(productId) {
-            if (!confirm('هل أنت متأكد من حذف هذه الخدمة؟')) return;
+            if (!confirm(currentLang === 'ar' ? 'هل أنت متأكد من حذف هذه الخدمة؟' : 'Are you sure you want to delete this service?')) return;
 
             try {
-                // Check if user owns the product
                 const productDoc = await db.collection('products').doc(productId).get();
                 if (productDoc.exists && productDoc.data().userId === currentUser.uid) {
                     await db.collection('products').doc(productId).delete();
-                    showToast('تم حذف الخدمة بنجاح', 'success');
+                    showToast(currentLang === 'ar' ? 'تم حذف الخدمة بنجاح' : 'Service deleted successfully', 'success');
                     
-                    // Refresh products
+                    // Refresh
                     if (currentPage === 'dashboard') {
                         loadUserProducts();
                     } else {
                         loadProductsByCategory(currentPage);
                     }
                 } else {
-                    showToast('لا يمكنك حذف هذه الخدمة', 'error');
+                    showToast(currentLang === 'ar' ? 'لا يمكنك حذف هذه الخدمة' : 'You cannot delete this service', 'error');
                 }
             } catch (error) {
-                console.error('Error deleting product:', error);
                 showToast(error.message, 'error');
             }
         }
 
         async function toggleFavorite(productId) {
             if (!currentUser) {
-                showToast('يجب تسجيل الدخول لإضافة للمفضلة', 'error');
+                showToast(currentLang === 'ar' ? 'يجب تسجيل الدخول لإضافة للمفضلة' : 'Please login to add favorites', 'error');
                 return;
             }
 
             try {
-                const productRef = db.collection('products').doc(productId);
-                const productDoc = await productRef.get();
-                
-                if (!productDoc.exists) return;
+                // Check if already favorited
+                const favoriteQuery = await db.collection('productFavorites')
+                    .where('productId', '==', productId)
+                    .where('userId', '==', currentUser.uid)
+                    .limit(1)
+                    .get();
 
-                const product = productDoc.data();
-                const favorites = product.favorites || [];
-                const userIndex = favorites.indexOf(currentUser.uid);
-
-                if (userIndex > -1) {
+                if (!favoriteQuery.empty) {
                     // Remove from favorites
-                    favorites.splice(userIndex, 1);
+                    await db.collection('productFavorites').doc(favoriteQuery.docs[0].id).delete();
+                    showToast(currentLang === 'ar' ? 'تمت الإزالة من المفضلة' : 'Removed from favorites', 'success');
                 } else {
                     // Add to favorites
-                    favorites.push(currentUser.uid);
+                    await db.collection('productFavorites').add({
+                        productId: productId,
+                        userId: currentUser.uid,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    showToast(currentLang === 'ar' ? 'تمت الإضافة إلى المفضلة' : 'Added to favorites', 'success');
                 }
-
-                await productRef.update({ favorites });
                 
-                // Refresh UI
+                // Refresh
                 if (currentPage === 'dashboard') {
                     loadUserFavorites();
                 } else {
@@ -2110,7 +2517,7 @@
                 }
                 
             } catch (error) {
-                console.error('Error toggling favorite:', error);
+                showToast(error.message, 'error');
             }
         }
 
@@ -2121,34 +2528,43 @@
             if (!container) return;
 
             try {
+                // Create index first time you see the error
                 const querySnapshot = await db.collection('products')
                     .where('category', '==', category)
                     .orderBy('createdAt', 'desc')
-                    .limit(20)
                     .get();
 
                 if (querySnapshot.empty) {
                     container.innerHTML = `
                         <div class="empty-state">
                             <i class="fas fa-box-open"></i>
-                            <h3>لا توجد خدمات متاحة حالياً</h3>
-                            <p>كن أول من يضيف خدمة في هذه الفئة</p>
+                            <h3>${currentLang === 'ar' ? 'لا توجد خدمات متاحة حالياً' : 'No services available yet'}</h3>
+                            <p>${currentLang === 'ar' ? 'كن أول من يضيف خدمة في هذه الفئة' : 'Be the first to add a service in this category'}</p>
                         </div>
                     `;
                     return;
                 }
 
+                // Get user's favorites
+                let userFavorites = [];
+                if (currentUser) {
+                    const favoritesQuery = await db.collection('productFavorites')
+                        .where('userId', '==', currentUser.uid)
+                        .get();
+                    userFavorites = favoritesQuery.docs.map(doc => doc.data().productId);
+                }
+
                 let html = '';
                 querySnapshot.forEach((doc) => {
                     const product = doc.data();
-                    const isFavorite = currentUser && product.favorites && product.favorites.includes(currentUser.uid);
+                    const isFavorite = userFavorites.includes(doc.id);
                     const isOwner = currentUser && product.userId === currentUser.uid;
                     
                     html += `
                         <div class="product-card">
                             <div class="product-image">
-                                ${product.image ? 
-                                    `<img src="${product.image}" alt="${product.title}">` : 
+                                ${product.imageUrl ? 
+                                    `<img src="${product.imageUrl}" alt="${product.title}" loading="lazy">` : 
                                     `<i class="fas fa-image" style="font-size: 3rem; color: var(--text-light);"></i>`
                                 }
                             </div>
@@ -2170,7 +2586,7 @@
                                             </button>` : ''}
                                         ${isOwner ? 
                                             `<button class="delete-btn" onclick="deleteProduct('${doc.id}')">
-                                                حذف
+                                                ${currentLang === 'ar' ? 'حذف' : 'Delete'}
                                             </button>` : ''}
                                     </div>
                                 </div>
@@ -2182,17 +2598,21 @@
                 container.innerHTML = html;
             } catch (error) {
                 console.error('Error loading products:', error);
+                // First time error: Click the link in console to create index
                 container.innerHTML = `
                     <div class="empty-state">
                         <i class="fas fa-exclamation-triangle"></i>
-                        <h3>حدث خطأ في تحميل الخدمات</h3>
-                        <p>يرجى المحاولة مرة أخرى لاحقاً</p>
+                        <h3>${currentLang === 'ar' ? 'جارٍ تحميل الخدمات...' : 'Loading services...'}</h3>
+                        <p>${currentLang === 'ar' ? 'قد يستغرق الأمر بضع ثوانٍ لأول مرة' : 'May take a few seconds for the first time'}</p>
                     </div>
                 `;
+                
+                // Auto-retry after 2 seconds
+                setTimeout(() => loadProductsByCategory(category), 2000);
             }
         }
 
-        // Load user's products (for business dashboard)
+        // Dashboard functions
         async function loadUserProducts() {
             if (!currentUser || userRole !== 'business') return;
 
@@ -2212,11 +2632,11 @@
                     container.innerHTML = `
                         <div class="empty-state">
                             <i class="fas fa-box-open"></i>
-                            <h3>لم تقم بإضافة أي خدمات بعد</h3>
-                            <p>ابدأ بإضافة خدمتك الأولى الآن</p>
+                            <h3>${currentLang === 'ar' ? 'لم تقم بإضافة أي خدمات بعد' : 'You haven\'t added any services yet'}</h3>
+                            <p>${currentLang === 'ar' ? 'ابدأ بإضافة خدمتك الأولى الآن' : 'Start by adding your first service'}</p>
                             <button class="auth-btn" onclick="showAddProductModal()" style="margin-top: 1rem;">
                                 <i class="fas fa-plus"></i>
-                                <span>إضافة خدمة جديدة</span>
+                                <span>${currentLang === 'ar' ? 'إضافة خدمة جديدة' : 'Add New Service'}</span>
                             </button>
                         </div>
                     `;
@@ -2230,8 +2650,8 @@
                     html += `
                         <div class="product-card">
                             <div class="product-image">
-                                ${product.image ? 
-                                    `<img src="${product.image}" alt="${product.title}">` : 
+                                ${product.imageUrl ? 
+                                    `<img src="${product.imageUrl}" alt="${product.title}">` : 
                                     `<i class="fas fa-image" style="font-size: 3rem; color: var(--text-light);"></i>`
                                 }
                             </div>
@@ -2244,11 +2664,8 @@
                                 <div class="product-footer">
                                     <div class="product-price">$${parseFloat(product.price).toFixed(2)}</div>
                                     <div class="product-actions">
-                                        <span style="color: var(--text-light); font-size: 0.9rem;">
-                                            <i class="fas fa-heart"></i> ${product.favorites ? product.favorites.length : 0}
-                                        </span>
                                         <button class="delete-btn" onclick="deleteProduct('${doc.id}')">
-                                            حذف
+                                            ${currentLang === 'ar' ? 'حذف' : 'Delete'}
                                         </button>
                                     </div>
                                 </div>
@@ -2258,13 +2675,11 @@
                 });
 
                 container.innerHTML = html;
-                document.getElementById('dashboard-section-title').textContent = 'خدماتك المنشورة';
             } catch (error) {
                 console.error('Error loading user products:', error);
             }
         }
 
-        // Load user's favorites
         async function loadUserFavorites() {
             if (!currentUser) return;
 
@@ -2272,73 +2687,76 @@
             if (!container) return;
 
             try {
-                // Get all products that have current user in favorites
-                const querySnapshot = await db.collection('products')
-                    .where('favorites', 'array-contains', currentUser.uid)
+                // Get user's favorite product IDs
+                const favoritesQuery = await db.collection('productFavorites')
+                    .where('userId', '==', currentUser.uid)
                     .get();
 
+                const favoriteProductIds = favoritesQuery.docs.map(doc => doc.data().productId);
+                
                 // Update stats
-                document.getElementById('favorites-count').textContent = querySnapshot.size;
+                document.getElementById('favorites-count').textContent = favoriteProductIds.length;
 
-                if (querySnapshot.empty) {
+                if (favoriteProductIds.length === 0) {
                     container.innerHTML = `
                         <div class="empty-state">
                             <i class="fas fa-heart"></i>
-                            <h3>لا توجد خدمات في المفضلة</h3>
-                            <p>أضف خدماتك المفضلة لتظهر هنا</p>
+                            <h3>${currentLang === 'ar' ? 'لا توجد خدمات في المفضلة' : 'No services in favorites'}</h3>
+                            <p>${currentLang === 'ar' ? 'أضف خدماتك المفضلة لتظهر هنا' : 'Add your favorite services to see them here'}</p>
                         </div>
                     `;
                     return;
                 }
 
+                // Get the actual products
                 let html = '';
-                querySnapshot.forEach((doc) => {
-                    const product = doc.data();
-                    const isFavorite = true; // Since we're in favorites
-                    
-                    html += `
-                        <div class="product-card">
-                            <div class="product-image">
-                                ${product.image ? 
-                                    `<img src="${product.image}" alt="${product.title}">` : 
-                                    `<i class="fas fa-image" style="font-size: 3rem; color: var(--text-light);"></i>`
-                                }
-                            </div>
-                            <div class="product-content">
-                                <div class="product-header">
-                                    <h3 class="product-title">${product.title}</h3>
-                                    <i class="fas fa-heart" style="color: var(--accent);"></i>
+                for (const productId of favoriteProductIds) {
+                    const productDoc = await db.collection('products').doc(productId).get();
+                    if (productDoc.exists) {
+                        const product = productDoc.data();
+                        
+                        html += `
+                            <div class="product-card">
+                                <div class="product-image">
+                                    ${product.imageUrl ? 
+                                        `<img src="${product.imageUrl}" alt="${product.title}">` : 
+                                        `<i class="fas fa-image" style="font-size: 3rem; color: var(--text-light);"></i>`
+                                    }
                                 </div>
-                                <span class="product-category">${getCategoryName(product.category)}</span>
-                                <p class="product-description">${product.description}</p>
-                                <div class="product-footer">
-                                    <div class="product-price">$${parseFloat(product.price).toFixed(2)}</div>
-                                    <div class="product-actions">
-                                        <button class="favorite-btn favorited" onclick="toggleFavorite('${doc.id}')">
-                                            <i class="fas fa-heart"></i>
-                                        </button>
+                                <div class="product-content">
+                                    <div class="product-header">
+                                        <h3 class="product-title">${product.title}</h3>
+                                        <i class="fas fa-heart" style="color: var(--accent);"></i>
+                                    </div>
+                                    <span class="product-category">${getCategoryName(product.category)}</span>
+                                    <p class="product-description">${product.description}</p>
+                                    <div class="product-footer">
+                                        <div class="product-price">$${parseFloat(product.price).toFixed(2)}</div>
+                                        <div class="product-actions">
+                                            <button class="favorite-btn favorited" onclick="toggleFavorite('${productId}')">
+                                                <i class="fas fa-heart"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    `;
-                });
+                        `;
+                    }
+                }
 
                 container.innerHTML = html;
-                document.getElementById('dashboard-section-title').textContent = 'قائمة المفضلة';
             } catch (error) {
                 console.error('Error loading favorites:', error);
             }
         }
 
-        // Dashboard functions
         function showMyProducts() {
             loadUserProducts();
         }
 
         function showMyFavorites() {
             if (!currentUser) {
-                showToast('يجب تسجيل الدخول لعرض المفضلة', 'error');
+                showToast(currentLang === 'ar' ? 'يجب تسجيل الدخول لعرض المفضلة' : 'Please login to view favorites', 'error');
                 return;
             }
             loadUserFavorites();
@@ -2347,37 +2765,22 @@
         // Helper functions
         function getCategoryName(category) {
             const categories = {
-                'real-estate': 'العقارات',
-                'tourism': 'السياحة',
-                'student': 'الطلابية',
-                'medical': 'الطبية',
-                'business': 'الأعمال',
-                'other': 'خدمات أخرى'
+                'real-estate': currentLang === 'ar' ? 'العقارات' : 'Real Estate',
+                'tourism': currentLang === 'ar' ? 'السياحة' : 'Tourism',
+                'student': currentLang === 'ar' ? 'الطلابية' : 'Student',
+                'medical': currentLang === 'ar' ? 'الطبية' : 'Medical',
+                'business': currentLang === 'ar' ? 'الأعمال' : 'Business',
+                'other': currentLang === 'ar' ? 'خدمات أخرى' : 'Other Services'
             };
             return categories[category] || category;
         }
 
         function showToast(message, type = 'info') {
-            // Create toast element
             const toast = document.createElement('div');
-            toast.style.cssText = `
-                position: fixed;
-                top: 20px;
-                left: 50%;
-                transform: translateX(-50%);
-                background: ${type === 'error' ? 'var(--accent)' : type === 'success' ? '#10b981' : 'var(--primary)'};
-                color: white;
-                padding: 1rem 2rem;
-                border-radius: var(--radius);
-                box-shadow: var(--shadow-lg);
-                z-index: 3000;
-                animation: slideDown 0.3s ease;
-            `;
-            
+            toast.className = `toast ${type}`;
             toast.textContent = message;
             document.body.appendChild(toast);
             
-            // Remove toast after 3 seconds
             setTimeout(() => {
                 toast.style.animation = 'slideUp 0.3s ease';
                 setTimeout(() => {
@@ -2386,7 +2789,7 @@
             }, 3000);
         }
 
-        // Page navigation (original functions)
+        // Page navigation
         function showPage(pageId) {
             // Hide all pages
             document.querySelectorAll('.service-page, .dashboard-section').forEach(page => {
@@ -2431,14 +2834,15 @@
                 document.getElementById('products-count').textContent = productsSnapshot.size;
                 
                 // Count user's favorites
-                const favoritesSnapshot = await db.collection('products')
-                    .where('favorites', 'array-contains', currentUser.uid)
+                const favoritesSnapshot = await db.collection('productFavorites')
+                    .where('userId', '==', currentUser.uid)
                     .get();
                 document.getElementById('favorites-count').textContent = favoritesSnapshot.size;
                 
                 // Update welcome message
-                document.getElementById('welcome-user').textContent = `مرحباً، ${currentUser.displayName || currentUser.email.split('@')[0]}`;
-                document.getElementById('user-role-badge').textContent = userRole === 'business' ? 'مقدم خدمة' : 'عميل';
+                document.getElementById('welcome-user').textContent = `${translations[currentLang].welcomeUser} ${currentUser.displayName || currentUser.email.split('@')[0]}`;
+                document.getElementById('user-role-badge').textContent = userRole === 'business' ? 
+                    translations[currentLang].businessRole : translations[currentLang].customerRole;
                 
             } catch (error) {
                 console.error('Error updating dashboard stats:', error);
@@ -2492,34 +2896,10 @@
                 title: document.getElementById('product-title').value,
                 description: document.getElementById('product-description').value,
                 price: parseFloat(document.getElementById('product-price').value),
-                category: document.getElementById('product-category').value,
-                image: document.getElementById('product-image').value || null
+                category: document.getElementById('product-category').value
             };
             await addProduct(productData);
         });
-
-        // Close modals on overlay click
-        document.querySelectorAll('.modal-overlay').forEach(modal => {
-            modal.addEventListener('click', function(e) {
-                if (e.target === this) {
-                    hideModal(this.id);
-                }
-            });
-        });
-
-        // Add CSS for toast animations
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes slideDown {
-                from { transform: translateX(-50%) translateY(-20px); opacity: 0; }
-                to { transform: translateX(-50%) translateY(0); opacity: 1; }
-            }
-            @keyframes slideUp {
-                from { transform: translateX(-50%) translateY(0); opacity: 1; }
-                to { transform: translateX(-50%) translateY(-20px); opacity: 0; }
-            }
-        `;
-        document.head.appendChild(style);
 
         // Initialize the app
         document.addEventListener('DOMContentLoaded', init);
