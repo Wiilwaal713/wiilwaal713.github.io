@@ -1,0 +1,3237 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wassl - بوابتك الموثوقة في تركيا</title>
+    <meta name="description" content="يقدم وصل خدمات شاملة تشمل العقارات، السياحة، التعليم، الرعاية الصحية، وحلول الأعمال في تركيا">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+    
+    <style>
+        :root {
+            --primary: #0f4c81;
+            --primary-dark: #0a3a6b;
+            --primary-light: #1a6bb3;
+            --secondary: #d4af37;
+            --secondary-dark: #b8941f;
+            --accent: #e11d48;
+            --dark: #1e293b;
+            --dark-alt: #334155;
+            --light: #f8fafc;
+            --light-alt: #f1f5f9;
+            --white: #ffffff;
+            --text: #374151;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.1);
+            --radius: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', 'Arial', sans-serif;
+            line-height: 1.7;
+            color: var(--text);
+            background-color: var(--light);
+            overflow-x: hidden;
+        }
+
+        [dir="ltr"] body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: var(--white);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        header.scrolled {
+            padding: 5px 0;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 0;
+            position: relative;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .logo-icon {
+            color: var(--secondary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+            margin-left: 0;
+        }
+
+        [dir="ltr"] .nav-links {
+            margin-right: 0;
+        }
+
+        .nav-links a {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+            padding: 5px 0;
+        }
+
+        .nav-links a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            right: 0;
+            background-color: var(--secondary);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a:hover:after {
+            width: 100%;
+        }
+
+        /* Active navigation item */
+        .nav-links a.active {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .nav-links a.active:after {
+            width: 100%;
+        }
+
+        /* Language Switch */
+        .lang-switch {
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            min-width: 100px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .lang-switch:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .lang-switch-desktop {
+            position: static;
+            margin-right: 1rem;
+        }
+
+        [dir="ltr"] .lang-switch-desktop {
+            margin-right: 0;
+            margin-left: 1rem;
+        }
+
+        .lang-switch-li-mobile {
+            display: none;
+        }
+
+        /* Updated Auth Buttons */
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .auth-btn {
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .auth-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .auth-btn.secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .auth-btn.secondary:hover {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-greeting {
+            font-weight: 500;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .user-role-badge {
+            background: var(--secondary);
+            color: var(--dark);
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* Mobile Auth - Hidden by default */
+        .mobile-auth {
+            display: none;
+        }
+
+        /* Modals */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: var(--white);
+            border-radius: var(--radius);
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: translateY(20px);
+            transition: var(--transition);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .modal-overlay.active .modal {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            color: var(--dark);
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            color: var(--accent);
+        }
+
+        .modal-content {
+            padding: 1.5rem;
+        }
+
+        .modal-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .modal-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .modal-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Role Selection */
+        .role-selection {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .role-option {
+            padding: 1.5rem;
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .role-option:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .role-option.selected {
+            border-color: var(--primary);
+            background: var(--light);
+        }
+
+        .role-option i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 0.8rem;
+        }
+
+        .role-option h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .role-option p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        /* Product Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .product-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid var(--border);
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .product-image {
+            height: 200px;
+            background: var(--light-alt);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-content {
+            padding: 1.5rem;
+        }
+
+        .product-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .product-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .product-category {
+            display: inline-block;
+            background: var(--light);
+            color: var(--primary);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .product-description {
+            color: var(--text);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border);
+            padding-top: 1rem;
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .favorite-btn {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .favorite-btn:hover {
+            color: var(--accent);
+        }
+
+        .favorite-btn.favorited {
+            color: var(--accent);
+        }
+
+        .delete-btn {
+            background: var(--accent);
+            color: var(--white);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .delete-btn:hover {
+            background: #c10e38;
+        }
+
+        /* Dashboard */
+        .dashboard-section {
+            display: none;
+            padding: 2rem 0 6rem;
+            min-height: 80vh;
+        }
+
+        .dashboard-section.active {
+            display: block;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .dashboard-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            padding: 4rem 0;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .dashboard-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .dashboard-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 3rem;
+        }
+
+        .dashboard-sidebar {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .dashboard-stats {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .stat-card {
+            background: var(--light);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .dashboard-main {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.8rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: var(--text-light);
+            margin-bottom: 4rem;
+            max-width: 600px;
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+        /* File Upload */
+        .file-upload {
+            position: relative;
+            margin-bottom: 1.8rem;
+        }
+
+        .file-upload input[type="file"] {
+            display: none;
+        }
+
+        .file-upload-label {
+            display: block;
+            padding: 1rem;
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .file-upload-label:hover {
+            border-color: var(--primary);
+            background: var(--light);
+        }
+
+        .file-upload-label i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .file-preview {
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .file-preview img {
+            max-width: 100%;
+            max-height: 150px;
+            border-radius: 8px;
+        }
+
+        /* Hero Section - Keep original styles */
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            padding: 8rem 0 6rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.95;
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--secondary);
+            color: var(--dark);
+            padding: 1.2rem 2.5rem;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+            border: none;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.4);
+            background: var(--secondary-dark);
+        }
+
+        /* Services Section */
+        .services {
+            padding: 6rem 0;
+            background: var(--white);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .service-card {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            text-align: center;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .service-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .service-icon {
+            font-size: 3.5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            background: var(--light);
+            width: 90px;
+            height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin-right: auto;
+            margin-left: auto;
+            transition: var(--transition);
+        }
+
+        .service-card:hover .service-icon {
+            transform: scale(1.1);
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .service-card h3 {
+            color: var(--dark);
+            margin-bottom: 1.2rem;
+            font-size: 1.6rem;
+            font-weight: 600;
+        }
+
+        .service-card p {
+            color: var(--text);
+            line-height: 1.7;
+            flex-grow: 1;
+            margin-bottom: 1.8rem;
+        }
+
+        .service-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: var(--primary);
+            color: var(--white);
+            padding: 0.9rem 1.8rem;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 500;
+            transition: var(--transition);
+            margin-top: auto;
+            cursor: pointer;
+            border: 2px solid var(--primary);
+        }
+
+        .service-link:hover {
+            background: transparent;
+            color: var(--primary);
+        }
+
+        /* About Section */
+        .about {
+            padding: 6rem 0;
+            background: var(--light-alt);
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-text h2 {
+            font-size: 2.8rem;
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .about-text p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            color: var(--text);
+        }
+
+        .about-image {
+            text-align: center;
+            position: relative;
+        }
+
+        .about-image img {
+            max-width: 100%;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-text {
+            font-size: 1rem;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        /* Appointments Section */
+        .appointments {
+            padding: 6rem 0;
+            background: var(--white);
+        }
+
+        .appointment-form {
+            max-width: 700px;
+            margin: 0 auto;
+            background: var(--white);
+            padding: 3rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border);
+        }
+
+        .form-group {
+            margin-bottom: 1.8rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.6rem;
+            color: var(--dark);
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(15, 76, 129, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: var(--primary);
+            color: var(--white);
+            padding: 1.2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .submit-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .submit-btn:disabled {
+            background: var(--text-light);
+            cursor: not-allowed;
+        }
+
+        .success-message {
+            display: none;
+            background: #10b981;
+            color: var(--white);
+            padding: 1.2rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+
+        .error-message {
+            display: none;
+            background: #ef4444;
+            color: var(--white);
+            padding: 1.2rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 6rem 0;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            text-align: center;
+        }
+
+        .contact-item {
+            padding: 2.5rem 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius);
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+        }
+
+        .contact-item:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .contact-icon {
+            font-size: 3rem;
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-item h3 {
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+
+        .contact-item p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: var(--white);
+            padding: 4rem 0 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-about p {
+            margin-bottom: 1.5rem;
+            opacity: 0.8;
+            line-height: 1.7;
+        }
+
+        .footer-links h3,
+        .footer-services h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            color: var(--white);
+        }
+
+        .footer-links ul,
+        .footer-services ul {
+            list-style: none;
+        }
+
+        .footer-links li,
+        .footer-services li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a,
+        .footer-services a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover,
+        .footer-services a:hover {
+            color: var(--secondary);
+            padding-right: 5px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-text {
+            opacity: 0.7;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--dark);
+            cursor: pointer;
+            z-index: 1002;
+        }
+        
+        /* WhatsApp FAB */
+        .whatsapp-fab {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background-color: #25D366;
+            color: var(--white);
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.8rem;
+            text-decoration: none;
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+            z-index: 1001;
+            transition: var(--transition);
+        }
+        .whatsapp-fab:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.5);
+        }
+        
+        /* Service Pages */
+        .service-page {
+            display: none;
+            padding: 2rem 0 6rem;
+            min-height: 80vh;
+        }
+
+        .service-page.active {
+            display: block;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .service-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            padding: 4rem 0;
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .service-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .service-header p {
+            font-size: 1.3rem;
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        .service-content {
+            background: var(--white);
+            padding: 3rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 3rem;
+            border: 1px solid var(--border);
+        }
+
+        .service-content h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+            font-weight: 600;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--secondary);
+            display: inline-block;
+        }
+
+        .service-content p {
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .service-content ul {
+            margin-bottom: 1.5rem;
+            padding-right: 1.5rem;
+        }
+
+        .service-content li {
+            margin-bottom: 0.8rem;
+            position: relative;
+        }
+
+        .service-content li:before {
+            content: '✓';
+            color: var(--secondary);
+            font-weight: bold;
+            position: absolute;
+            right: -1.5rem;
+        }
+
+        .service-form {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .service-form h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        /* Remove back button */
+        .back-button {
+            display: none;
+        }
+
+        /* Service Tabs Navigation */
+        .service-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 1rem;
+        }
+
+        .service-tab {
+            background: var(--white);
+            color: var(--text);
+            border: 2px solid var(--border);
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .service-tab:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .service-tab.active {
+            background: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
+        }
+
+        .service-tab i {
+            font-size: 1.1rem;
+        }
+
+        /* Service Navigation Links */
+        .service-nav-links {
+            display: flex;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .service-nav-link {
+            background: var(--light);
+            color: var(--primary);
+            padding: 0.6rem 1.2rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            border: 2px solid transparent;
+        }
+
+        .service-nav-link:hover {
+            background: var(--primary);
+            color: var(--white);
+            transform: translateY(-2px);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-light);
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            z-index: 3000;
+            animation: slideDown 0.3s ease;
+        }
+
+        .toast.error {
+            background: var(--accent);
+        }
+
+        .toast.success {
+            background: #10b981;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateX(-50%) translateY(-20px); opacity: 0; }
+            to { transform: translateX(-50%) translateY(0); opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateX(-50%) translateY(0); opacity: 1; }
+            to { transform: translateX(-50%) translateY(-20px); opacity: 0; }
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+            
+            .about-content {
+                gap: 3rem;
+            }
+            
+            .dashboard-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: fixed;
+                top: 0;
+                right: 0;
+                left: 0;
+                bottom: 0;
+                background: var(--white);
+                flex-direction: column;
+                padding: 5rem 2rem;
+                box-shadow: var(--shadow-lg);
+                z-index: 1000;
+                overflow-y: auto;
+                margin: 0 !important;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .auth-buttons {
+                display: none;
+            }
+
+            .mobile-auth {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+                margin-top: 2rem;
+            }
+
+            .lang-switch-desktop {
+                display: none;
+            }
+
+            .lang-switch-li-mobile {
+                display: list-item;
+            }
+
+            .hero {
+                padding: 6rem 0 4rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .section-title {
+                font-size: 2.2rem;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .whatsapp-fab {
+                width: 55px;
+                height: 55px;
+                font-size: 2.2rem;
+                bottom: 20px;
+                left: 20px;
+            }
+            
+            .service-content, .service-form {
+                padding: 2rem;
+            }
+
+            .service-header h1 {
+                font-size: 2.5rem;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .role-selection {
+                grid-template-columns: 1fr;
+            }
+
+            .service-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .service-tab {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .service-header h1 {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .service-content, .service-form {
+                padding: 1.5rem;
+            }
+            
+            .appointment-form {
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Main Navigation -->
+    <header id="main-header">
+        <div class="container">
+            <nav>
+                <a class="logo" onclick="showPage('home')">
+                    <i class="fas fa-handshake logo-icon"></i>
+                    <span data-key="logo">وصل</span>
+                </a>
+                <button class="mobile-menu-btn" onclick="toggleMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <ul class="nav-links" id="navLinks">
+                    <li><a onclick="showPage('home')" class="nav-home active" data-key="navHome">الرئيسية</a></li>
+                    <li><a onclick="showServicePage('real-estate')" class="nav-services" data-key="navServices">الخدمات</a></li>
+                    <li><a onclick="showPage('home'); scrollToSection('about')" class="nav-about" data-key="navAbout">من نحن</a></li>
+                    <li><a onclick="showPage('home'); scrollToSection('appointments')" class="nav-appointments" data-key="navAppointments">المواعيد</a></li>
+                    <li><a onclick="showPage('home'); scrollToSection('contact')" class="nav-contact" data-key="navContact">اتصل بنا</a></li>
+                    
+                    <!-- Dynamic Auth Links (Mobile) -->
+                    <div class="mobile-auth" id="mobileAuth">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                    
+                    <li class="lang-switch-li-mobile">
+                        <button class="lang-switch" onclick="toggleLanguage()">
+                            <i class="fas fa-globe"></i> 
+                            <span data-key="langBtn">English</span>
+                        </button>
+                    </li>
+                </ul>
+                
+                <!-- Dynamic Auth Buttons (Desktop) -->
+                <div class="auth-buttons" id="authButtons">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+                
+                <button class="lang-switch lang-switch-desktop" onclick="toggleLanguage()">
+                    <i class="fas fa-globe"></i> 
+                    <span data-key="langBtn">English</span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Home Page -->
+    <section id="home-page" class="service-page active">
+        <div class="hero" id="home">
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="hero-title" data-key="heroTitle">بوابتك الموثوقة في تركيا</h1>
+                    <p class="hero-subtitle" data-key="heroSubtitle">خدمات شاملة للعقارات، السياحة، التعليم، الرعاية الصحية، وحلول الأعمال. متمركزون في بولو، نخدم جميع أنحاء تركيا بتميز وموثوقية.</p>
+                    <button onclick="showServicePage('real-estate')" class="cta-button cta-text">
+                        <span data-key="ctaText">ابدأ رحلتك</span>
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <section class="services" id="services">
+            <div class="container">
+                <h2 class="section-title services-title" data-key="servicesTitle">خدماتنا المتميزة</h2>
+                <p class="section-subtitle services-subtitle" data-key="servicesSubtitle">حلول شاملة مصممة خصيصاً لاحتياجاتك في تركيا، مقدمة بخبرة وتفانٍ</p>
+                <div class="services-grid">
+                    <div class="service-card" data-service="real-estate">
+                        <div class="service-icon"><i class="fas fa-building"></i></div>
+                        <h3 class="service1-title" data-key="service1Title">الخدمات العقارية</h3>
+                        <p class="service1-desc" data-key="service1Desc">اعثر على عقار أحلامك في أكثر المواقع المرغوبة في تركيا. نقدم عقارات سكنية وتجارية حصرية للبيع والإيجار مع خدمة متميزة.</p>
+                        <button onclick="showServicePage('real-estate')" class="service-link service1-link">
+                            <span data-key="service1Link">اكتشف العقارات</span>
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                    </div>
+                    <div class="service-card" data-service="tourism">
+                        <div class="service-icon"><i class="fas fa-plane"></i></div>
+                        <h3 class="service2-title" data-key="service2Title">الخدمات السياحية</h3>
+                        <p class="service2-desc" data-key="service2Desc">اختبر جمال تركيا الأخاذ مع باقاتنا السياحية المختارة بعناية. خطط سفر مخصصة وإقامات فاخرة لرحلات لا تُنسى.</p>
+                        <button onclick="showServicePage('tourism')" class="service-link service2-link">
+                            <span data-key="service2Link">استكشف تركيا</span>
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                    </div>
+                    <div class="service-card" data-service="student">
+                        <div class="service-icon"><i class="fas fa-graduation-cap"></i></div>
+                        <h3 class="service3-title" data-key="service3Title">الخدمات الطلابية</h3>
+                        <p class="service3-desc" data-key="service3Desc">تنقل في نظام التعليم التركي بإرشاد خبرائنا. من تقديم طلبات الجامعة إلى ترتيب السكن، نضمن رحلتك الأكاديمية سلسة وبلا متاعب.</p>
+                        <button onclick="showServicePage('student')" class="service-link service3-link">
+                            <span data-key="service3Link">ابدأ رحلتك</span>
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                    </div>
+                    <div class="service-card" data-service="medical">
+                        <div class="service-icon"><i class="fas fa-heartbeat"></i></div>
+                        <h3 class="service4-title" data-key="service4Title">الخدمات العلاجية</h3>
+                        <p class="service4-desc" data-key="service4Desc">الوصول إلى نظام الرعاية الصحية العالمي في تركيا مع خدمات السياحة العلاجية المتميزة لدينا. أفضل المستشفيات، علاجات متخصصة، ورعاية شاملة.</p>
+                        <button onclick="showServicePage('medical')" class="service-link service4-link">
+                            <span data-key="service4Link">ابحث عن العلاج</span>
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                    </div>
+                    <div class="service-card" data-service="business">
+                        <div class="service-icon"><i class="fas fa-briefcase"></i></div>
+                        <h3 class="service5-title" data-key="service5Title">خدمات الأعمال</h3>
+                        <p class="service5-desc" data-key="service5Desc">أطلق أو وسع عملك في تركيا مع استشاراتنا المهنية. تسجيل الشركات، تحليل الأسواق، والتخطيط الاستراتيجي للنجاح.</p>
+                        <button onclick="showServicePage('business')" class="service-link service5-link">
+                            <span data-key="service5Link">نَمِ بأعمالك</span>
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                    </div>
+                    <div class="service-card" data-service="other">
+                        <div class="service-icon"><i class="fas fa-hands-helping"></i></div>
+                        <h3 class="service6-title" data-key="service6Title">خدمات إضافية</h3>
+                        <p class="service6-desc" data-key="service6Desc">دعم شامل يشمل الخدمات القانونية، الترجمة، تصاريح الإقامة، التأمين، والنقل لجعل حياتك في تركيا خالية من المتاعب.</p>
+                        <button onclick="showServicePage('other')" class="service-link service6-link">
+                            <span data-key="service6Link">عرض جميع الخدمات</span>
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="about" id="about">
+            <div class="container">
+                <div class="about-content">
+                    <div class="about-text">
+                        <h2 class="about-title" data-key="aboutTitle">شريكك الموثوق في تركيا</h2>
+                        <p class="about-p1" data-key="aboutP1">وصل هو مزود الخدمات المتميز الخاص بك، بمقر رئيسي في بولو ووصول على مستوى تركيا. مع سنوات من الخبرة المتخصصة، نتفوق في ربط الأفراد والشركات بالخدمات المتميزة التي يحتاجونها عبر تركيا.</p>
+                        <p class="about-p2" data-key="aboutP2">سواء كنت تبحث عن استثمارات عقارية، تخطط لعطلة تركية لا تُنسى، تتطلع إلى فرص تعليمية، تحتاج إلى علاجات طبية، أو توسيع مشاريعك التجارية، نقدم تجارب سلسة وخالية من المتاعب.</p>
+                        <p class="about-p3" data-key="aboutP3">فريقنا المتفاني من محترفي الصناعة ملتزم بتقديم خدمة استثنائية، وبناء علاقات دائمة، وضمان رضاك التام مع كل تفاعل.</p>
+                        
+                        <div class="stats">
+                            <div class="stat-item">
+                                <div class="stat-number">500+</div>
+                                <div class="stat-text" data-key="statText1">عملاء سعداء</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">7+</div>
+                                <div class="stat-text" data-key="statText2">سنوات خبرة</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">24/7</div>
+                                <div class="stat-text" data-key="statText3">دعم عملاء</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="about-image">
+                        <div style="width: 100%; height: 400px; background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem;">
+                            <i class="fas fa-users" style="font-size: 5rem; opacity: 0.7;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="appointments" id="appointments">
+            <div class="container">
+                <h2 class="section-title appointments-title" data-key="appointmentsTitle">جدول استشارتك</h2>
+                <p class="section-subtitle appointments-subtitle" data-key="appointmentsSubtitle">دعنا نناقش كيف يمكننا مساعدتك في تحقيق أهدافك في تركيا</p>
+                <form class="appointment-form" id="appointmentForm">
+                    <div class="form-group">
+                        <label for="name" class="label-name" data-key="labelName">الاسم الكامل</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="label-email" data-key="labelEmail">البريد الإلكتروني</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone" class="label-phone" data-key="labelPhone">رقم الهاتف</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="service" class="label-service" data-key="labelService">الخدمة المطلوبة</label>
+                        <select id="service" name="service" required>
+                            <option value="" class="option-select" data-key="optionSelect">اختر خدمة...</option>
+                            <option value="real-estate" class="option1" data-key="option1">الخدمات العقارية</option>
+                            <option value="tourism" class="option2" data-key="option2">الخدمات السياحية</option>
+                            <option value="student" class="option3" data-key="option3">الخدمات الطلابية</option>
+                            <option value="medical" class="option4" data-key="option4">الخدمات العلاجية</option>
+                            <option value="business" class="option5" data-key="option5">خدمات الأعمال</option>
+                            <option value="other" class="option6" data-key="option6">خدمات أخرى</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="date" class="label-date" data-key="labelDate">التاريخ المفضل</label>
+                        <input type="date" id="date" name="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message" class="label-message" data-key="labelMessage">متطلباتك</label>
+                        <textarea id="message" name="message" placeholder="أخبرنا المزيد عن احتياجاتك وتوقعاتك المحددة..."></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn btn-text">
+                        <span id="submit-text" data-key="btnText">طلب استشارة</span>
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                    <div class="success-message" id="successMessage">
+                        <span class="success-text" data-key="successText">شكراً لك! تم استلام طلب استشارتك. سنتصل بك قريباً لتأكيد موعدك.</span>
+                    </div>
+                    <div class="error-message" id="errorMessage">
+                        <span class="error-text" data-key="errorText">حدث خطأ أثناء إرسال الطلب. يرجى المحاولة مرة أخرى.</span>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <section class="contact" id="contact">
+            <div class="container">
+                <h2 class="section-title contact-title" data-key="contactTitle">تواصل معنا</h2>
+                <p class="section-subtitle contact-subtitle" data-key="contactSubtitle">نحن هنا للإجابة على أسئلتك ومساعدتك في البدء</p>
+                <div class="contact-grid">
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+                        <h3 class="contact1-title" data-key="contact1Title">موقعنا</h3>
+                        <p class="contact1-info" data-key="contact1Info">بولو، تركيا</p>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fas fa-phone"></i></div>
+                        <h3 class="contact2-title" data-key="contact2Title">اتصل بنا</h3>
+                        <p class="contact2-info" data-key="contact2Info">+90 538 213 6214</p>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                        <h3 class="contact3-title" data-key="contact3Title">راسلنا</h3>
+                        <p class="contact3-info" data-key="contact3Info">wasslservices@gmail.com</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+
+    <!-- Dashboard Page -->
+    <section id="dashboard-page" class="dashboard-section">
+        <div class="dashboard-header">
+            <div class="container">
+                <h1 id="dashboard-title" data-key="dashboardTitle">لوحة التحكم</h1>
+                <p id="dashboard-subtitle" data-key="dashboardSubtitle">إدارة خدماتك وتفاعلاتك</p>
+            </div>
+        </div>
+        <div class="container">
+            <div class="dashboard-content">
+                <div class="dashboard-sidebar">
+                    <div class="user-info">
+                        <h3 id="welcome-user" data-key="welcomeUser">مرحباً،</h3>
+                        <div class="user-role-badge" id="user-role-badge">عميل</div>
+                    </div>
+                    
+                    <div class="dashboard-stats">
+                        <div class="stat-card">
+                            <div class="stat-number" id="products-count">0</div>
+                            <div class="stat-label" data-key="productsCount">الخدمات المنشورة</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="favorites-count">0</div>
+                            <div class="stat-label" data-key="favoritesCount">المفضلة</div>
+                        </div>
+                    </div>
+                    
+                    <button onclick="showAddProductModal()" class="auth-btn" id="add-product-btn" style="width: 100%; margin-top: 2rem;">
+                        <i class="fas fa-plus"></i>
+                        <span data-key="addProductBtn">إضافة خدمة جديدة</span>
+                    </button>
+                    
+                    <button onclick="showMyProducts()" class="auth-btn secondary" id="my-products-btn" style="width: 100%; margin-top: 1rem;">
+                        <i class="fas fa-list"></i>
+                        <span data-key="myProductsBtn">خدماتي المنشورة</span>
+                    </button>
+                    
+                    <button onclick="showMyFavorites()" class="auth-btn secondary" id="my-favorites-btn" style="width: 100%; margin-top: 1rem;">
+                        <i class="fas fa-heart"></i>
+                        <span data-key="myFavoritesBtn">قائمة المفضلة</span>
+                    </button>
+                </div>
+                
+                <div class="dashboard-main">
+                    <h2 id="dashboard-section-title" data-key="myProducts">خدماتك المنشورة</h2>
+                    <div class="products-grid" id="dashboard-products">
+                        <!-- Products will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Hub Page -->
+    <section id="services-hub-page" class="service-page">
+        <div class="service-header">
+            <div class="container">
+                <h1 data-key="servicesTitle">خدماتنا المتميزة</h1>
+                <p data-key="servicesSubtitle">اختر الخدمة التي تريد استكشافها</p>
+            </div>
+        </div>
+        <div class="container">
+            <!-- Service Tabs Navigation -->
+            <div class="service-tabs" id="serviceTabs">
+                <button class="service-tab active" onclick="showServicePage('real-estate')">
+                    <i class="fas fa-building"></i>
+                    <span data-key="service1Title">العقارات</span>
+                </button>
+                <button class="service-tab" onclick="showServicePage('tourism')">
+                    <i class="fas fa-plane"></i>
+                    <span data-key="service2Title">السياحة</span>
+                </button>
+                <button class="service-tab" onclick="showServicePage('student')">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span data-key="service3Title">الطلابية</span>
+                </button>
+                <button class="service-tab" onclick="showServicePage('medical')">
+                    <i class="fas fa-heartbeat"></i>
+                    <span data-key="service4Title">العلاجية</span>
+                </button>
+                <button class="service-tab" onclick="showServicePage('business')">
+                    <i class="fas fa-briefcase"></i>
+                    <span data-key="service5Title">الأعمال</span>
+                </button>
+                <button class="service-tab" onclick="showServicePage('other')">
+                    <i class="fas fa-hands-helping"></i>
+                    <span data-key="service6Title">إضافية</span>
+                </button>
+            </div>
+
+            <!-- Service Pages Container -->
+            <div id="services-container">
+                <!-- Real Estate Service Page -->
+                <div id="real-estate-page" class="service-content" style="display: block;">
+                    <h2 class="service1-title" data-key="service1Title">الخدمات العقارية</h2>
+                    <p class="service1-desc" data-key="service1Desc">اعثر على عقار أحلامك في أكثر المواقع المرغوبة في تركيا. نقدم عقارات سكنية وتجارية حصرية للبيع والإيجار مع خدمة متميزة.</p>
+                    
+                    <h3 class="real-estate-content-title1" data-key="realEstateContentTitle1">شراء العقارات</h3>
+                    <p class="real-estate-content-p1" data-key="realEstateContentP1">نقدم خدمات شراء منازل شاملة تساعد العملاء في العثور على عقاراتهم المثالية، بدءاً من تقييم متطلباتهم المحددة وصولاً إلى إتمام الصفقة. يقدم فريقنا دعماً كاملاً خلال جميع مراحل العملية لضمان تجربة ناجحة وسلسة.</p>
+                    
+                    <!-- Navigation to other services -->
+                    <div class="service-nav-links">
+                        <a href="javascript:void(0)" onclick="showServicePage('tourism')" class="service-nav-link">
+                            <i class="fas fa-plane"></i>
+                            <span data-key="service2Link">الخدمات السياحية</span>
+                        </a>
+                        <a href="javascript:void(0)" onclick="showServicePage('student')" class="service-nav-link">
+                            <i class="fas fa-graduation-cap"></i>
+                            <span data-key="service3Link">الخدمات الطلابية</span>
+                        </a>
+                        <a href="javascript:void(0)" onclick="showServicePage('medical')" class="service-nav-link">
+                            <i class="fas fa-heartbeat"></i>
+                            <span data-key="service4Link">الخدمات العلاجية</span>
+                        </a>
+                    </div>
+                    
+                    <!-- Dynamic Products Grid -->
+                    <div id="real-estate-products-section" style="margin-top: 3rem;">
+                        <h3 style="margin-bottom: 2rem; color: var(--dark); font-size: 1.8rem;" data-key="availableServices">الخدمات المتاحة</h3>
+                        <div class="products-grid" id="real-estate-products">
+                            <!-- Products will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tourism Service Page -->
+                <div id="tourism-page" class="service-content" style="display: none;">
+                    <h2 class="service2-title" data-key="service2Title">الخدمات السياحية</h2>
+                    <p class="service2-desc" data-key="service2Desc">اختبر جمال تركيا الأخاذ مع باقاتنا السياحية المختارة بعناية. خطط سفر مخصصة وإقامات فاخرة لرحلات لا تُنسى.</p>
+                    
+                    <h3 class="tourism-content-title1" data-key="tourismContentTitle1">تجارب سفر مخصصة</h3>
+                    <p class="tourism-content-p1" data-key="tourismContentP1">نقدم باقات سفر حصرية وخطوط سفر مخصصة لمساعدتك في استكشاف مدن تركيا الرائعة، والمواقع التاريخية، والعجائب الطبيعية. سواء كنت مهتماً بالتاريخ القديم، أو الانغماس الثقافي، أو الجمال الطبيعي، نصمم الرحلة المثالية المصممة خصيصاً لاهتماماتك.</p>
+                    
+                    <!-- Navigation to other services -->
+                    <div class="service-nav-links">
+                        <a href="javascript:void(0)" onclick="showServicePage('real-estate')" class="service-nav-link">
+                            <i class="fas fa-building"></i>
+                            <span data-key="service1Link">الخدمات العقارية</span>
+                        </a>
+                        <a href="javascript:void(0)" onclick="showServicePage('student')" class="service-nav-link">
+                            <i class="fas fa-graduation-cap"></i>
+                            <span data-key="service3Link">الخدمات الطلابية</span>
+                        </a>
+                        <a href="javascript:void(0)" onclick="showServicePage('medical')" class="service-nav-link">
+                            <i class="fas fa-heartbeat"></i>
+                            <span data-key="service4Link">الخدمات العلاجية</span>
+                        </a>
+                    </div>
+                    
+                    <!-- Dynamic Products Grid -->
+                    <div id="tourism-products-section" style="margin-top: 3rem;">
+                        <h3 style="margin-bottom: 2rem; color: var(--dark); font-size: 1.8rem;" data-key="availablePackages">الباقات السياحية المتاحة</h3>
+                        <div class="products-grid" id="tourism-products">
+                            <!-- Products will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Student Service Page -->
+                <div id="student-page" class="service-content" style="display: none;">
+                    <h2 class="service3-title" data-key="service3Title">الخدمات الطلابية</h2>
+                    <p class="service3-desc" data-key="service3Desc">تنقل في نظام التعليم التركي بإرشاد خبرائنا. من تقديم طلبات الجامعة إلى ترتيب السكن، نضمن رحلتك الأكاديمية سلسة وبلا متاعب.</p>
+                    
+                    <!-- Navigation to other services -->
+                    <div class="service-nav-links">
+                        <a href="javascript:void(0)" onclick="showServicePage('real-estate')" class="service-nav-link">
+                            <i class="fas fa-building"></i>
+                            <span data-key="service1Link">الخدمات العقارية</span>
+                        </a>
+                        <a href="javascript:void(0)" onclick="showServicePage('tourism')" class="service-nav-link">
+                            <i class="fas fa-plane"></i>
+                            <span data-key="service2Link">الخدمات السياحية</span>
+                        </a>
+                        <a href="javascript:void(0)" onclick="showServicePage('medical')" class="service-nav-link">
+                            <i class="fas fa-heartbeat"></i>
+                            <span data-key="service4Link">الخدمات العلاجية</span>
+                        </a>
+                    </div>
+                    
+                    <!-- Dynamic Products Grid -->
+                    <div id="student-products-section" style="margin-top: 3rem;">
+                        <h3 style="margin-bottom: 2rem; color: var(--dark); font-size: 1.8rem;" data-key="availableServices">الخدمات المتاحة</h3>
+                        <div class="products-grid" id="student-products">
+                            <!-- Products will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Medical Service Page -->
+                <div id="medical-page" class="service-content" style="display: none;">
+                    <h2 class="service4-title" data-key="service4Title">الخدمات العلاجية</h2>
+                    <p class="service4-desc" data-key="service4Desc">الوصول إلى نظام الرعاية الصحية العالمي في تركيا مع خدمات السياحة العلاجية المتميزة لدينا. أفضل المستشفيات، علاجات متخصصة، ورعاية شاملة.</p>
+                    
+                    <!-- Navigation to other services -->
+                    <div class="service-nav-links">
+                        <a href="javascript:void(0)" onclick="showServicePage('real-estate')" class="service-nav-link">
+                            <i class="fas fa-building"></i>
+                            <span data-key="service1Link">الخدمات العقارية</span>
+                        </a>
+                        <a href="javascript:void(0)" onclick="showServicePage('tourism')" class="service-nav-link">
+                            <i class="fas fa-plane"></i>
+                            <span data-key="service2Link">الخدمات السياحية</span>
+                        </a>
+                        <a href="javascript:void(0)" onclick="showServicePage('student')" class="service-nav-link">
+                            <i class="fas fa-graduation-cap"></i>
+                            <span data-key="service3Link">الخدمات الطلابية</span>
+                        </a>
+                    </div>
+                    
+                    <!-- Dynamic Products Grid -->
+                    <div id="medical-products-section" style="margin-top: 3rem;">
+                        <h3 style="margin-bottom: 2rem; color: var(--dark); font-size: 1.8rem;" data-key="availableServices">الخدمات المتاحة</h3>
+                        <div class="products-grid" id="medical-products">
+                            <!-- Products will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Business Service Page -->
+                <div id="business-page" class="service-content" style="display: none;">
+                    <h2 class="service5-title" data-key="service5Title">خدمات الأعمال</h2>
+                    <p class="service5-desc" data-key="service5Desc">أطلق أو وسع عملك في تركيا مع استشاراتنا المهنية. تسجيل الشركات، تحليل الأسواق، والتخطيط الاستراتيجي للنجاح.</p>
+                    
+                    <!-- Navigation to other services -->
+                    <div class="service-nav-links">
+                        <a href="javascript:void(0)" onclick="showServicePage('real-estate')" class="service-nav-link">
+                            <i class="fas fa-building"></i>
+                            <span data-key="service1Link">الخدمات العقارية</span>
+                        </a>
+                        <a href="javascript:void(0)" onclick="showServicePage('tourism')" class="service-nav-link">
+                            <i class="fas fa-plane"></i>
+                            <span data-key="service2Link">الخدمات السياحية</span>
+                        </a>
+                        <a href="javascript:void(0)" onclick="showServicePage('medical')" class="service-nav-link">
+                            <i class="fas fa-heartbeat"></i>
+                            <span data-key="service4Link">الخدمات العلاجية</span>
+                        </a>
+                    </div>
+                    
+                    <!-- Dynamic Products Grid -->
+                    <div id="business-products-section" style="margin-top: 3rem;">
+                        <h3 style="margin-bottom: 2rem; color: var(--dark); font-size: 1.8rem;" data-key="availableServices">الخدمات المتاحة</h3>
+                        <div class="products-grid" id="business-products">
+                            <!-- Products will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Other Services Page -->
+                <div id="other-page" class="service-content" style="display: none;">
+                    <h2 class="service6-title" data-key="service6Title">خدمات إضافية</h2>
+                    <p class="service6-desc" data-key="service6Desc">دعم شامل يشمل الخدمات القانونية، الترجمة، تصاريح الإقامة، التأمين، والنقل لجعل حياتك في تركيا خالية من المتاعب.</p>
+                    
+                    <!-- Navigation to other services -->
+                    <div class="service-nav-links">
+                        <a href="javascript:void(0)" onclick="showServicePage('real-estate')" class="service-nav-link">
+                            <i class="fas fa-building"></i>
+                            <span data-key="service1Link">الخدمات العقارية</span>
+                        </a>
+                        <a href="javascript:void(0)" onclick="showServicePage('tourism')" class="service-nav-link">
+                            <i class="fas fa-plane"></i>
+                            <span data-key="service2Link">الخدمات السياحية</span>
+                        </a>
+                        <a href="javascript:void(0)" onclick="showServicePage('student')" class="service-nav-link">
+                            <i class="fas fa-graduation-cap"></i>
+                            <span data-key="service3Link">الخدمات الطلابية</span>
+                        </a>
+                    </div>
+                    
+                    <!-- Dynamic Products Grid -->
+                    <div id="other-products-section" style="margin-top: 3rem;">
+                        <h3 style="margin-bottom: 2rem; color: var(--dark); font-size: 1.8rem;" data-key="availableServices">الخدمات المتاحة</h3>
+                        <div class="products-grid" id="other-products">
+                            <!-- Products will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Login Modal -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="login-title" data-key="loginTitle">تسجيل الدخول</h2>
+                <button class="modal-close" onclick="hideModal('loginModal')">&times;</button>
+            </div>
+            <div class="modal-content">
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="login-email" data-key="labelEmail">البريد الإلكتروني</label>
+                        <input type="email" id="login-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password" data-key="labelPassword">كلمة المرور</label>
+                        <input type="password" id="login-password" required>
+                    </div>
+                    <button type="submit" class="submit-btn">
+                        <span data-key="loginBtn">تسجيل الدخول</span>
+                    </button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <span data-key="noAccount">ليس لديك حساب؟</span>
+                <a onclick="showRegisterModal()" id="register-link" data-key="registerLink">سجل الآن</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal-overlay" id="registerModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="register-title" data-key="registerTitle">إنشاء حساب جديد</h2>
+                <button class="modal-close" onclick="hideModal('registerModal')">&times;</button>
+            </div>
+            <div class="modal-content">
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label for="register-name" data-key="labelName">الاسم الكامل</label>
+                        <input type="text" id="register-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-email" data-key="labelEmail">البريد الإلكتروني</label>
+                        <input type="email" id="register-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password" data-key="labelPassword">كلمة المرور</label>
+                        <input type="password" id="register-password" required minlength="6">
+                    </div>
+                    
+                    <div class="role-selection">
+                        <div class="role-option" onclick="selectRole('customer')" id="role-customer">
+                            <i class="fas fa-user"></i>
+                            <h3 data-key="customerRole">عميل</h3>
+                            <p data-key="customerDesc">تصفح الخدمات وأضفها للمفضلة</p>
+                        </div>
+                        <div class="role-option" onclick="selectRole('business')" id="role-business">
+                            <i class="fas fa-briefcase"></i>
+                            <h3 data-key="businessRole">مقدم خدمة</h3>
+                            <p data-key="businessDesc">أنشر خدماتك وأدرجها في السوق</p>
+                        </div>
+                    </div>
+                    <input type="hidden" id="register-role" value="customer">
+                    
+                    <button type="submit" class="submit-btn">
+                        <span data-key="registerBtn">إنشاء حساب</span>
+                    </button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <span data-key="haveAccount">لديك حساب بالفعل؟</span>
+                <a onclick="showLoginModal()" id="login-link" data-key="loginLink">تسجيل الدخول</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Product Modal -->
+    <div class="modal-overlay" id="addProductModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="add-product-title" data-key="addProductTitle">إضافة خدمة جديدة</h2>
+                <button class="modal-close" onclick="hideModal('addProductModal')">&times;</button>
+            </div>
+            <div class="modal-content">
+                <form id="addProductForm">
+                    <div class="form-group">
+                        <label for="product-title" data-key="productTitle">عنوان الخدمة</label>
+                        <input type="text" id="product-title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="product-description" data-key="productDescription">وصف الخدمة</label>
+                        <textarea id="product-description" rows="4" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="product-price" data-key="productPrice">السعر ($)</label>
+                        <input type="number" id="product-price" required min="0" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label for="product-category" data-key="productCategory">الفئة</label>
+                        <select id="product-category" required>
+                            <option value="real-estate" data-key="option1">العقارات</option>
+                            <option value="tourism" data-key="option2">السياحة</option>
+                            <option value="student" data-key="option3">الطلابية</option>
+                            <option value="medical" data-key="option4">الطبية</option>
+                            <option value="business" data-key="option5">الأعمال</option>
+                            <option value="other" data-key="option6">خدمات أخرى</option>
+                        </select>
+                    </div>
+                    <div class="file-upload">
+                        <label class="file-upload-label" for="product-image">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <span data-key="uploadImage">انقر لرفع صورة</span>
+                            <span style="font-size: 0.9rem; color: var(--text-light);" data-key="maxSize">(الحد الأقصى: 5MB)</span>
+                        </label>
+                        <input type="file" id="product-image" accept="image/*" onchange="previewImage(event)">
+                        <div class="file-preview" id="file-preview"></div>
+                    </div>
+                    <button type="submit" class="submit-btn">
+                        <span data-key="addProductBtn">إضافة الخدمة</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <a href="https://wa.me/905382136214" target="_blank" class="whatsapp-fab" aria-label="اتصل بنا على واتساب">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script>
+        // ============================================
+        // FIREBASE CONFIGURATION
+        // ============================================
+        // REPLACE THESE VALUES WITH YOUR FIREBASE CONFIG
+        // Get these from Firebase Console > Project Settings > General > Your apps
+        // ============================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyBABsnWbbD-tbI3z-T2l_bc4TliRrEZ2lM",
+            authDomain: "wassl-d24f7.firebaseapp.com",
+            projectId: "wassl-d24f7",
+            storageBucket: "wassl-d24f7.appspot.com",
+            messagingSenderId: "932001515178",
+            appId: "1:932001515178:web:bb84aec2505d6560e05222"
+        };
+        // ============================================
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        const storage = firebase.storage();
+
+        // Translations object (simplified for demo)
+        const translations = {
+            en: {
+                // Navigation
+                navHome: "Home",
+                navServices: "Services",
+                navAbout: "About Us",
+                navAppointments: "Appointments",
+                navContact: "Contact Us",
+                langBtn: "العربية",
+                
+                // Hero
+                heroTitle: "Your Trusted Gateway in Turkey",
+                heroSubtitle: "Comprehensive services for real estate, tourism, education, healthcare, and business solutions. Based in Bolu, serving all of Turkey with excellence and reliability.",
+                ctaText: "Start Your Journey",
+                
+                // Auth
+                loginTitle: "Login",
+                registerTitle: "Create Account",
+                loginBtn: "Login",
+                registerBtn: "Create Account",
+                noAccount: "Don't have an account?",
+                haveAccount: "Already have an account?",
+                registerLink: "Register Now",
+                loginLink: "Login",
+                
+                // User Roles
+                customerRole: "Customer",
+                businessRole: "Business",
+                customerDesc: "Browse services and add to favorites",
+                businessDesc: "Publish and manage your services",
+                
+                // Dashboard
+                dashboardTitle: "Dashboard",
+                dashboardSubtitle: "Manage your services and interactions",
+                welcomeUser: "Welcome,",
+                productsCount: "Published Services",
+                favoritesCount: "Favorites",
+                addProductBtn: "Add New Service",
+                myProductsBtn: "My Published Services",
+                myFavoritesBtn: "Favorites List",
+                myProducts: "Your Published Services",
+                availableServices: "Available Services",
+                availablePackages: "Available Packages",
+                
+                // Services
+                servicesTitle: "Our Premium Services",
+                servicesSubtitle: "Comprehensive solutions tailored to your needs in Turkey",
+                service1Title: "Real Estate Services",
+                service2Title: "Tourism Services",
+                service3Title: "Student Services",
+                service4Title: "Medical Services",
+                service5Title: "Business Services",
+                service6Title: "Additional Services",
+                service1Link: "Discover Properties",
+                service2Link: "Explore Turkey",
+                service3Link: "Start Your Journey",
+                service4Link: "Find Treatment",
+                service5Link: "Grow Your Business",
+                service6Link: "View All Services",
+                
+                // About
+                aboutTitle: "Your Trusted Partner in Turkey",
+                statText1: "Happy Clients",
+                statText2: "Years Experience",
+                statText3: "Customer Support",
+                
+                // Appointments
+                appointmentsTitle: "Schedule Your Consultation",
+                appointmentsSubtitle: "Let's discuss how we can help you achieve your goals in Turkey",
+                labelName: "Full Name",
+                labelEmail: "Email Address",
+                labelPhone: "Phone Number",
+                labelService: "Service Needed",
+                labelDate: "Preferred Date",
+                labelMessage: "Your Requirements",
+                labelPassword: "Password",
+                optionSelect: "Select a service...",
+                option1: "Real Estate Services",
+                option2: "Tourism Services",
+                option3: "Student Services",
+                option4: "Medical Services",
+                option5: "Business Services",
+                option6: "Other Services",
+                btnText: "Request Consultation",
+                successText: "Thank you! Your consultation request has been received.",
+                errorText: "An error occurred. Please try again.",
+                
+                // Contact
+                contactTitle: "Get In Touch",
+                contactSubtitle: "We're here to answer your questions and help you get started",
+                contact1Title: "Our Location",
+                contact1Info: "Bolu, Turkey",
+                contact2Title: "Call Us",
+                contact2Info: "+90 538 213 6214",
+                contact3Title: "Email Us",
+                contact3Info: "wasslservices@gmail.com",
+                
+                // Product Form
+                productTitle: "Service Title",
+                productDescription: "Service Description",
+                productPrice: "Price ($)",
+                productCategory: "Category",
+                uploadImage: "Click to upload image",
+                maxSize: "(Max: 5MB)",
+                
+                // Service Pages
+                service1Subtitle: "Find your dream property in Turkey with our premium real estate solutions",
+                service2Subtitle: "Discover the wonders of Turkey with our expertly crafted travel experiences",
+                realEstateContentTitle1: "Property Acquisition",
+                tourismContentTitle1: "Custom Travel Experiences"
+            },
+            ar: {
+                // Navigation
+                navHome: "الرئيسية",
+                navServices: "الخدمات",
+                navAbout: "من نحن",
+                navAppointments: "المواعيد",
+                navContact: "اتصل بنا",
+                langBtn: "English",
+                
+                // Hero
+                heroTitle: "بوابتك الموثوقة في تركيا",
+                heroSubtitle: "خدمات شاملة للعقارات، السياحة، التعليم، الرعاية الصحية، وحلول الأعمال. متمركزون في بولو، نخدم جميع أنحاء تركيا بتميز وموثوقية.",
+                ctaText: "ابدأ رحلتك",
+                
+                // Auth
+                loginTitle: "تسجيل الدخول",
+                registerTitle: "إنشاء حساب جديد",
+                loginBtn: "تسجيل الدخول",
+                registerBtn: "إنشاء حساب",
+                noAccount: "ليس لديك حساب؟",
+                haveAccount: "لديك حساب بالفعل؟",
+                registerLink: "سجل الآن",
+                loginLink: "تسجيل الدخول",
+                
+                // User Roles
+                customerRole: "عميل",
+                businessRole: "مقدم خدمة",
+                customerDesc: "تصفح الخدمات وأضفها للمفضلة",
+                businessDesc: "أنشر خدماتك وأدرجها في السوق",
+                
+                // Dashboard
+                dashboardTitle: "لوحة التحكم",
+                dashboardSubtitle: "إدارة خدماتك وتفاعلاتك",
+                welcomeUser: "مرحباً،",
+                productsCount: "الخدمات المنشورة",
+                favoritesCount: "المفضلة",
+                addProductBtn: "إضافة خدمة جديدة",
+                myProductsBtn: "خدماتي المنشورة",
+                myFavoritesBtn: "قائمة المفضلة",
+                myProducts: "خدماتك المنشورة",
+                availableServices: "الخدمات المتاحة",
+                availablePackages: "الباقات السياحية المتاحة",
+                
+                // Services
+                servicesTitle: "خدماتنا المتميزة",
+                servicesSubtitle: "حلول شاملة مصممة خصيصاً لاحتياجاتك في تركيا",
+                service1Title: "الخدمات العقارية",
+                service2Title: "الخدمات السياحية",
+                service3Title: "الخدمات الطلابية",
+                service4Title: "الخدمات العلاجية",
+                service5Title: "خدمات الأعمال",
+                service6Title: "خدمات إضافية",
+                service1Link: "اكتشف العقارات",
+                service2Link: "استكشف تركيا",
+                service3Link: "ابدأ رحلتك",
+                service4Link: "ابحث عن العلاج",
+                service5Link: "نَمِ بأعمالك",
+                service6Link: "عرض جميع الخدمات",
+                
+                // About
+                aboutTitle: "شريكك الموثوق في تركيا",
+                statText1: "عملاء سعداء",
+                statText2: "سنوات خبرة",
+                statText3: "دعم عملاء",
+                
+                // Appointments
+                appointmentsTitle: "جدول استشارتك",
+                appointmentsSubtitle: "دعنا نناقش كيف يمكننا مساعدتك في تحقيق أهدافك في تركيا",
+                labelName: "الاسم الكامل",
+                labelEmail: "البريد الإلكتروني",
+                labelPhone: "رقم الهاتف",
+                labelService: "الخدمة المطلوبة",
+                labelDate: "التاريخ المفضل",
+                labelMessage: "متطلباتك",
+                labelPassword: "كلمة المرور",
+                optionSelect: "اختر خدمة...",
+                option1: "الخدمات العقارية",
+                option2: "الخدمات السياحية",
+                option3: "الخدمات الطلابية",
+                option4: "الخدمات العلاجية",
+                option5: "خدمات الأعمال",
+                option6: "خدمات أخرى",
+                btnText: "طلب استشارة",
+                successText: "شكراً لك! تم استلام طلب استشارتك.",
+                errorText: "حدث خطأ. يرجى المحاولة مرة أخرى.",
+                
+                // Contact
+                contactTitle: "تواصل معنا",
+                contactSubtitle: "نحن هنا للإجابة على أسئلتك ومساعدتك في البدء",
+                contact1Title: "موقعنا",
+                contact1Info: "بولو، تركيا",
+                contact2Title: "اتصل بنا",
+                contact2Info: "+90 538 213 6214",
+                contact3Title: "راسلنا",
+                contact3Info: "wasslservices@gmail.com",
+                
+                // Product Form
+                productTitle: "عنوان الخدمة",
+                productDescription: "وصف الخدمة",
+                productPrice: "السعر ($)",
+                productCategory: "الفئة",
+                uploadImage: "انقر لرفع صورة",
+                maxSize: "(الحد الأقصى: 5MB)",
+                
+                // Service Pages
+                service1Subtitle: "اعثر على عقار أحلامك في تركيا مع حلولنا العقارية المتميزة",
+                service2Subtitle: "اكتشف عجائب تركيا مع تجارب السفر المصممة بخبرة",
+                realEstateContentTitle1: "شراء العقارات",
+                tourismContentTitle1: "تجارب سفر مخصصة"
+            }
+        };
+
+        // Global variables
+        let currentUser = null;
+        let userRole = null;
+        let currentPage = 'home';
+        let currentLang = 'ar';
+        let selectedImage = null;
+
+        // DOM Elements
+        const authButtons = document.getElementById('authButtons');
+        const mobileAuth = document.getElementById('mobileAuth');
+        const loginModal = document.getElementById('loginModal');
+        const registerModal = document.getElementById('registerModal');
+        const addProductModal = document.getElementById('addProductModal');
+
+        // Initialize the app
+        function init() {
+            // Set minimum date for appointment
+            document.getElementById('date').min = new Date().toISOString().split('T')[0];
+            
+            // Set up auth state listener
+            auth.onAuthStateChanged(async (user) => {
+                if (user) {
+                    currentUser = user;
+                    await loadUserRole();
+                    updateAuthUI();
+                } else {
+                    currentUser = null;
+                    userRole = null;
+                    updateAuthUI();
+                }
+            });
+
+            // Load language preference
+            const savedLang = localStorage.getItem('wassl-lang') || 'ar';
+            setLanguage(savedLang);
+            
+            // Load initial page
+            showPage('home');
+        }
+
+        // Language functions
+        function setLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('wassl-lang', lang);
+            
+            // Set direction
+            document.documentElement.lang = lang;
+            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+            
+            // Update all elements with data-key
+            document.querySelectorAll('[data-key]').forEach(element => {
+                const key = element.getAttribute('data-key');
+                if (translations[lang] && translations[lang][key]) {
+                    if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+                        element.placeholder = translations[lang][key];
+                    } else {
+                        element.textContent = translations[lang][key];
+                    }
+                }
+            });
+            
+            // Update auth UI
+            updateAuthUI();
+        }
+
+        function toggleLanguage() {
+            const newLang = currentLang === 'en' ? 'ar' : 'en';
+            setLanguage(newLang);
+        }
+
+        // Load user role from Firestore
+        async function loadUserRole() {
+            if (!currentUser) return;
+            
+            try {
+                const userDoc = await db.collection('users').doc(currentUser.uid).get();
+                if (userDoc.exists) {
+                    userRole = userDoc.data().role;
+                } else {
+                    userRole = 'customer';
+                }
+            } catch (error) {
+                console.error('Error loading user role:', error);
+                userRole = 'customer';
+            }
+        }
+
+        // Update authentication UI - FIXED: Both desktop and mobile buttons
+        function updateAuthUI() {
+            const langData = translations[currentLang];
+            
+            if (currentUser) {
+                // User is logged in - show user menu (desktop)
+                authButtons.innerHTML = `
+                    <div class="user-menu">
+                        <span class="user-greeting">
+                            <i class="fas fa-user"></i>
+                            ${currentUser.displayName || currentUser.email.split('@')[0]}
+                            <span class="user-role-badge">${userRole === 'business' ? langData.businessRole : langData.customerRole}</span>
+                        </span>
+                        ${userRole === 'business' ? 
+                            `<button class="auth-btn" onclick="showPage('dashboard')">
+                                <i class="fas fa-tachometer-alt"></i>
+                                <span>${langData.dashboardTitle}</span>
+                            </button>` : ''}
+                        <button class="auth-btn secondary" onclick="signOut()">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>${currentLang === 'ar' ? 'تسجيل الخروج' : 'Logout'}</span>
+                        </button>
+                    </div>
+                `;
+
+                // User is logged in - show user menu (mobile)
+                mobileAuth.innerHTML = `
+                    <div class="user-menu" style="flex-direction: column; align-items: flex-start; width: 100%;">
+                        <span class="user-greeting" style="margin-bottom: 1rem;">
+                            <i class="fas fa-user"></i>
+                            ${currentUser.displayName || currentUser.email.split('@')[0]}
+                            <span class="user-role-badge">${userRole === 'business' ? langData.businessRole : langData.customerRole}</span>
+                        </span>
+                        ${userRole === 'business' ? 
+                            `<button class="auth-btn" onclick="showPage('dashboard'); toggleMenu();" style="width: 100%; margin-top: 0.5rem;">
+                                <i class="fas fa-tachometer-alt"></i>
+                                <span>${langData.dashboardTitle}</span>
+                            </button>` : ''}
+                        <button class="auth-btn secondary" onclick="signOut(); toggleMenu();" style="width: 100%; margin-top: 0.5rem;">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>${currentLang === 'ar' ? 'تسجيل الخروج' : 'Logout'}</span>
+                        </button>
+                    </div>
+                `;
+            } else {
+                // User is not logged in - show login/register buttons (desktop)
+                authButtons.innerHTML = `
+                    <button class="auth-btn" onclick="showLoginModal()">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>${langData.loginBtn}</span>
+                    </button>
+                    <button class="auth-btn secondary" onclick="showRegisterModal()">
+                        <i class="fas fa-user-plus"></i>
+                        <span>${langData.registerBtn}</span>
+                    </button>
+                `;
+
+                // User is not logged in - show login/register buttons (mobile)
+                mobileAuth.innerHTML = `
+                    <button class="auth-btn" onclick="showLoginModal(); toggleMenu();" style="width: 100%;">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>${langData.loginBtn}</span>
+                    </button>
+                    <button class="auth-btn secondary" onclick="showRegisterModal(); toggleMenu();" style="width: 100%; margin-top: 0.5rem;">
+                        <i class="fas fa-user-plus"></i>
+                        <span>${langData.registerBtn}</span>
+                    </button>
+                `;
+            }
+        }
+
+        // Modal functions
+        function showModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function hideModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function showLoginModal() {
+            hideModal('registerModal');
+            showModal('loginModal');
+        }
+
+        function showRegisterModal() {
+            hideModal('loginModal');
+            showModal('registerModal');
+        }
+
+        function showAddProductModal() {
+            showModal('addProductModal');
+        }
+
+        // Role selection
+        function selectRole(role) {
+            document.getElementById('register-role').value = role;
+            
+            // Update UI
+            document.querySelectorAll('.role-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            if (role === 'customer') {
+                document.getElementById('role-customer').classList.add('selected');
+            } else {
+                document.getElementById('role-business').classList.add('selected');
+            }
+        }
+
+        // Image preview
+        function previewImage(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            if (file.size > 5 * 1024 * 1024) { // 5MB limit
+                showToast(currentLang === 'ar' ? 'حجم الصورة كبير جداً (الحد الأقصى 5MB)' : 'Image too large (max 5MB)', 'error');
+                event.target.value = '';
+                return;
+            }
+            
+            selectedImage = file;
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                const preview = document.getElementById('file-preview');
+                preview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+            }
+            
+            reader.readAsDataURL(file);
+        }
+
+        // Authentication functions
+        async function signUp(name, email, password, role) {
+            try {
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                
+                // Update profile
+                await userCredential.user.updateProfile({
+                    displayName: name
+                });
+
+                // Save to Firestore
+                await db.collection('users').doc(userCredential.user.uid).set({
+                    name: name,
+                    email: email,
+                    role: role,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                hideModal('registerModal');
+                showToast(currentLang === 'ar' ? 'تم إنشاء الحساب بنجاح!' : 'Account created successfully!', 'success');
+                
+            } catch (error) {
+                showToast(error.message, 'error');
+            }
+        }
+
+        async function signIn(email, password) {
+            try {
+                await auth.signInWithEmailAndPassword(email, password);
+                hideModal('loginModal');
+                showToast(currentLang === 'ar' ? 'تم تسجيل الدخول بنجاح!' : 'Logged in successfully!', 'success');
+            } catch (error) {
+                showToast(error.message, 'error');
+            }
+        }
+
+        async function signOut() {
+            try {
+                await auth.signOut();
+                if (currentPage === 'dashboard') {
+                    showPage('home');
+                }
+                showToast(currentLang === 'ar' ? 'تم تسجيل الخروج' : 'Logged out', 'success');
+            } catch (error) {
+                showToast(error.message, 'error');
+            }
+        }
+
+        // ============================================
+        // FIXED: addProduct function with loading spinner
+        // ============================================
+        async function addProduct(productData) {
+            if (!currentUser || userRole !== 'business') {
+                showToast(currentLang === 'ar' ? 'يجب أن تكون مقدم خدمة لإضافة منتجات' : 'Must be a business user to add products', 'error');
+                return;
+            }
+
+            // GET BUTTON AND SHOW LOADING
+            const submitBtn = document.querySelector('#addProductForm button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = currentLang === 'ar' ? 
+                '<i class="fas fa-spinner fa-spin"></i> جاري الرفع...' : 
+                '<i class="fas fa-spinner fa-spin"></i> Uploading...';
+
+            try {
+                let imageUrl = null;
+                
+                // Upload image if exists
+                if (selectedImage) {
+                    const storageRef = storage.ref();
+                    // Added folder structure for better organization
+                    const imageRef = storageRef.child(`products/${currentUser.uid}/${Date.now()}_${selectedImage.name}`);
+                    await imageRef.put(selectedImage);
+                    imageUrl = await imageRef.getDownloadURL();
+                }
+
+                const product = {
+                    ...productData,
+                    userId: currentUser.uid,
+                    userName: currentUser.displayName || currentUser.email,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    imageUrl: imageUrl
+                };
+
+                // ============================================
+                // FIXED: Removed auto-favorite code
+                // ============================================
+                await db.collection('products').add(product);
+
+                hideModal('addProductModal');
+                showToast(currentLang === 'ar' ? 'تمت إضافة الخدمة بنجاح!' : 'Service added successfully!', 'success');
+                
+                // Reset form
+                document.getElementById('addProductForm').reset();
+                document.getElementById('file-preview').innerHTML = '';
+                selectedImage = null;
+                
+                // Refresh products
+                if (currentPage === 'dashboard') {
+                    loadUserProducts();
+                } else if (['real-estate', 'tourism', 'student', 'medical', 'business', 'other'].includes(currentPage)) {
+                    loadProductsByCategory(currentPage);
+                }
+                
+            } catch (error) {
+                console.error('Error adding product:', error);
+                showToast(error.message, 'error');
+            } finally {
+                // RESET BUTTON
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+            }
+        }
+
+        async function deleteProduct(productId) {
+            if (!confirm(currentLang === 'ar' ? 'هل أنت متأكد من حذف هذه الخدمة؟' : 'Are you sure you want to delete this service?')) return;
+
+            try {
+                const productDoc = await db.collection('products').doc(productId).get();
+                if (productDoc.exists && productDoc.data().userId === currentUser.uid) {
+                    await db.collection('products').doc(productId).delete();
+                    showToast(currentLang === 'ar' ? 'تم حذف الخدمة بنجاح' : 'Service deleted successfully', 'success');
+                    
+                    // Refresh
+                    if (currentPage === 'dashboard') {
+                        loadUserProducts();
+                    } else {
+                        loadProductsByCategory(currentPage);
+                    }
+                } else {
+                    showToast(currentLang === 'ar' ? 'لا يمكنك حذف هذه الخدمة' : 'You cannot delete this service', 'error');
+                }
+            } catch (error) {
+                showToast(error.message, 'error');
+            }
+        }
+
+        async function toggleFavorite(productId) {
+            if (!currentUser) {
+                showToast(currentLang === 'ar' ? 'يجب تسجيل الدخول لإضافة للمفضلة' : 'Please login to add favorites', 'error');
+                return;
+            }
+
+            try {
+                // Check if already favorited
+                const favoriteQuery = await db.collection('productFavorites')
+                    .where('productId', '==', productId)
+                    .where('userId', '==', currentUser.uid)
+                    .limit(1)
+                    .get();
+
+                if (!favoriteQuery.empty) {
+                    // Remove from favorites
+                    await db.collection('productFavorites').doc(favoriteQuery.docs[0].id).delete();
+                    showToast(currentLang === 'ar' ? 'تمت الإزالة من المفضلة' : 'Removed from favorites', 'success');
+                } else {
+                    // Add to favorites
+                    await db.collection('productFavorites').add({
+                        productId: productId,
+                        userId: currentUser.uid,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    showToast(currentLang === 'ar' ? 'تمت الإضافة إلى المفضلة' : 'Added to favorites', 'success');
+                }
+                
+                // Refresh
+                if (currentPage === 'dashboard') {
+                    loadUserFavorites();
+                } else {
+                    loadProductsByCategory(currentPage);
+                }
+                
+            } catch (error) {
+                showToast(error.message, 'error');
+            }
+        }
+
+        // Load products by category
+        async function loadProductsByCategory(category) {
+            const containerId = `${category}-products`;
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            try {
+                // ============================================
+                // NOTE: This query may require an index
+                // When you see the error in console, click the link to create the index
+                // ============================================
+                const querySnapshot = await db.collection('products')
+                    .where('category', '==', category)
+                    .orderBy('createdAt', 'desc')
+                    .get();
+
+                if (querySnapshot.empty) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-box-open"></i>
+                            <h3>${currentLang === 'ar' ? 'لا توجد خدمات متاحة حالياً' : 'No services available yet'}</h3>
+                            <p>${currentLang === 'ar' ? 'كن أول من يضيف خدمة في هذه الفئة' : 'Be the first to add a service in this category'}</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                // Get user's favorites
+                let userFavorites = [];
+                if (currentUser) {
+                    const favoritesQuery = await db.collection('productFavorites')
+                        .where('userId', '==', currentUser.uid)
+                        .get();
+                    userFavorites = favoritesQuery.docs.map(doc => doc.data().productId);
+                }
+
+                let html = '';
+                querySnapshot.forEach((doc) => {
+                    const product = doc.data();
+                    const isFavorite = userFavorites.includes(doc.id);
+                    const isOwner = currentUser && product.userId === currentUser.uid;
+                    
+                    html += `
+                        <div class="product-card">
+                            <div class="product-image">
+                                ${product.imageUrl ? 
+                                    `<img src="${product.imageUrl}" alt="${product.title}" loading="lazy">` : 
+                                    `<i class="fas fa-image" style="font-size: 3rem; color: var(--text-light);"></i>`
+                                }
+                            </div>
+                            <div class="product-content">
+                                <div class="product-header">
+                                    <h3 class="product-title">${product.title}</h3>
+                                    ${isFavorite ? 
+                                        `<i class="fas fa-heart" style="color: var(--accent);"></i>` : ''}
+                                </div>
+                                <span class="product-category">${getCategoryName(product.category)}</span>
+                                <p class="product-description">${product.description}</p>
+                                <div class="product-footer">
+                                    <div class="product-price">$${parseFloat(product.price).toFixed(2)}</div>
+                                    <div class="product-actions">
+                                        ${!isOwner ? 
+                                            `<button class="favorite-btn ${isFavorite ? 'favorited' : ''}" 
+                                                onclick="toggleFavorite('${doc.id}')">
+                                                <i class="fas fa-heart"></i>
+                                            </button>` : ''}
+                                        ${isOwner ? 
+                                            `<button class="delete-btn" onclick="deleteProduct('${doc.id}')">
+                                                ${currentLang === 'ar' ? 'حذف' : 'Delete'}
+                                            </button>` : ''}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                container.innerHTML = html;
+            } catch (error) {
+                console.error('Error loading products:', error);
+                // First time error: Click the link in console to create index
+                if (error.code === 'failed-precondition') {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <h3>${currentLang === 'ar' ? 'جارٍ إنشاء فهرس قاعدة البيانات' : 'Creating database index...'}</h3>
+                            <p>${currentLang === 'ar' ? 'قد يستغرق الأمر دقيقة لأول مرة' : 'May take a minute for the first time'}</p>
+                            <p style="font-size: 0.9rem; margin-top: 1rem;">
+                                ${currentLang === 'ar' ? 
+                                    'افتح وحدة التحكم في المتصفح (F12) وانقر على رابط إنشاء الفهرس' : 
+                                    'Open browser console (F12) and click the index creation link'}
+                            </p>
+                        </div>
+                    `;
+                } else {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <h3>${currentLang === 'ar' ? 'حدث خطأ في تحميل الخدمات' : 'Error loading services'}</h3>
+                            <p>${currentLang === 'ar' ? 'يرجى المحاولة مرة أخرى لاحقاً' : 'Please try again later'}</p>
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        // Dashboard functions
+        async function loadUserProducts() {
+            if (!currentUser || userRole !== 'business') return;
+
+            const container = document.getElementById('dashboard-products');
+            if (!container) return;
+
+            try {
+                const querySnapshot = await db.collection('products')
+                    .where('userId', '==', currentUser.uid)
+                    .orderBy('createdAt', 'desc')
+                    .get();
+
+                // Update stats
+                document.getElementById('products-count').textContent = querySnapshot.size;
+
+                if (querySnapshot.empty) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-box-open"></i>
+                            <h3>${currentLang === 'ar' ? 'لم تقم بإضافة أي خدمات بعد' : 'You haven\'t added any services yet'}</h3>
+                            <p>${currentLang === 'ar' ? 'ابدأ بإضافة خدمتك الأولى الآن' : 'Start by adding your first service'}</p>
+                            <button class="auth-btn" onclick="showAddProductModal()" style="margin-top: 1rem;">
+                                <i class="fas fa-plus"></i>
+                                <span>${currentLang === 'ar' ? 'إضافة خدمة جديدة' : 'Add New Service'}</span>
+                            </button>
+                        </div>
+                    `;
+                    return;
+                }
+
+                let html = '';
+                querySnapshot.forEach((doc) => {
+                    const product = doc.data();
+                    
+                    html += `
+                        <div class="product-card">
+                            <div class="product-image">
+                                ${product.imageUrl ? 
+                                    `<img src="${product.imageUrl}" alt="${product.title}">` : 
+                                    `<i class="fas fa-image" style="font-size: 3rem; color: var(--text-light);"></i>`
+                                }
+                            </div>
+                            <div class="product-content">
+                                <div class="product-header">
+                                    <h3 class="product-title">${product.title}</h3>
+                                </div>
+                                <span class="product-category">${getCategoryName(product.category)}</span>
+                                <p class="product-description">${product.description}</p>
+                                <div class="product-footer">
+                                    <div class="product-price">$${parseFloat(product.price).toFixed(2)}</div>
+                                    <div class="product-actions">
+                                        <button class="delete-btn" onclick="deleteProduct('${doc.id}')">
+                                            ${currentLang === 'ar' ? 'حذف' : 'Delete'}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                container.innerHTML = html;
+            } catch (error) {
+                console.error('Error loading user products:', error);
+            }
+        }
+
+        async function loadUserFavorites() {
+            if (!currentUser) return;
+
+            const container = document.getElementById('dashboard-products');
+            if (!container) return;
+
+            try {
+                // Get user's favorite product IDs
+                const favoritesQuery = await db.collection('productFavorites')
+                    .where('userId', '==', currentUser.uid)
+                    .get();
+
+                const favoriteProductIds = favoritesQuery.docs.map(doc => doc.data().productId);
+                
+                // Update stats
+                document.getElementById('favorites-count').textContent = favoriteProductIds.length;
+
+                if (favoriteProductIds.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-heart"></i>
+                            <h3>${currentLang === 'ar' ? 'لا توجد خدمات في المفضلة' : 'No services in favorites'}</h3>
+                            <p>${currentLang === 'ar' ? 'أضف خدماتك المفضلة لتظهر هنا' : 'Add your favorite services to see them here'}</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                // Get the actual products
+                let html = '';
+                for (const productId of favoriteProductIds) {
+                    const productDoc = await db.collection('products').doc(productId).get();
+                    if (productDoc.exists) {
+                        const product = productDoc.data();
+                        
+                        html += `
+                            <div class="product-card">
+                                <div class="product-image">
+                                    ${product.imageUrl ? 
+                                        `<img src="${product.imageUrl}" alt="${product.title}">` : 
+                                        `<i class="fas fa-image" style="font-size: 3rem; color: var(--text-light);"></i>`
+                                    }
+                                </div>
+                                <div class="product-content">
+                                    <div class="product-header">
+                                        <h3 class="product-title">${product.title}</h3>
+                                        <i class="fas fa-heart" style="color: var(--accent);"></i>
+                                    </div>
+                                    <span class="product-category">${getCategoryName(product.category)}</span>
+                                    <p class="product-description">${product.description}</p>
+                                    <div class="product-footer">
+                                        <div class="product-price">$${parseFloat(product.price).toFixed(2)}</div>
+                                        <div class="product-actions">
+                                            <button class="favorite-btn favorited" onclick="toggleFavorite('${productId}')">
+                                                <i class="fas fa-heart"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }
+                }
+
+                container.innerHTML = html;
+            } catch (error) {
+                console.error('Error loading favorites:', error);
+            }
+        }
+
+        function showMyProducts() {
+            loadUserProducts();
+        }
+
+        function showMyFavorites() {
+            if (!currentUser) {
+                showToast(currentLang === 'ar' ? 'يجب تسجيل الدخول لعرض المفضلة' : 'Please login to view favorites', 'error');
+                return;
+            }
+            loadUserFavorites();
+        }
+
+        // Helper functions
+        function getCategoryName(category) {
+            const categories = {
+                'real-estate': currentLang === 'ar' ? 'العقارات' : 'Real Estate',
+                'tourism': currentLang === 'ar' ? 'السياحة' : 'Tourism',
+                'student': currentLang === 'ar' ? 'الطلابية' : 'Student',
+                'medical': currentLang === 'ar' ? 'الطبية' : 'Medical',
+                'business': currentLang === 'ar' ? 'الأعمال' : 'Business',
+                'other': currentLang === 'ar' ? 'خدمات أخرى' : 'Other Services'
+            };
+            return categories[category] || category;
+        }
+
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideUp 0.3s ease';
+                setTimeout(() => {
+                    document.body.removeChild(toast);
+                }, 300);
+            }, 3000);
+        }
+
+        // Page navigation
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.service-page, .dashboard-section').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show the selected page
+            const pageElement = document.getElementById(`${pageId}-page`);
+            if (pageElement) {
+                pageElement.classList.add('active');
+            }
+            
+            // Save the current page
+            currentPage = pageId;
+            
+            // Close mobile menu if open
+            document.getElementById('navLinks').classList.remove('active');
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+            
+            // Update navigation active state
+            updateNavActiveState();
+            
+            // Load products if it's a service page
+            if (pageId === 'services-hub') {
+                // Show the first service by default
+                showServicePage('real-estate');
+            }
+            
+            // Load dashboard data if on dashboard
+            if (pageId === 'dashboard' && currentUser && userRole === 'business') {
+                loadUserProducts();
+                updateDashboardStats();
+            }
+        }
+
+        // NEW: Show service page within services hub
+        function showServicePage(serviceId) {
+            // First, show the services hub page
+            if (currentPage !== 'services-hub') {
+                showPage('services-hub');
+            }
+            
+            // Hide all service content divs
+            const serviceIds = ['real-estate', 'tourism', 'student', 'medical', 'business', 'other'];
+            serviceIds.forEach(id => {
+                const servicePage = document.getElementById(`${id}-page`);
+                if (servicePage) {
+                    servicePage.style.display = 'none';
+                }
+            });
+            
+            // Show the selected service
+            const selectedService = document.getElementById(`${serviceId}-page`);
+            if (selectedService) {
+                selectedService.style.display = 'block';
+            }
+            
+            // Update tabs active state
+            document.querySelectorAll('.service-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            const activeTab = document.querySelector(`.service-tab[onclick="showServicePage('${serviceId}')"]`);
+            if (activeTab) {
+                activeTab.classList.add('active');
+            }
+            
+            // Load products for this category
+            loadProductsByCategory(serviceId);
+            
+            // Update navigation
+            updateNavActiveState();
+        }
+
+        // Update navigation active state
+        function updateNavActiveState() {
+            // Remove active class from all nav links
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Add active class to current page link
+            if (currentPage === 'home') {
+                document.querySelector('.nav-home').classList.add('active');
+            } else if (currentPage === 'services-hub' || currentPage === 'dashboard') {
+                // For services hub and dashboard, highlight services link
+                document.querySelector('.nav-services').classList.add('active');
+            }
+        }
+
+        async function updateDashboardStats() {
+            if (!currentUser) return;
+            
+            try {
+                // Count user's products
+                const productsSnapshot = await db.collection('products')
+                    .where('userId', '==', currentUser.uid)
+                    .get();
+                document.getElementById('products-count').textContent = productsSnapshot.size;
+                
+                // Count user's favorites
+                const favoritesSnapshot = await db.collection('productFavorites')
+                    .where('userId', '==', currentUser.uid)
+                    .get();
+                document.getElementById('favorites-count').textContent = favoritesSnapshot.size;
+                
+                // Update welcome message
+                document.getElementById('welcome-user').textContent = `${translations[currentLang].welcomeUser} ${currentUser.displayName || currentUser.email.split('@')[0]}`;
+                document.getElementById('user-role-badge').textContent = userRole === 'business' ? 
+                    translations[currentLang].businessRole : translations[currentLang].customerRole;
+                
+            } catch (error) {
+                console.error('Error updating dashboard stats:', error);
+            }
+        }
+
+        function scrollToSection(sectionId) {
+            showPage('home');
+            setTimeout(() => {
+                const section = document.getElementById(sectionId);
+                if (section) {
+                    section.scrollIntoView({ behavior: 'smooth' });
+                }
+            }, 100);
+        }
+
+        function toggleMenu() {
+            document.getElementById('navLinks').classList.toggle('active');
+        }
+
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('main-header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Event Listeners
+        document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            await signIn(email, password);
+        });
+
+        document.getElementById('registerForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('register-name').value;
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+            const role = document.getElementById('register-role').value;
+            await signUp(name, email, password, role);
+        });
+
+        document.getElementById('addProductForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const productData = {
+                title: document.getElementById('product-title').value,
+                description: document.getElementById('product-description').value,
+                price: parseFloat(document.getElementById('product-price').value),
+                category: document.getElementById('product-category').value
+            };
+            await addProduct(productData);
+        });
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
