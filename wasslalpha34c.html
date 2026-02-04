@@ -5129,6 +5129,206 @@
                 console.error('Error updating customer stats:', error);
             }
         }
+
+// ============================================
+// 🔒 ADMIN GOD MODE LOGIC (Full Implementation)
+// ============================================
+
+// 1. Master Loader (Calls everything)
+async function loadAdminDashboard() {
+    // Basic Security Check on Frontend
+    if (!currentUser || userRole !== 'admin') {
+        alert("⛔ SECURITY BREACH: UNAUTHORIZED ACCESS DETECTED.");
+        MapsTo('home');
+        return;
+    }
+
+    // Load both sections
+    await loadPendingApprovals();
+    await loadAllPostsAdmin();
+}
+
+// 2. Load Pending Business Users
+async function loadPendingApprovals() {
+    const container = document.getElementById('admin-pending-list');
+    
+    try {
+        const snapshot = await db.collection('users')
+            .where('role', '==', 'business')
+            .where('isApproved', '==', false)
+            .get();
+
+        if (snapshot.empty) {
+            container.innerHTML = `
+                <div class="cyber-card" style="text-align: center; grid-column: 1/-1; border-color: #333;">
+                    <i class="fas fa-check-circle" style="font-size: 3rem; color: #333; margin-bottom: 1rem;"></i>
+                    <h3 style="color: #64748b;">ALL CLEAR</h3>
+                    <p style="color: #475569;">No pending access requests found.</p>
+                </div>`;
+            return;
+        }
+
+        let html = '';
+        snapshot.forEach(doc => {
+            const user = doc.data();
+            const date = user.createdAt ? new Date(user.createdAt.toDate()).toLocaleDateString() : 'Unknown Date';
+            
+            html += `
+                <div class="cyber-card">
+                    <div class="cyber-badge" style="color: var(--neon-blue);">ID: ${doc.id.substring(0, 8)}...</div>
+                    <h3 style="color: white; margin: 0.5rem 0;">${user.name || 'Unknown Agent'}</h3>
+                    <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 0.5rem;">
+                        <i class="fas fa-envelope"></i> ${user.email}
+                    </p>
+                    <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 1.5rem;">
+                        <i class="fas fa-clock"></i> Applied: ${date}
+                    </p>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <button onclick="adminAction('${doc.id}', 'approve')" class="cyber-btn success">
+                            GRANT ACCESS
+                        </button>
+                        <button onclick="adminAction('${doc.id}', 'reject')" class="cyber-btn danger">
+                            DENY
+                        </button>
+                    </div>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+
+    } catch (error) {
+        console.error("Admin Users Error:", error);
+        container.innerHTML = `<div class="cyber-card" style="color: var(--neon-red);">SYSTEM ERROR: ${error.message}</div>`;
+    }
+}
+
+// 3. Admin Action (Approve/Reject User) with SUPER ADMIN LOCK
+async function adminAction(userId, action) {
+    // 🛡️ SUPER ADMIN LIST (Add your email here in lowercase)
+    const SUPER_ADMINS = ['wasslservices@gmail.com']; 
+
+    try {
+        // Fetch target first for safety
+        const targetDoc = await db.collection('users').doc(userId).get();
+        if(!targetDoc.exists) return;
+        
+        const targetEmail = targetDoc.data().email.toLowerCase();
+
+        // Check if trying to ban a God
+        if (SUPER_ADMINS.includes(targetEmail)) {
+            alert("⚠️ PERMISSION DENIED: Cannot modify a Super Admin.");
+            return;
+        }
+
+        if (!confirm(`CONFIRM ACTION: ${action.toUpperCase()} User?`)) return;
+
+        if (action === 'approve') {
+            await db.collection('users').doc(userId).update({
+                isApproved: true,
+                approvedAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            showToast("ACCESS GRANTED", "success");
+        } else {
+            // Rejection = Deletion (Kill Switch)
+            await db.collection('users').doc(userId).delete();
+            showToast("USER TERMINATED", "info");
+        }
+
+        // Refresh List
+        loadPendingApprovals();
+
+    } catch (error) {
+        alert("EXECUTION FAILED: " + error.message);
+    }
+}
+
+// 4. Load Posts Feed (Content Overwatch)
+async function loadAllPostsAdmin(filter = 'all') {
+    const container = document.getElementById('admin-posts-feed');
+    // Don't clear content on filter change to keep it smooth, just fade
+    container.style.opacity = '0.5';
+
+    try {
+        let query = db.collection('products').orderBy('createdAt', 'desc').limit(50);
+        
+        if (filter !== 'all') {
+            // Assuming you have created the Index for this
+            query = query.where('status', '==', filter);
+        }
+
+        const snapshot = await query.get();
+        container.style.opacity = '1';
+
+        if (snapshot.empty) {
+            container.innerHTML = `<div class="cyber-card" style="grid-column: 1/-1; text-align: center; color: #64748b;">NO DATA FOUND IN FEED</div>`;
+            return;
+        }
+
+        let html = '';
+        snapshot.forEach(doc => {
+            const post = doc.data();
+            const isHidden = post.status === 'hidden';
+            
+            // Image Logic
+            const imgHTML = post.imageUrl 
+                ? `<img src="${post.imageUrl}" style="width: 100%; height: 150px; object-fit: cover; border: 1px solid #334155; margin: 10px 0;">`
+                : `<div style="height: 150px; background: #0f172a; display: flex; align-items: center; justify-content: center; border: 1px solid #334155; color: #334155;">NO IMG</div>`;
+
+            // Status Color
+            const statusColor = isHidden ? 'var(--neon-red)' : 'var(--neon-green)';
+            const statusText = isHidden ? 'HIDDEN' : 'ACTIVE';
+
+            html += `
+                <div class="cyber-card" style="${isHidden ? 'border-color: var(--neon-red);' : ''}">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                        <span class="cyber-badge" style="color: ${statusColor}; border-color: ${statusColor};">${statusText}</span>
+                        <span style="color: #64748b; font-size: 0.8rem;">${new Date(post.createdAt?.toDate()).toLocaleDateString()}</span>
+                    </div>
+                    
+                    <h4 style="color: white; margin: 0; font-size: 1.1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${post.title}</h4>
+                    <div style="color: #94a3b8; font-size: 0.8rem; margin-bottom: 5px;">By: ${post.userName || 'Unknown'}</div>
+                    
+                    ${imgHTML}
+                    
+                    <p style="color: #cbd5e1; font-size: 0.9rem; height: 40px; overflow: hidden; margin-bottom: 15px;">
+                        ${post.description.substring(0, 80)}...
+                    </p>
+
+                    <button onclick="togglePostStatus('${doc.id}', '${isHidden ? 'active' : 'hidden'}')" 
+                            class="cyber-btn ${isHidden ? 'success' : 'danger'}" style="width: 100%;">
+                        ${isHidden ? '<i class="fas fa-eye"></i> RESTORE VISIBILITY' : '<i class="fas fa-ban"></i> HIDE CONTENT'}
+                    </button>
+                </div>
+            `;
+        });
+
+        container.innerHTML = html;
+
+    } catch (error) {
+        console.error("Feed Error:", error);
+        if (error.code === 'failed-precondition') {
+            container.innerHTML = `<div class="cyber-card" style="color: var(--neon-red); grid-column: 1/-1;">
+                ⚠️ INDEX MISSING: Open Console (F12) and click the Firebase link to generate index for filtered queries.
+            </div>`;
+        }
+    }
+}
+
+// 5. Toggle Post Status
+async function togglePostStatus(postId, newStatus) {
+    try {
+        await db.collection('products').doc(postId).update({
+            status: newStatus
+        });
+        // Reload feed without full page refresh
+        loadAllPostsAdmin(); 
+    } catch (error) {
+        alert("UPDATE FAILED: " + error.message);
+    }
+}
+
+        
     </script>
 </body>
 </html>
