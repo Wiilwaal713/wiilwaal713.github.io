@@ -3655,70 +3655,97 @@
             const langData = translations[currentLang];
             
             if (currentUser) {
-                // User is logged in - show user menu (desktop)
-                authButtons.innerHTML = `
-                    <div class="user-menu">
-                        <span class="user-greeting">
-                            <i class="fas fa-user"></i>
-                            ${currentUser.displayName || currentUser.email.split('@')[0]}
-                            <span class="user-role-badge">${userRole === 'business' ? langData.businessRole : langData.customerRole}</span>
-                        </span>
-                        <button class="auth-btn" onclick="showDashboard()">
-                            <i class="fas fa-tachometer-alt"></i>
-                            <span>${userRole === 'business' ? langData.businessDashboardTitle : langData.customerDashboardTitle}</span>
-                        </button>
-                        <button class="auth-btn secondary" onclick="signOut()">
-                            <i class="fas fa-sign-out-alt"></i>
-                            <span>${currentLang === 'ar' ? 'تسجيل الخروج' : 'Logout'}</span>
-                        </button>
-                    </div>
-                `;
+                // ============================================================
+                // 1. DETERMINE ROLE & BUTTON SETTINGS
+                // ============================================================
+                let dashboardTitle = langData.customerDashboardTitle;
+                let dashboardAction = "showDashboard()";
+                let roleLabel = langData.customerRole;
+                // Default Badge Style (Blue/Standard)
+                let roleStyle = ""; 
         
-                // User is logged in - show user menu (mobile)
-                mobileAuth.innerHTML = `
-                    <div class="user-menu" style="flex-direction: column; align-items: flex-start; width: 100%;">
-                        <span class="user-greeting" style="margin-bottom: 1rem;">
-                            <i class="fas fa-user"></i>
-                            ${currentUser.displayName || currentUser.email.split('@')[0]}
-                            <span class="user-role-badge">${userRole === 'business' ? langData.businessRole : langData.customerRole}</span>
-                        </span>
-                        <button class="auth-btn" onclick="showDashboard(); toggleMenu();" style="width: 100%; margin-top: 0.5rem;">
-                            <i class="fas fa-tachometer-alt"></i>
-                            <span>${userRole === 'business' ? langData.businessDashboardTitle : langData.customerDashboardTitle}</span>
-                        </button>
-                        <button class="auth-btn secondary" onclick="signOut(); toggleMenu();" style="width: 100%; margin-top: 0.5rem;">
-                            <i class="fas fa-sign-out-alt"></i>
-                            <span>${currentLang === 'ar' ? 'تسجيل الخروج' : 'Logout'}</span>
-                        </button>
-                    </div>
-                `;
-            } else {
-                // User is not logged in - show login/register buttons (desktop)
-                authButtons.innerHTML = `
-                    <button class="auth-btn" onclick="showLoginModal()">
-                        <i class="fas fa-sign-in-alt"></i>
-                        <span>${langData.loginBtn}</span>
-                    </button>
-                    <button class="auth-btn secondary" onclick="showRegisterModal()">
-                        <i class="fas fa-user-plus"></i>
-                        <span>${langData.registerBtn}</span>
-                    </button>
-                `;
-        
-                // User is not logged in - show login/register buttons (mobile)
-                mobileAuth.innerHTML = `
-                    <button class="auth-btn" onclick="showLoginModal(); toggleMenu();" style="width: 100%;">
-                        <i class="fas fa-sign-in-alt"></i>
-                        <span>${langData.loginBtn}</span>
-                    </button>
-                    <button class="auth-btn secondary" onclick="showRegisterModal(); toggleMenu();" style="width: 100%; margin-top: 0.5rem;">
-                        <i class="fas fa-user-plus"></i>
-                        <span>${langData.registerBtn}</span>
-                    </button>
-                `;
+                if (userRole === 'business') {
+                    dashboardTitle = langData.businessDashboardTitle;
+                    roleLabel = langData.businessRole;
+                    // Optional: Green for business
+                    roleStyle = "background: #10b981; color: white;"; 
+            } 
+            else if (userRole === 'admin') {
+                dashboardTitle = "ADMIN CONSOLE"; 
+                dashboardAction = "navigateTo('admin-dashboard')";
+                roleLabel = "ADMIN";
+                // Special Black & Gold Style for Admin
+                roleStyle = "background: #000; color: #fff; border: 1px solid #d4af37;";
             }
-        }
+    
+            // ============================================================
+            // 2. RENDER DESKTOP MENU
+            // ============================================================
+            authButtons.innerHTML = `
+                <div class="user-menu">
+                    <span class="user-greeting">
+                        <i class="fas fa-user-circle"></i>
+                        ${currentUser.displayName || currentUser.email.split('@')[0]}
+                        <span class="user-role-badge" style="${roleStyle}">${roleLabel}</span>
+                    </span>
+                
+                    <button class="auth-btn" onclick="${dashboardAction}">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>${dashboardTitle}</span>
+                    </button>
+                    
+                    <button class="auth-btn secondary" onclick="signOut()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>${currentLang === 'ar' ? 'تسجيل الخروج' : 'Logout'}</span>
+                    </button>
+                </div>
+            `;
 
+            // ============================================================
+            // 3. RENDER MOBILE MENU
+            // ============================================================
+            mobileAuth.innerHTML = `
+                <div class="user-menu" style="flex-direction: column; align-items: flex-start; width: 100%;">
+                    <span class="user-greeting" style="margin-bottom: 1rem;">
+                        <i class="fas fa-user-circle"></i>
+                        ${currentUser.displayName || currentUser.email.split('@')[0]}
+                        <span class="user-role-badge" style="${roleStyle}">${roleLabel}</span>
+                    </span>
+                    
+                    <button class="auth-btn" onclick="${dashboardAction}; toggleMenu();" style="width: 100%; margin-top: 0.5rem;">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>${dashboardTitle}</span>
+                    </button>
+                    
+                    <button class="auth-btn secondary" onclick="signOut(); toggleMenu();" style="width: 100%; margin-top: 0.5rem;">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>${currentLang === 'ar' ? 'تسجيل الخروج' : 'Logout'}</span>
+                    </button>
+                </div>
+            `;
+    
+        } else {
+            // ============================================================
+            // 4. GUEST VIEW (Not Logged In)
+            // ============================================================
+            const guestHTML = `
+                <button class="auth-btn" onclick="showLoginModal(); toggleMenu();" style="${window.innerWidth <= 768 ? 'width: 100%;' : ''}">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>${langData.loginBtn}</span>
+                </button>
+                <button class="auth-btn secondary" onclick="showRegisterModal(); toggleMenu();" style="${window.innerWidth <= 768 ? 'width: 100%; margin-top: 0.5rem;' : ''}">
+                    <i class="fas fa-user-plus"></i>
+                    <span>${langData.registerBtn}</span>
+                </button>
+            `;
+        
+            authButtons.innerHTML = guestHTML;
+            mobileAuth.innerHTML = guestHTML;
+        }
+    }
+
+        
+                
         // Modal functions
         function showModal(modalId) {
             const modal = document.getElementById(modalId);
