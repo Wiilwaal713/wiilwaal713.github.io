@@ -4591,37 +4591,43 @@
         }
 
         // Page navigation
-        function showPage(pageId) {
-            // Hide all pages
-            document.querySelectorAll('.service-page, .dashboard-section').forEach(page => {
-                page.classList.remove('active');
-            });
-            
-            // Show the selected page
-            const pageElement = document.getElementById(`${pageId}-page`);
-            if (pageElement) {
-                pageElement.classList.add('active');
-            } else {
-                // Fallback to home if page not found
-                const homePage = document.getElementById('home-page');
-                if (homePage) {
-                    homePage.classList.add('active');
-                }
-            }
-            
-            // Close mobile menu if open
-            document.getElementById('navLinks').classList.remove('active');
-            
-            // Scroll to top
-            window.scrollTo(0, 0);
-            
-            // Load dashboard data if on dashboard
-            if (pageId === 'business-dashboard' && currentUser && userRole === 'business') {
-                loadBusinessDashboard();
-            } else if (pageId === 'customer-dashboard' && currentUser && userRole === 'customer') {
-                loadCustomerDashboard();
-            }
+function showPage(pageId) {
+    // 1. Hide all pages (Existing Logic)
+    document.querySelectorAll('.service-page, .dashboard-section').forEach(page => {
+        page.classList.remove('active');
+    });
+    
+    // 2. Show the selected page (Existing Logic)
+    const pageElement = document.getElementById(`${pageId}-page`);
+    if (pageElement) {
+        pageElement.classList.add('active');
+    } else {
+        // Fallback to home if page not found
+        const homePage = document.getElementById('home-page');
+        if (homePage) {
+            homePage.classList.add('active');
         }
+    }
+    
+    // 3. Close mobile menu if open (Existing Logic)
+    document.getElementById('navLinks').classList.remove('active');
+    
+    // 4. Scroll to top (Existing Logic)
+    window.scrollTo(0, 0);
+    
+    // 5. Load dashboard data based on role (UPDATED SECTION)
+    if (pageId === 'business-dashboard' && currentUser && userRole === 'business') {
+        loadBusinessDashboard();
+    } else if (pageId === 'customer-dashboard' && currentUser && userRole === 'customer') {
+        loadCustomerDashboard();
+    } 
+    // --- NEW ADMIN LOGIC ADDED HERE ---
+    else if (pageId === 'admin-dashboard' && currentUser && userRole === 'admin') {
+        loadAdminDashboard();
+    }
+}
+
+
 
         // Show service page within services hub
         function showServicePage(serviceId) {
