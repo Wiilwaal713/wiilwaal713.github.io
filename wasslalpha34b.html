@@ -3571,27 +3571,56 @@
                 showToast(currentLang === 'ar' ? 'يجب أن تكون مقدم خدمة لإضافة منتجات' : 'Must be a business user to add products', 'error');
                 return;
             }
-
+        
             // GET BUTTON AND SHOW LOADING
             const submitBtn = document.querySelector('#addProductForm button[type="submit"]');
             const originalText = submitBtn.innerHTML;
             submitBtn.disabled = true;
+            // Set initial loading message even if no image, for consistent feedback
             submitBtn.innerHTML = currentLang === 'ar' ? 
                 '<i class="fas fa-spinner fa-spin"></i> جاري الرفع...' : 
                 '<i class="fas fa-spinner fa-spin"></i> Uploading...';
-
+        
             try {
                 let imageUrl = null;
                 
-                // Upload image if exists
+                // 1. Upload Image (If selected)
                 if (selectedImage) {
                     const storageRef = storage.ref();
                     // Added folder structure for better organization
                     const imageRef = storageRef.child(`products/${currentUser.uid}/${Date.now()}_${selectedImage.name}`);
-                    await imageRef.put(selectedImage);
-                    imageUrl = await imageRef.getDownloadURL();
+                    
+                    // Create the upload task
+                    const uploadTask = imageRef.put(selectedImage);
+        
+                    // Wrap upload in a Promise to track progress
+                    await new Promise((resolve, reject) => {
+                        uploadTask.on('state_changed', 
+                            (snapshot) => {
+                                // Calculate percentage
+                                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                                // Update button text with percentage
+                                submitBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${Math.round(progress)}%`;
+                            }, 
+                            (error) => {
+                                // Handle upload errors
+                                console.error("Upload error:", error);
+                                reject(error);
+                            }, 
+                            () => {
+                                // Upload complete
+                                resolve();
+                            }
+                        );
+                    });
+        
+                    // Get the URL after upload finishes
+                    imageUrl = await uploadTask.snapshot.ref.getDownloadURL();
                 }
-
+        
+                // 2. Save Data to Firestore
+                submitBtn.innerHTML = currentLang === 'ar' ? 'جاري الحفظ...' : 'Saving...';
+        
                 const product = {
                     ...productData,
                     userId: currentUser.uid,
@@ -3599,12 +3628,13 @@
                     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                     imageUrl: imageUrl
                 };
-
+        
                 // ============================================
-                // FIXED: Removed auto-favorite code
+                // FIXED: Removed auto-favorite code (from Code A)
                 // ============================================
                 await db.collection('products').add(product);
-
+        
+                // 3. Success!
                 hideModal('addProductModal');
                 showToast(currentLang === 'ar' ? 'تمت إضافة الخدمة بنجاح!' : 'Service added successfully!', 'success');
                 
@@ -3613,7 +3643,7 @@
                 document.getElementById('file-preview').innerHTML = '';
                 selectedImage = null;
                 
-                // Refresh products
+                // Refresh products (using Code A's precise logic)
                 const currentHash = window.location.hash.substring(1);
                 if (currentHash === 'dashboard') {
                     loadUserProducts();
@@ -3623,14 +3653,19 @@
                 
             } catch (error) {
                 console.error('Error adding product:', error);
-                showToast(error.message, 'error');
+                // Specific error message for Storage permissions (from Code B)
+                if (error.code === 'storage/unauthorized') {
+                    showToast("Storage permission denied. Check Firebase Console Rules.", 'error');
+                } else {
+                    showToast(error.message, 'error');
+                }
             } finally {
                 // RESET BUTTON
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = originalText;
             }
         }
-
+        
         async function deleteProduct(productId) {
             if (!confirm(currentLang === 'ar' ? 'هل أنت متأكد من حذف هذه الخدمة؟' : 'Are you sure you want to delete this service?')) return;
 
