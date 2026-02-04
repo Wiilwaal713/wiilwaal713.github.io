@@ -3586,7 +3586,8 @@
                 
                 // 1. Upload Image (If selected)
                 if (selectedImage) {
-                    const storageRef = storage.ref();
+                    // Force connection to the specific bucket found in terminal
+                    const storageRef = firebase.storage().refFromURL("gs://wa-f01de.firebasestorage.app");
                     // Added folder structure for better organization
                     const imageRef = storageRef.child(`products/${currentUser.uid}/${Date.now()}_${selectedImage.name}`);
                     
