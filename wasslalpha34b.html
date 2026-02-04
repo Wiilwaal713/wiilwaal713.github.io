@@ -2506,7 +2506,17 @@
                 myFavoritesBtn: "Favorites List",
                 myProducts: "Your Published Services",
                 availableServices: "Available Services",
-                availablePackages: "Available Packages",
+                availablePackages: "Available Packages", // Add these AFTER the existing dashboard translations in 'en' object
+                businessDashboardTitle: "Business Dashboard",
+                businessDashboardSubtitle: "Manage your services and view statistics",
+                customerDashboardTitle: "Customer Dashboard",
+                customerDashboardSubtitle: "Browse services and add to favorites",
+                totalViews: "Total Views",
+                totalFavorites: "Total Favorites",
+                businessStatsBtn: "Statistics",
+                allServices: "All Services",
+                viewedCount: "Viewed Services",
+                availableServices: "Available Services",
                 
                 // Services
                 servicesTitle: "Our Premium Services",
@@ -2824,7 +2834,17 @@
                 myFavoritesBtn: "قائمة المفضلة",
                 myProducts: "خدماتك المنشورة",
                 availableServices: "الخدمات المتاحة",
-                availablePackages: "الباقات السياحية المتاحة",
+                availablePackages: "الباقات السياحية المتاحة", // Add these AFTER the existing dashboard translations in 'ar' object                
+                businessDashboardTitle: "لوحة تحكم مقدم الخدمة",
+                businessDashboardSubtitle: "إدارة خدماتك وعرض إحصائياتك",
+                customerDashboardTitle: "لوحة تحكم العميل",
+                customerDashboardSubtitle: "استعرض الخدمات وأضفها للمفضلة",
+                totalViews: "إجمالي المشاهدات",
+                totalFavorites: "إجمالي المفضلة",
+                businessStatsBtn: "الإحصائيات",
+                allServices: "جميع الخدمات",
+                viewedCount: "الخدمات المستعرضة",
+                availableServices: "الخدمات المتاحة",
                 
                 // Services
                 servicesTitle: "خدماتنا المتميزة",
@@ -3292,7 +3312,7 @@
                 }
             } 
             else if (route === 'dashboard') {
-                showPage('dashboard');
+                showDashboard(); // Changed from showPage('dashboard')
             }
             else if (route === 'services') {
                 showServicePage('real-estate'); // Default to first service
@@ -3373,18 +3393,17 @@
                             ${currentUser.displayName || currentUser.email.split('@')[0]}
                             <span class="user-role-badge">${userRole === 'business' ? langData.businessRole : langData.customerRole}</span>
                         </span>
-                        ${userRole === 'business' ? 
-                            `<button class="auth-btn" onclick="navigateTo('dashboard')">
-                                <i class="fas fa-tachometer-alt"></i>
-                                <span>${langData.dashboardTitle}</span>
-                            </button>` : ''}
+                        <button class="auth-btn" onclick="showDashboard()">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>${userRole === 'business' ? langData.businessDashboardTitle : langData.customerDashboardTitle}</span>
+                        </button>
                         <button class="auth-btn secondary" onclick="signOut()">
                             <i class="fas fa-sign-out-alt"></i>
                             <span>${currentLang === 'ar' ? 'تسجيل الخروج' : 'Logout'}</span>
                         </button>
                     </div>
                 `;
-
+        
                 // User is logged in - show user menu (mobile)
                 mobileAuth.innerHTML = `
                     <div class="user-menu" style="flex-direction: column; align-items: flex-start; width: 100%;">
@@ -3393,11 +3412,10 @@
                             ${currentUser.displayName || currentUser.email.split('@')[0]}
                             <span class="user-role-badge">${userRole === 'business' ? langData.businessRole : langData.customerRole}</span>
                         </span>
-                        ${userRole === 'business' ? 
-                            `<button class="auth-btn" onclick="navigateTo('dashboard'); toggleMenu();" style="width: 100%; margin-top: 0.5rem;">
-                                <i class="fas fa-tachometer-alt"></i>
-                                <span>${langData.dashboardTitle}</span>
-                            </button>` : ''}
+                        <button class="auth-btn" onclick="showDashboard(); toggleMenu();" style="width: 100%; margin-top: 0.5rem;">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>${userRole === 'business' ? langData.businessDashboardTitle : langData.customerDashboardTitle}</span>
+                        </button>
                         <button class="auth-btn secondary" onclick="signOut(); toggleMenu();" style="width: 100%; margin-top: 0.5rem;">
                             <i class="fas fa-sign-out-alt"></i>
                             <span>${currentLang === 'ar' ? 'تسجيل الخروج' : 'Logout'}</span>
@@ -3416,7 +3434,7 @@
                         <span>${langData.registerBtn}</span>
                     </button>
                 `;
-
+        
                 // User is not logged in - show login/register buttons (mobile)
                 mobileAuth.innerHTML = `
                     <button class="auth-btn" onclick="showLoginModal(); toggleMenu();" style="width: 100%;">
@@ -3535,6 +3553,7 @@
         async function signOut() {
             try {
                 await auth.signOut();
+                // Navigate to home if on any dashboard
                 if (window.location.hash.includes('dashboard')) {
                     navigateTo('home');
                 }
@@ -3971,6 +3990,12 @@
             const pageElement = document.getElementById(`${pageId}-page`);
             if (pageElement) {
                 pageElement.classList.add('active');
+            } else {
+                // Fallback to home if page not found
+                const homePage = document.getElementById('home-page');
+                if (homePage) {
+                    homePage.classList.add('active');
+                }
             }
             
             // Close mobile menu if open
@@ -3980,9 +4005,10 @@
             window.scrollTo(0, 0);
             
             // Load dashboard data if on dashboard
-            if (pageId === 'dashboard' && currentUser && userRole === 'business') {
-                loadUserProducts();
-                updateDashboardStats();
+            if (pageId === 'business-dashboard' && currentUser && userRole === 'business') {
+                loadBusinessDashboard();
+            } else if (pageId === 'customer-dashboard' && currentUser && userRole === 'customer') {
+                loadCustomerDashboard();
             }
         }
 
@@ -4114,6 +4140,392 @@
 
         // Initialize the app
         document.addEventListener('DOMContentLoaded', init);
+
+        // ============================================
+        // NEW DASHBOARD FUNCTIONS
+        // ============================================
+        
+        // Function to show appropriate dashboard based on role
+        function showDashboard() {
+            if (!currentUser) {
+                showToast(currentLang === 'ar' ? 'يجب تسجيل الدخول' : 'Please login first', 'error');
+                navigateTo('home');
+                return;
+            }
+            
+            if (userRole === 'business') {
+                showPage('business-dashboard');
+                loadBusinessDashboard();
+            } else if (userRole === 'customer') {
+                showPage('customer-dashboard');
+                loadCustomerDashboard();
+            } else {
+                // Default to customer if no role
+                userRole = 'customer';
+                showPage('customer-dashboard');
+                loadCustomerDashboard();
+            }
+        }
+        
+        // Business dashboard functions
+        async function loadBusinessDashboard() {
+            if (!currentUser || userRole !== 'business') return;
+            
+            // Update welcome message
+            document.getElementById('welcome-business-user').textContent = 
+                `${translations[currentLang].welcomeUser} ${currentUser.displayName || currentUser.email.split('@')[0]}`;
+            
+            // Load business products
+            await loadBusinessProducts();
+            await updateBusinessStats();
+        }
+        
+        async function loadBusinessProducts() {
+            if (!currentUser || userRole !== 'business') return;
+            
+            const container = document.getElementById('business-dashboard-products');
+            if (!container) return;
+            
+            try {
+                const querySnapshot = await db.collection('products')
+                    .where('userId', '==', currentUser.uid)
+                    .orderBy('createdAt', 'desc')
+                    .get();
+                
+                // Update products count
+                document.getElementById('business-products-count').textContent = querySnapshot.size;
+                
+                if (querySnapshot.empty) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-box-open"></i>
+                            <h3>${currentLang === 'ar' ? 'لم تقم بإضافة أي خدمات بعد' : 'You haven\'t added any services yet'}</h3>
+                            <p>${currentLang === 'ar' ? 'ابدأ بإضافة خدمتك الأولى الآن' : 'Start by adding your first service'}</p>
+                            <button class="auth-btn" onclick="showAddProductModal()" style="margin-top: 1rem;">
+                                <i class="fas fa-plus"></i>
+                                <span>${currentLang === 'ar' ? 'إضافة خدمة جديدة' : 'Add New Service'}</span>
+                            </button>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                let html = '';
+                let totalViews = 0;
+                let totalFavorites = 0;
+                
+                for (const doc of querySnapshot.docs) {
+                    const product = doc.data();
+                    const productId = doc.id;
+                    
+                    // Get views count for this product
+                    const viewsQuery = await db.collection('productViews')
+                        .where('productId', '==', productId)
+                        .get();
+                    const viewsCount = viewsQuery.size;
+                    totalViews += viewsCount;
+                    
+                    // Get favorites count for this product
+                    const favoritesQuery = await db.collection('productFavorites')
+                        .where('productId', '==', productId)
+                        .get();
+                    const favoritesCount = favoritesQuery.size;
+                    totalFavorites += favoritesCount;
+                    
+                    html += `
+                        <div class="product-card">
+                            <div class="product-image">
+                                ${product.imageUrl ? 
+                                    `<img src="${product.imageUrl}" alt="${product.title}">` : 
+                                    `<i class="fas fa-image" style="font-size: 3rem; color: var(--text-light);"></i>`
+                                }
+                            </div>
+                            <div class="product-content">
+                                <div class="product-header">
+                                    <h3 class="product-title">${product.title}</h3>
+                                    <div style="display: flex; gap: 10px; align-items: center;">
+                                        <span style="font-size: 0.8rem; color: var(--text-light);">
+                                            <i class="fas fa-eye"></i> ${viewsCount}
+                                        </span>
+                                        <span style="font-size: 0.8rem; color: var(--text-light);">
+                                            <i class="fas fa-heart"></i> ${favoritesCount}
+                                        </span>
+                                    </div>
+                                </div>
+                                <span class="product-category">${getCategoryName(product.category)}</span>
+                                <p class="product-description">${product.description}</p>
+                                <div class="product-footer">
+                                    <div class="product-price">$${parseFloat(product.price).toFixed(2)}</div>
+                                    <div class="product-actions">
+                                        <button class="delete-btn" onclick="deleteProduct('${doc.id}')">
+                                            ${currentLang === 'ar' ? 'حذف' : 'Delete'}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                // Update total stats
+                document.getElementById('business-total-views').textContent = totalViews;
+                document.getElementById('business-favorites-count').textContent = totalFavorites;
+                
+                container.innerHTML = html;
+            } catch (error) {
+                console.error('Error loading business products:', error);
+            }
+        }
+        
+        async function updateBusinessStats() {
+            if (!currentUser || userRole !== 'business') return;
+            
+            try {
+                // Count user's products
+                const productsSnapshot = await db.collection('products')
+                    .where('userId', '==', currentUser.uid)
+                    .get();
+                document.getElementById('business-products-count').textContent = productsSnapshot.size;
+                
+                // Calculate total views and favorites
+                let totalViews = 0;
+                let totalFavorites = 0;
+                
+                for (const doc of productsSnapshot.docs) {
+                    const productId = doc.id;
+                    
+                    // Get views for this product
+                    const viewsQuery = await db.collection('productViews')
+                        .where('productId', '==', productId)
+                        .get();
+                    totalViews += viewsQuery.size;
+                    
+                    // Get favorites for this product
+                    const favoritesQuery = await db.collection('productFavorites')
+                        .where('productId', '==', productId)
+                        .get();
+                    totalFavorites += favoritesQuery.size;
+                }
+                
+                document.getElementById('business-total-views').textContent = totalViews;
+                document.getElementById('business-favorites-count').textContent = totalFavorites;
+                
+            } catch (error) {
+                console.error('Error updating business stats:', error);
+            }
+        }
+        
+        function showBusinessStats() {
+            // You can expand this to show detailed statistics
+            alert(currentLang === 'ar' ? 'سيتم عرض إحصائيات مفصلة قريباً' : 'Detailed statistics will be shown soon');
+        }
+        
+        // Customer dashboard functions
+        async function loadCustomerDashboard() {
+            if (!currentUser || userRole !== 'customer') return;
+            
+            // Update welcome message
+            document.getElementById('welcome-customer-user').textContent = 
+                `${translations[currentLang].welcomeUser} ${currentUser.displayName || currentUser.email.split('@')[0]}`;
+            
+            // Load all services for customer
+            await loadAllServicesForCustomer();
+            await updateCustomerStats();
+        }
+        
+        async function loadAllServicesForCustomer() {
+            if (!currentUser) return;
+            
+            const container = document.getElementById('customer-dashboard-products');
+            if (!container) return;
+            
+            try {
+                const querySnapshot = await db.collection('products')
+                    .orderBy('createdAt', 'desc')
+                    .limit(50) // Limit to 50 services
+                    .get();
+                
+                if (querySnapshot.empty) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-box-open"></i>
+                            <h3>${currentLang === 'ar' ? 'لا توجد خدمات متاحة حالياً' : 'No services available yet'}</h3>
+                            <p>${currentLang === 'ar' ? 'كن أول من يضيف خدمة' : 'Be the first to add a service'}</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Get user's favorites
+                let userFavorites = [];
+                const favoritesQuery = await db.collection('productFavorites')
+                    .where('userId', '==', currentUser.uid)
+                    .get();
+                userFavorites = favoritesQuery.docs.map(doc => doc.data().productId);
+                
+                let html = '';
+                let viewedCount = 0;
+                
+                for (const doc of querySnapshot.docs) {
+                    const product = doc.data();
+                    const productId = doc.id;
+                    const isFavorite = userFavorites.includes(productId);
+                    
+                    // Check if user has viewed this product
+                    const viewQuery = await db.collection('productViews')
+                        .where('productId', '==', productId)
+                        .where('userId', '==', currentUser.uid)
+                        .limit(1)
+                        .get();
+                    
+                    if (!viewQuery.empty) {
+                        viewedCount++;
+                    }
+                    
+                    html += `
+                        <div class="product-card">
+                            <div class="product-image">
+                                ${product.imageUrl ? 
+                                    `<img src="${product.imageUrl}" alt="${product.title}" loading="lazy">` : 
+                                    `<i class="fas fa-image" style="font-size: 3rem; color: var(--text-light);"></i>`
+                                }
+                            </div>
+                            <div class="product-content">
+                                <div class="product-header">
+                                    <h3 class="product-title">${product.title}</h3>
+                                    ${isFavorite ? 
+                                        `<i class="fas fa-heart" style="color: var(--accent);"></i>` : ''}
+                                </div>
+                                <span class="product-category">${getCategoryName(product.category)}</span>
+                                <p class="product-description">${product.description}</p>
+                                <div class="product-footer">
+                                    <div class="product-price">$${parseFloat(product.price).toFixed(2)}</div>
+                                    <div class="product-actions">
+                                        <button class="favorite-btn ${isFavorite ? 'favorited' : ''}" 
+                                            onclick="toggleFavorite('${doc.id}')">
+                                            <i class="fas fa-heart"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                // Update viewed count
+                document.getElementById('customer-viewed-count').textContent = viewedCount;
+                
+                container.innerHTML = html;
+            } catch (error) {
+                console.error('Error loading all services for customer:', error);
+            }
+        }
+        
+        async function showCategoryForCustomer(category) {
+            if (!currentUser) return;
+            
+            const container = document.getElementById('customer-dashboard-products');
+            if (!container) return;
+            
+            try {
+                const querySnapshot = await db.collection('products')
+                    .where('category', '==', category)
+                    .orderBy('createdAt', 'desc')
+                    .get();
+                
+                // Get user's favorites
+                let userFavorites = [];
+                const favoritesQuery = await db.collection('productFavorites')
+                    .where('userId', '==', currentUser.uid)
+                    .get();
+                userFavorites = favoritesQuery.docs.map(doc => doc.data().productId);
+                
+                if (querySnapshot.empty) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-box-open"></i>
+                            <h3>${currentLang === 'ar' ? 'لا توجد خدمات في هذه الفئة' : 'No services in this category'}</h3>
+                            <p>${currentLang === 'ar' ? 'كن أول من يضيف خدمة في هذه الفئة' : 'Be the first to add a service in this category'}</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                let html = '';
+                querySnapshot.forEach((doc) => {
+                    const product = doc.data();
+                    const isFavorite = userFavorites.includes(doc.id);
+                    
+                    html += `
+                        <div class="product-card">
+                            <div class="product-image">
+                                ${product.imageUrl ? 
+                                    `<img src="${product.imageUrl}" alt="${product.title}" loading="lazy">` : 
+                                    `<i class="fas fa-image" style="font-size: 3rem; color: var(--text-light);"></i>`
+                                }
+                            </div>
+                            <div class="product-content">
+                                <div class="product-header">
+                                    <h3 class="product-title">${product.title}</h3>
+                                    ${isFavorite ? 
+                                        `<i class="fas fa-heart" style="color: var(--accent);"></i>` : ''}
+                                </div>
+                                <span class="product-category">${getCategoryName(product.category)}</span>
+                                <p class="product-description">${product.description}</p>
+                                <div class="product-footer">
+                                    <div class="product-price">$${parseFloat(product.price).toFixed(2)}</div>
+                                    <div class="product-actions">
+                                        <button class="favorite-btn ${isFavorite ? 'favorited' : ''}" 
+                                            onclick="toggleFavorite('${doc.id}')">
+                                            <i class="fas fa-heart"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                container.innerHTML = html;
+                
+                // Update category buttons active state
+                document.querySelectorAll('.service-categories .service-nav-link').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                event.target.classList.add('active');
+                
+                // Update title
+                document.getElementById('customer-dashboard-section-title').textContent = 
+                    getCategoryName(category);
+                    
+            } catch (error) {
+                console.error('Error loading category for customer:', error);
+            }
+        }
+        
+        async function updateCustomerStats() {
+            if (!currentUser || userRole !== 'customer') return;
+            
+            try {
+                // Count user's favorites
+                const favoritesSnapshot = await db.collection('productFavorites')
+                    .where('userId', '==', currentUser.uid)
+                    .get();
+                document.getElementById('customer-favorites-count').textContent = favoritesSnapshot.size;
+                
+                // Count viewed services (services the customer has viewed)
+                const viewsSnapshot = await db.collection('productViews')
+                    .where('userId', '==', currentUser.uid)
+                    .get();
+                
+                // Get unique product views
+                const viewedProductIds = [...new Set(viewsSnapshot.docs.map(doc => doc.data().productId))];
+                document.getElementById('customer-viewed-count').textContent = viewedProductIds.length;
+                
+            } catch (error) {
+                console.error('Error updating customer stats:', error);
+            }
+        }
     </script>
 </body>
 </html>
