@@ -3539,29 +3539,260 @@
 
         // Authentication functions
         async function signUp(name, email, password, role) {
+            // 1. Show Loading State
+            const btn = document.querySelector('#registerForm button');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ' + 
+                           (currentLang === 'ar' ? 'جاري المعالجة...' : 'Processing...');
+            btn.disabled = true;
+        
             try {
+                // 2. Create Auth User
                 const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-                
-                // Update profile
-                await userCredential.user.updateProfile({
+                const user = userCredential.user;
+        
+                // 3. Update Profile Name
+                await user.updateProfile({
                     displayName: name
                 });
-
-                // Save to Firestore
-                await db.collection('users').doc(userCredential.user.uid).set({
+        
+                // 4. Save to Firestore with approval system
+                const isApproved = (role === 'customer');
+                
+                await db.collection('users').doc(user.uid).set({
                     name: name,
                     email: email,
                     role: role,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    isApproved: isApproved,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    lastLogin: firebase.firestore.FieldValue.serverTimestamp()
                 });
-
+        
+                // 5. Handle different user types
                 hideModal('registerModal');
-                showToast(currentLang === 'ar' ? 'تم إنشاء الحساب بنجاح!' : 'Account created successfully!', 'success');
+                
+                if (role === 'business') {
+                    // Business: Sign out and show approval pending message
+                    await auth.signOut();
+                    
+                    const message = currentLang === 'ar' 
+                        ? "تم إنشاء حسابك التجاري بنجاح! سيتم تفعيله بعد مراجعة الإدارة (خلال 24 ساعة). ستصلك رسالة تأكيد عبر البريد الإلكتروني."
+                        : "Business account created successfully! It is pending admin approval (within 24 hours). You'll receive a confirmation email.";
+                    
+                    showToast(message, 'info');
+                    
+                    // Optional: Show login modal after delay
+                    setTimeout(() => showModal('loginModal'), 3000);
+                    
+                } else {
+                    // Customer: Show success and redirect to dashboard
+                    const message = currentLang === 'ar' 
+                        ? 'تم إنشاء الحساب بنجاح!' 
+                        : 'Account created successfully!';
+                    
+                    showToast(message, 'success');
+                    
+                    // Automatically log in customer and redirect using Hash Routing
+                    setTimeout(() => {
+                        MapsTo('customer-dashboard'); // Use hash routing instead of window.location.href
+                    }, 1500);
+                }
+        
+            } catch (error) {
+                console.error('Signup Error:', error);
+                
+                // Enhanced error handling with translations
+                let errorMessage = error.message;
+                
+                if (currentLang === 'ar') {
+                    if (error.code === 'auth/email-already-in-use') {
+                        errorMessage = 'البريد الإلكتروني مستخدم بالفعل';
+                    } else if (error.code === 'auth/weak-password') {
+                        errorMessage = 'كلمة المرور ضعيفة. يجب أن تكون 6 أحرف على الأقل';
+                    } else if (error.code === 'auth/invalid-email') {
+                        errorMessage = 'بريد إلكتروني غير صالح';
+                    } else if (error.code === 'auth/operation-not-allowed') {
+                        errorMessage = 'عملية التسجيل غير مسموحة حالياً';
+                    } else if (error.code === 'auth/network-request-failed') {
+                        errorMessage = 'فشل في الشبكة. يرجى التحقق من اتصال الإنترنت';
+                    }
+                } else {
+                    if (error.code === 'auth/email-already-in-use') {
+                        errorMessage = 'Email is already in use';
+                    } else if (error.code === 'auth/weak-password') {
+                        errorMessage = 'Password is too weak. Must be at least 6 characters';
+                    } else if (error.code === 'auth/invalid-email') {
+                        errorMessage = 'Invalid email address';
+                    }
+                }
+                
+                showToast(errorMessage, 'error');
+                
+            } finally {
+                // 6. Reset button state
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        }
+        
+        // Helper function to redirect based on role and approval status using Hash Routing
+        function redirectBasedOnRole(role, isApproved) {
+            switch(role) {
+                case 'customer':
+                    MapsTo('customer-dashboard'); // Use hash routing
+                    break;
+                    
+                case 'business':
+                    if (isApproved) {
+                        MapsTo('business-dashboard'); // Use hash routing
+                    } else {
+                        // Redirect to pending approval page using hash routing
+                        MapsTo('pending-approval');
+                    }
+                    break;
+                    
+                case 'admin':
+                    MapsTo('admin-dashboard'); // Use hash routing
+                    break;
+                    
+                default:
+                    MapsTo('home'); // Use hash routing
+            }
+        }
+        
+        // Optional: Login handler that checks approval status
+        async function handleLogin(email, password) {
+            try {
+                const userCredential = await auth.signInWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+                
+                // Get user data from Firestore
+                const userDoc = await db.collection('users').doc(user.uid).get();
+                
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    
+                    // Update last login timestamp
+                    await db.collection('users').doc(user.uid).update({
+                        lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    
+                    // Check if business user is approved
+                    if (userData.role === 'business' && !userData.isApproved) {
+                        // Business not approved - sign them out and show message
+                        await auth.signOut();
+                        
+                        const message = currentLang === 'ar'
+                            ? 'حسابك التجاري قيد الانتظار للموافقة. الرجاء الانتظار حتى تتم مراجعته.'
+                            : 'Your business account is pending approval. Please wait for review.';
+                        
+                        showToast(message, 'warning');
+                        MapsTo('pending-approval'); // Use hash routing
+                        return;
+                    }
+                    
+                    // Successful login - redirect based on role and approval
+                    redirectBasedOnRole(userData.role, userData.isApproved || false);
+                    
+                } else {
+                    // User document doesn't exist (edge case)
+                    showToast(currentLang === 'ar' ? 'بيانات المستخدم غير موجودة' : 'User data not found', 'error');
+                    await auth.signOut();
+                }
                 
             } catch (error) {
+                console.error('Login Error:', error);
+                
+                let errorMessage = error.message;
+                if (currentLang === 'ar') {
+                    if (error.code === 'auth/user-not-found') {
+                        errorMessage = 'المستخدم غير موجود';
+                    } else if (error.code === 'auth/wrong-password') {
+                        errorMessage = 'كلمة المرور غير صحيحة';
+                    } else if (error.code === 'auth/user-disabled') {
+                        errorMessage = 'تم تعطيل هذا الحساب';
+                    }
+                }
+                
+                showToast(errorMessage, 'error');
+            }
+        }
+        
+        // Optional: Admin function to approve businesses
+        async function approveBusinessUser(userId) {
+            try {
+                await db.collection('users').doc(userId).update({
+                    isApproved: true,
+                    approvedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    approvedBy: auth.currentUser.uid // Log which admin approved
+                });
+                
+                // Optional: Send approval email notification
+                const userDoc = await db.collection('users').doc(userId).get();
+                const userData = userDoc.data();
+                
+                // You could trigger a cloud function here to send email
+                console.log(`Business account approved for: ${userData.email}`);
+                
+                showToast(currentLang === 'ar' ? 'تمت الموافقة على الحساب التجاري' : 'Business account approved', 'success');
+                
+            } catch (error) {
+                console.error('Approval Error:', error);
                 showToast(error.message, 'error');
             }
         }
+        
+        // Optional: Check user status on app load - FIXED for hash routing
+        function checkUserStatus() {
+            auth.onAuthStateChanged(async (user) => {
+                if (user) {
+                    const userDoc = await db.collection('users').doc(user.uid).get();
+                    
+                    if (userDoc.exists) {
+                        const userData = userDoc.data();
+                        
+                        // For business users, check approval status
+                        if (userData.role === 'business' && !userData.isApproved) {
+                            // Check current hash (remove # if present)
+                            const currentHash = window.location.hash.replace('#', '');
+                            
+                            // Redirect to pending page if not already there
+                            if (currentHash !== 'pending-approval') {
+                                MapsTo('pending-approval');
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Enhanced helper: If MapsTo doesn't exist, fall back to window.location.hash
+        function ensureMapsToAvailable() {
+            if (typeof MapsTo === 'undefined') {
+                // Create a simple fallback MapsTo function
+                window.MapsTo = function(page) {
+                    window.location.hash = page;
+                };
+                
+                // Also handle initial page load based on hash
+                if (window.location.hash) {
+                    const initialPage = window.location.hash.replace('#', '');
+                    // You might want to load the corresponding content here
+                    console.log(`Loading page: ${initialPage}`);
+                }
+            }
+        }
+        
+        // Call this on app initialization
+        ensureMapsToAvailable();
+        // checkUserStatus(); // Uncomment if you want auto-check on load
+        
+        // Optional: Listen for hash changes to handle routing
+        window.addEventListener('hashchange', function() {
+            const page = window.location.hash.replace('#', '') || 'home';
+            console.log(`Hash changed to: ${page}`);
+            // You can add logic here to load the appropriate content for the page
+        });
 
         async function signIn(email, password) {
             try {
