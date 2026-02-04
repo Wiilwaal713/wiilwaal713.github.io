@@ -3228,35 +3228,83 @@
         // END GOOGLE SHEETS SUBMISSION FUNCTION
         // ============================================
 
-        // Initialize the app
+        // Global variable to hold the listener (put this right above the init function)
+        let userListener = null;
+        
         function init() {
-            // Set minimum date for appointment
-            document.getElementById('date').min = new Date().toISOString().split('T')[0];
-            
-            // Set up auth state listener
+            // 1. Set minimum date for appointment
+            const dateInput = document.getElementById('date');
+            if (dateInput) dateInput.min = new Date().toISOString().split('T')[0];
+        
+            // 2. Set up auth state listener
             auth.onAuthStateChanged(async (user) => {
                 if (user) {
                     currentUser = user;
-                    await loadUserRole();
-                    updateAuthUI();
+        
+                    // --- SECURITY UPGRADE START ---
+                    // If a listener already exists from a previous session, stop it first
+                    if (userListener) userListener();
+        
+                    // Start a LIVE connection to the user's database document
+                    userListener = db.collection('users').doc(user.uid)
+                        .onSnapshot((doc) => {
+                            if (doc.exists) {
+                                const userData = doc.data();
+                                userRole = userData.role; // Keep role updated in real-time
+        
+                                // THE KILL SWITCH: Check permission every time the DB changes
+                                if (userData.role === 'business' && userData.isApproved !== true) {
+                                    console.warn("Security Alert: Approval revoked.");
+        
+                                    // Force Logout Immediately
+                                    auth.signOut().then(() => {
+                                        // Show a strict alert (Alerts pause execution, which is good here)
+                                        alert(currentLang === 'ar' 
+                                            ? "تم تعليق حسابك من قبل الإدارة." 
+                                            : "Your account approval has been revoked by the admin.");
+                                        
+                                        // Redirect to pending page
+                                        MapsTo('pending-approval');
+                                    });
+                                } else {
+                                    // If they are safe, update the UI normally
+                                    updateAuthUI();
+                                }
+                            } else {
+                                // If the user document was deleted entirely
+                                auth.signOut();
+                            }
+                        }, (error) => {
+                            console.error("Real-time listener error:", error);
+                        });
+                    // --- SECURITY UPGRADE END ---
+        
                 } else {
+                    // User logged out
                     currentUser = null;
                     userRole = null;
+        
+                    // Stop listening to the database to save memory/data
+                    if (userListener) {
+                        userListener();
+                        userListener = null;
+                    }
+        
                     updateAuthUI();
                 }
             });
-
-            // Load language preference
+        
+            // 3. Load language preference
             const savedLang = localStorage.getItem('wassl-lang') || 'ar';
             setLanguage(savedLang);
-            
-            // Initialize hash routing
+        
+            // 4. Initialize hash routing
             initHashRouting();
-            
-            // Listen for hash changes
+        
+            // 5. Listen for hash changes
             window.addEventListener('hashchange', handleHashChange);
-            
-            // Initial load based on current hash
+        
+            // 6. Initial load based on current hash
             handleHashChange();
         }
 
