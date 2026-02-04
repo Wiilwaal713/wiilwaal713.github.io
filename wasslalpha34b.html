@@ -1482,6 +1482,76 @@
             .appointment-form {
                 padding: 2rem;
             }
+
+            /* ============================================ */
+            /* NEW DASHBOARD CSS */
+            /* ============================================ */
+            
+            .service-categories {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+                margin-top: 1rem;
+            }
+            
+            .service-categories .service-nav-link {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                text-align: right;
+                justify-content: flex-start;
+                background: var(--light);
+                color: var(--primary);
+                padding: 0.6rem 1.2rem;
+                border-radius: 30px;
+                text-decoration: none;
+                font-weight: 500;
+                transition: var(--transition);
+                border: 2px solid transparent;
+                cursor: pointer;
+                width: 100%;
+            }
+            
+            .service-categories .service-nav-link:hover {
+                background: var(--primary);
+                color: var(--white);
+                transform: translateY(-2px);
+            }
+            
+            .service-categories .service-nav-link.active {
+                background: var(--primary);
+                color: var(--white);
+                border-color: var(--primary);
+            }
+            
+            .dashboard-sidebar .auth-btn.secondary {
+                background: transparent;
+                color: var(--primary);
+                border: 2px solid var(--primary);
+            }
+            
+            .dashboard-sidebar .auth-btn.secondary:hover {
+                background: var(--primary);
+                color: var(--white);
+            }
+            
+            /* User role badge colors */
+            .user-role-badge {
+                background: var(--secondary);
+                color: var(--dark);
+                padding: 0.2rem 0.8rem;
+                border-radius: 20px;
+                font-size: 0.8rem;
+                font-weight: 600;
+            }
+            
+            #user-role-badge-business {
+                background: #10b981; /* Green for business */
+            }
+            
+            #user-role-badge-customer {
+                background: #3b82f6; /* Blue for customer */
+            }
         }
     </style>
 </head>
