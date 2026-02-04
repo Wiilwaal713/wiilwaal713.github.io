@@ -1718,29 +1718,34 @@
     </section>
 
     <!-- Dashboard Page -->
-    <section id="dashboard-page" class="dashboard-section">
+    <!-- Business Dashboard Page -->
+    <section id="business-dashboard-page" class="dashboard-section">
         <div class="dashboard-header">
             <div class="container">
-                <h1 id="dashboard-title" data-key="dashboardTitle">لوحة التحكم</h1>
-                <p id="dashboard-subtitle" data-key="dashboardSubtitle">إدارة خدماتك وتفاعلاتك</p>
+                <h1 id="business-dashboard-title" data-key="businessDashboardTitle">لوحة تحكم مقدم الخدمة</h1>
+                <p id="business-dashboard-subtitle" data-key="businessDashboardSubtitle">إدارة خدماتك وعرض إحصائياتك</p>
             </div>
         </div>
         <div class="container">
             <div class="dashboard-content">
                 <div class="dashboard-sidebar">
                     <div class="user-info">
-                        <h3 id="welcome-user" data-key="welcomeUser">مرحباً،</h3>
-                        <div class="user-role-badge" id="user-role-badge">عميل</div>
+                        <h3 id="welcome-business-user" data-key="welcomeUser">مرحباً،</h3>
+                        <div class="user-role-badge" id="user-role-badge-business">مقدم خدمة</div>
                     </div>
                     
                     <div class="dashboard-stats">
                         <div class="stat-card">
-                            <div class="stat-number" id="products-count">0</div>
+                            <div class="stat-number" id="business-products-count">0</div>
                             <div class="stat-label" data-key="productsCount">الخدمات المنشورة</div>
                         </div>
                         <div class="stat-card">
-                            <div class="stat-number" id="favorites-count">0</div>
-                            <div class="stat-label" data-key="favoritesCount">المفضلة</div>
+                            <div class="stat-number" id="business-total-views">0</div>
+                            <div class="stat-label" data-key="totalViews">إجمالي المشاهدات</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="business-favorites-count">0</div>
+                            <div class="stat-label" data-key="totalFavorites">إجمالي المفضلة</div>
                         </div>
                     </div>
                     
@@ -1754,16 +1759,89 @@
                         <span data-key="myProductsBtn">خدماتي المنشورة</span>
                     </button>
                     
-                    <button onclick="showMyFavorites()" class="auth-btn secondary" id="my-favorites-btn" style="width: 100%; margin-top: 1rem;">
+                    <button onclick="showBusinessStats()" class="auth-btn secondary" id="business-stats-btn" style="width: 100%; margin-top: 1rem;">
+                        <i class="fas fa-chart-bar"></i>
+                        <span data-key="businessStatsBtn">الإحصائيات</span>
+                    </button>
+                </div>
+                
+                <div class="dashboard-main">
+                    <h2 id="business-dashboard-section-title" data-key="myProducts">خدماتك المنشورة</h2>
+                    <div class="products-grid" id="business-dashboard-products">
+                        <!-- Business products will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Customer Dashboard Page -->
+    <section id="customer-dashboard-page" class="dashboard-section">
+        <div class="dashboard-header">
+            <div class="container">
+                <h1 id="customer-dashboard-title" data-key="customerDashboardTitle">لوحة تحكم العميل</h1>
+                <p id="customer-dashboard-subtitle" data-key="customerDashboardSubtitle">استعرض الخدمات وأضفها للمفضلة</p>
+            </div>
+        </div>
+        <div class="container">
+            <div class="dashboard-content">
+                <div class="dashboard-sidebar">
+                    <div class="user-info">
+                        <h3 id="welcome-customer-user" data-key="welcomeUser">مرحباً،</h3>
+                        <div class="user-role-badge" id="user-role-badge-customer">عميل</div>
+                    </div>
+                    
+                    <div class="dashboard-stats">
+                        <div class="stat-card">
+                            <div class="stat-number" id="customer-favorites-count">0</div>
+                            <div class="stat-label" data-key="favoritesCount">المفضلة</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="customer-viewed-count">0</div>
+                            <div class="stat-label" data-key="viewedCount">الخدمات المستعرضة</div>
+                        </div>
+                    </div>
+                    
+                    <div class="service-nav-links" style="margin-top: 2rem;">
+                        <button onclick="showAllServicesForCustomer()" class="service-nav-link active" id="all-services-customer-btn">
+                            <i class="fas fa-th"></i>
+                            <span data-key="allServices">جميع الخدمات</span>
+                        </button>
+                    </div>
+                    
+                    <div class="service-categories" style="margin-top: 1rem;">
+                        <button onclick="showCategoryForCustomer('real-estate')" class="service-nav-link">
+                            <i class="fas fa-building"></i>
+                            <span>العقارات</span>
+                        </button>
+                        <button onclick="showCategoryForCustomer('tourism')" class="service-nav-link">
+                            <i class="fas fa-plane"></i>
+                            <span>السياحة</span>
+                        </button>
+                        <button onclick="showCategoryForCustomer('student')" class="service-nav-link">
+                            <i class="fas fa-graduation-cap"></i>
+                            <span>الطلابية</span>
+                        </button>
+                        <button onclick="showCategoryForCustomer('medical')" class="service-nav-link">
+                            <i class="fas fa-heartbeat"></i>
+                            <span>الطبية</span>
+                        </button>
+                        <button onclick="showCategoryForCustomer('business')" class="service-nav-link">
+                            <i class="fas fa-briefcase"></i>
+                            <span>الأعمال</span>
+                        </button>
+                    </div>
+                    
+                    <button onclick="showMyFavorites()" class="auth-btn" id="my-favorites-customer-btn" style="width: 100%; margin-top: 2rem;">
                         <i class="fas fa-heart"></i>
                         <span data-key="myFavoritesBtn">قائمة المفضلة</span>
                     </button>
                 </div>
                 
                 <div class="dashboard-main">
-                    <h2 id="dashboard-section-title" data-key="myProducts">خدماتك المنشورة</h2>
-                    <div class="products-grid" id="dashboard-products">
-                        <!-- Products will be loaded here -->
+                    <h2 id="customer-dashboard-section-title" data-key="availableServices">الخدمات المتاحة</h2>
+                    <div class="products-grid" id="customer-dashboard-products">
+                        <!-- Customer view of all services will be loaded here -->
                     </div>
                 </div>
             </div>
