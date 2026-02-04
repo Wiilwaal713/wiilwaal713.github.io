@@ -3570,7 +3570,7 @@
             if (!route) {
                 route = 'home';
             }
-            
+
             // Handle different routes
             if (route === 'home') {
                 showPage('home');
@@ -3584,6 +3584,14 @@
             else if (route === 'dashboard') {
                 showDashboard(); // Changed from showPage('dashboard')
             }
+            // --- NEW LOGIC START ---
+            else if (route === 'admin-dashboard') {
+                showPage('admin-dashboard');
+            }
+            else if (route === 'pending-approval') {
+                showPage('pending-approval');
+            }
+            // --- NEW LOGIC END ---
             else if (route === 'services') {
                 showServicePage('real-estate'); // Default to first service
             }
@@ -3598,6 +3606,8 @@
             // Update navigation active state
             updateNavActiveState(route);
         }
+
+            
         
         // ============================================
         // END HASH ROUTING SYSTEM
