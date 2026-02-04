@@ -2647,6 +2647,19 @@
                     <div id="admin-posts-feed" class="products-grid">
                         </div>
                 </div>
+                <div class="dashboard-main" style="background: transparent; border: none; box-shadow: none; padding: 0; margin-top: 4rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                        <h2 class="panel-title" style="border-color: var(--neon-blue);">
+                            <i class="fas fa-user-check"></i> Active Business Units
+                        </h2>
+                        <button onclick="loadActiveBusinesses()" class="cyber-btn" style="border-color: var(--neon-blue); color: var(--neon-blue);">
+                            <i class="fas fa-sync"></i> REFRESH ACTIVE
+                        </button>
+                    </div>
+
+                    <div id="admin-active-list" class="products-grid">
+                        </div>
+                </div>
 
             </div>
         </div>
@@ -5196,6 +5209,7 @@ async function loadAdminDashboard() {
 
     // Load both sections
     await loadPendingApprovals();
+    await loadActiveBusinesses(); // <--- ADDED THIS
     await loadAllPostsAdmin();
 }
 
@@ -5256,43 +5270,52 @@ async function loadPendingApprovals() {
 
 // 3. Admin Action (Approve/Reject User) with SUPER ADMIN LOCK
 async function adminAction(userId, action) {
-    // 🛡️ SUPER ADMIN LIST (Add your email here in lowercase)
-    const SUPER_ADMINS = ['wasslservices@gmail.com']; 
+    const SUPER_ADMINS = ['wasslservices@gmail.com', 'wiilwaal713@gmail.com']; 
 
     try {
-        // Fetch target first for safety
         const targetDoc = await db.collection('users').doc(userId).get();
         if(!targetDoc.exists) return;
         
-        const targetEmail = targetDoc.data().email.toLowerCase();
+        const targetEmail = (targetDoc.data().email || "").toLowerCase();
 
-        // Check if trying to ban a God
         if (SUPER_ADMINS.includes(targetEmail)) {
-            alert("⚠️ PERMISSION DENIED: Cannot modify a Super Admin.");
+            alert("⛔ SECURITY: Cannot modify a Super Admin.");
             return;
         }
 
-        if (!confirm(`CONFIRM ACTION: ${action.toUpperCase()} User?`)) return;
-
+        // Logic Switch
         if (action === 'approve') {
             await db.collection('users').doc(userId).update({
                 isApproved: true,
                 approvedAt: firebase.firestore.FieldValue.serverTimestamp()
             });
             showToast("ACCESS GRANTED", "success");
-        } else {
-            // Rejection = Deletion (Kill Switch)
+        } 
+        else if (action === 'suspend') {
+            // THE KILL SWITCH: Just set false, don't delete
+            if (!confirm(`⚠️ WARNING: This will instantly log out ${targetEmail}. Proceed?`)) return;
+            
+            await db.collection('users').doc(userId).update({
+                isApproved: false,
+                suspendedAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            showToast("ACCESS REVOKED", "warning");
+        }
+        else if (action === 'reject') {
+            if (!confirm(`DELETE USER PERMANENTLY?`)) return;
             await db.collection('users').doc(userId).delete();
-            showToast("USER TERMINATED", "info");
+            showToast("USER DELETED", "info");
         }
 
-        // Refresh List
+        // Refresh Lists
         loadPendingApprovals();
+        loadActiveBusinesses();
 
     } catch (error) {
-        alert("EXECUTION FAILED: " + error.message);
+        alert("Error: " + error.message);
     }
 }
+
 
 // 4. Load Posts Feed (Content Overwatch)
 async function loadAllPostsAdmin(filter = 'all') {
