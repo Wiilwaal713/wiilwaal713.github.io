@@ -3794,13 +3794,87 @@
             // You can add logic here to load the appropriate content for the page
         });
 
+        // ============================================
+        // SECURE LOGIN FUNCTION (Checks Approval)
+        // ============================================
         async function signIn(email, password) {
+            // 1. Show Loading State on the Button
+            const btn = document.querySelector('#loginForm button');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ' + 
+                           (currentLang === 'ar' ? 'جاري التحقق...' : 'Checking...');
+            btn.disabled = true;
+        
             try {
-                await auth.signInWithEmailAndPassword(email, password);
-                hideModal('loginModal');
-                showToast(currentLang === 'ar' ? 'تم تسجيل الدخول بنجاح!' : 'Logged in successfully!', 'success');
+                // 2. Attempt to Log In
+                const userCredential = await auth.signInWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+        
+                // 3. SECURITY CHECK: Fetch their file from the Database
+                const userDoc = await db.collection('users').doc(user.uid).get();
+                
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+        
+                    // 4. THE GATEKEEPER: Are they an unapproved business?
+                    // If they are Business AND isApproved is false (or missing) -> KICK THEM OUT
+                    if (userData.role === 'business' && userData.isApproved !== true) {
+                        
+                        // FORCE LOGOUT IMMEDIATELY
+                        await auth.signOut();
+                        
+                        // Show strict message
+                        const message = currentLang === 'ar' 
+                            ? "عذراً، حسابك لا يزال قيد المراجعة. يرجى الانتظار حتى يتم تفعيله." 
+                            : "Access Denied. Your account is still pending admin approval.";
+                        
+                        alert(message); // Alert is better here so they definitely see it
+                        
+                        // Redirect to the Pending Page
+                        hideModal('loginModal');
+                        MapsTo('pending-approval');
+                        return; // Stop the function here
+                    }
+                    
+                    // 5. If Allowed: Update Last Login Date
+                    db.collection('users').doc(user.uid).update({
+                        lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+        
+                    // 6. Success! Let them in.
+                    hideModal('loginModal');
+                    showToast(currentLang === 'ar' ? 'تم تسجيل الدخول بنجاح!' : 'Logged in successfully!', 'success');
+                    
+                    // Redirect based on who they are
+                    if (userData.role === 'business') {
+                        MapsTo('business-dashboard');
+                    } else if (userData.role === 'customer') {
+                        MapsTo('customer-dashboard');
+                    } else {
+                        MapsTo('home');
+                    }
+                } else {
+                    // Edge case: User exists in Auth but not Database
+                    throw new Error(currentLang === 'ar' ? 'بيانات المستخدم غير موجودة' : 'User profile not found');
+                }
+        
             } catch (error) {
-                showToast(error.message, 'error');
+                console.error("Login Error:", error);
+                // Translate common errors
+                let msg = error.message;
+                if (currentLang === 'ar') {
+                    if (error.code === 'auth/wrong-password') msg = 'كلمة المرور غير صحيحة';
+                    else if (error.code === 'auth/user-not-found') msg = 'لا يوجد حساب بهذا البريد الإلكتروني';
+                }
+                showToast(msg, 'error');
+                
+                // Ensure they are logged out if an error occurred after auth
+                await auth.signOut();
+                
+            } finally {
+                // Reset Button
+                btn.innerHTML = originalText;
+                btn.disabled = false;
             }
         }
 
