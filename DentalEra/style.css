@@ -419,6 +419,8 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 
 .about-image-col {
   position: relative;
+  max-width: 480px;
+  margin: 0 auto;
 }
 
 .about-img-wrap {
