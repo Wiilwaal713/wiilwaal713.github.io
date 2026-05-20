@@ -1237,6 +1237,11 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   body.menu-open {
     overflow: hidden;
   }
+  
+  body.menu-open .navbar {
+    backdrop-filter: none !important;
+    background: #040812 !important;
+  }
 
   .hero {
     grid-template-columns: 1fr;
