@@ -491,7 +491,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 /* ===== SERVICES ===== */
 .services-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 24px;
 }
 
@@ -619,7 +619,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 /* ===== GALLERY ===== */
 .gallery-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 24px;
 }
 
@@ -1277,7 +1277,21 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 
 @media (max-width: 600px) {
   .section { padding: 48px 0; }
-  .services-grid { grid-template-columns: 1fr; }
+  
+  /* Services: 4 in a row */
+  .services-grid { grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .svc-body { padding: 8px; }
+  .svc-icon { font-size: 1.1rem; margin-bottom: 4px; }
+  .svc-body h3 { font-size: 0.7rem; line-height: 1.2; margin-bottom: 0; }
+  .svc-body p, .svc-link { display: none; } /* Hidden to fit 4-col on mobile */
+
+  /* Technology: 3 in a row */
+  .tech-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .tech-card, .tech-card.reverse { display: flex; flex-direction: column; gap: 8px; }
+  .tech-visual img { aspect-ratio: 1/1; }
+  .tech-tag { font-size: 0.55rem; padding: 2px 6px; margin-bottom: 4px; }
+  .tech-info h3 { font-size: 0.75rem; line-height: 1.2; margin-bottom: 4px; }
+  .tech-info p, .tech-list { display: none; } /* Hidden to fit 3-col on mobile */
   .why-grid { grid-template-columns: 1fr; }
   .team-grid { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr; }
