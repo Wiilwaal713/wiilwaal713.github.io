@@ -423,8 +423,6 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 
 .about-img-wrap {
   position: relative;
-  max-width: 340px;
-  margin: 0 auto;
 }
 
 .about-main-img {
@@ -1290,7 +1288,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   /* Technology: stacked on mobile */
   .tech-grid { display: flex; flex-direction: column; gap: 32px; }
   .tech-card, .tech-card.reverse { display: flex; flex-direction: column; gap: 16px; }
-  .tech-visual img { aspect-ratio: 4/5; }
+  .tech-visual img { aspect-ratio: 4/5; object-fit: contain; }
   .tech-tag { font-size: 0.65rem; padding: 4px 10px; margin-bottom: 8px; }
   .tech-info h3 { font-size: 1.2rem; line-height: 1.3; margin-bottom: 8px; }
   .tech-info p, .tech-list { display: block; } 
