@@ -1861,6 +1861,7 @@
                     <li><a onclick="navigateTo('home#about')" class="nav-about" data-key="navAbout">من نحن</a></li>
                     <li><a onclick="navigateTo('home#appointments')" class="nav-appointments"
                             data-key="navAppointments">المواعيد</a></li>
+                    <li><a onclick="navigateTo('careers')" class="nav-careers" data-key="navCareers">انضم إلينا</a></li>
                     <li><a onclick="navigateTo('home#contact')" class="nav-contact" data-key="navContact">اتصل بنا</a>
                     </li>
 
@@ -2063,6 +2064,15 @@
                     <div class="form-group">
                         <label for="phone" class="label-phone" data-key="labelPhone">رقم الهاتف</label>
                         <input type="tel" id="phone" name="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-method" class="label-contact-method" data-key="labelContactMethod">طريقة التواصل المفضلة</label>
+                        <select id="contact-method" name="contact-method" required>
+                            <option value="" data-key="contactMethodPlaceholder">اختر طريقة التواصل</option>
+                            <option value="whatsapp" data-key="contactMethodWhatsApp">واتساب (WhatsApp)</option>
+                            <option value="email" data-key="contactMethodEmail">البريد الإلكتروني (Email)</option>
+                            <option value="phone" data-key="contactMethodPhone">اتصال هاتفي (Phone Call)</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="service" class="label-service" data-key="labelService">الخدمة المطلوبة</label>
@@ -2338,7 +2348,7 @@
                             <div class="form-group">
                                 <label for="property-type" class="real-estate-label1" data-key="realEstateLabel1">نوع
                                     العقار</label>
-                                <select id="property-type" name="property-type" required>
+                                <select id="property-type" name="property-type" required onchange="toggleLandOptions(this)">
                                     <option value="" class="real-estate-option-select"
                                         data-key="realEstateOptionSelect">اختر نوع العقار</option>
                                     <option value="apartment" class="real-estate-option1" data-key="realEstateOption1">
@@ -2349,6 +2359,15 @@
                                         عقار تجاري</option>
                                     <option value="land" class="real-estate-option4" data-key="realEstateOption4">أرض
                                     </option>
+                                </select>
+                            </div>
+                            <div class="form-group" id="land-options-group" style="display: none;">
+                                <label for="land-type" class="real-estate-label-land" data-key="realEstateLabelLand">نوع الأرض</label>
+                                <select id="land-type" name="land-type">
+                                    <option value="" data-key="landTypePlaceholder">اختر نوع الأرض</option>
+                                    <option value="agricultural" data-key="landTypeAgri">زراعية (Agricultural)</option>
+                                    <option value="residential" data-key="landTypeRes">سكنية (Residential)</option>
+                                    <option value="commercial" data-key="landTypeCom">تجارية (Commercial)</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -2405,6 +2424,10 @@
                                 <label class="real-estate-label8" data-key="realEstateLabel8">Required Number of
                                     Rooms</label>
                                 <input type="number" name="required-rooms" min="1">
+                            </div>
+                            <div class="form-group">
+                                <label class="real-estate-label-days" data-key="realEstateLabelDays">مدة الإيجار بالأيام (Rent Duration in Days)</label>
+                                <input type="number" name="rent-days" min="1">
                             </div>
                             <button type="submit" class="submit-btn real-estate-submit"
                                 data-key="realEstateSubmit">إرسال الطلب</button>
@@ -2486,6 +2509,27 @@
                             </select>
                         </div>
                         <div class="form-group">
+                            <label for="car-type" class="tourism-label-car" data-key="tourismLabelCar">نوع السيارة المطلوبة</label>
+                            <select id="car-type" name="car-type">
+                                <option value="" data-key="carTypePlaceholder">اختر نوع السيارة</option>
+                                <option value="sedan" data-key="carTypeSedan">سيدان (Sedan)</option>
+                                <option value="suv" data-key="carTypeSUV">عائلية (SUV)</option>
+                                <option value="van" data-key="carTypeVan">فان (Van/Minibus)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="car-days" class="tourism-label-car-days" data-key="tourismLabelCarDays">عدد أيام استئجار السيارة</label>
+                            <input type="number" id="car-days" name="car-days" min="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="airport-pickup" class="tourism-label-pickup" data-key="tourismLabelPickup">الاستقبال من المطار</label>
+                            <select id="airport-pickup" name="airport-pickup" required>
+                                <option value="" data-key="pickupPlaceholder">هل تحتاج استقبال من المطار؟</option>
+                                <option value="yes" data-key="pickupYes">نعم، أحتاج استقبال</option>
+                                <option value="no" data-key="pickupNo">لا، لدي وسيلة نقل خاصة</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
                             <label for="hotel" class="tourism-label6" data-key="tourismLabel6">احتياجات
                                 الإقامة</label>
                             <select id="hotel" name="hotel" required>
@@ -2516,6 +2560,19 @@
                         <div class="form-group">
                             <label for="num-rooms" class="tourism-label9" data-key="tourismLabel9">عدد الغرف</label>
                             <input type="number" id="num-rooms" name="num-rooms" min="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="hotel-days" class="tourism-label-hotel-days" data-key="tourismLabelHotelDays">مدة الإقامة (بالأيام)</label>
+                            <input type="number" id="hotel-days" name="hotel-days" min="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="hotel-stars" class="tourism-label-hotel-stars" data-key="tourismLabelHotelStars">تصنيف الفندق (نجوم)</label>
+                            <select id="hotel-stars" name="hotel-stars">
+                                <option value="" data-key="hotelStarsPlaceholder">اختر تصنيف الفندق</option>
+                                <option value="3" data-key="hotelStars3">3 نجوم</option>
+                                <option value="4" data-key="hotelStars4">4 نجوم</option>
+                                <option value="5" data-key="hotelStars5">5 نجوم</option>
+                            </select>
                         </div>
                         <button type="submit" class="submit-btn tourism-submit" data-key="tourismSubmit">إرسال
                             الاستفسار</button>
@@ -2702,6 +2759,13 @@
                         <label class="label-phone" data-key="labelPhone">رقم الهاتف</label>
                         <input type="tel" name="phone" required>
                     </div>
+                    <div class="form-group">
+                        <label for="medical-city" class="medical-label-city" data-key="medicalLabelCity">المدينة</label>
+                        <select id="medical-city" name="medical-city" class="city-select" required>
+                            <option value="" data-key="selectCityPlaceholder">اختر المدينة</option>
+                            <!-- Populated by JS -->
+                        </select>
+                    </div>
 
                     <div class="form-group">
                         <label for="patient-gender" class="medical-label1" data-key="medicalLabel1">الجنس</label>
@@ -2716,6 +2780,7 @@
                     <div class="form-group">
                         <label for="patient-nationality" class="medical-label2" data-key="medicalLabel2">الجنسية</label>
                         <select id="patient-nationality" name="patient-nationality" required>
+                            <option value="" data-key="nationalityPlaceholder">اختر الجنسية...</option>
                             <option value="saudi" data-key="saudi">Saudi Arabia (المملكة العربية السعودية)</option>
                             <option value="uae" data-key="uae">UAE (الإمارات العربية المتحدة)</option>
                             <option value="kuwait" data-key="kuwait">Kuwait (الكويت)</option>
@@ -2763,6 +2828,37 @@
                                 السنية</option>
                             <option value="other" class="medical-option7" data-key="medicalOption7">خدمة طبية
                                 أخرى</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="service-date" class="medical-label-date" data-key="medicalLabelDate">تاريخ الخدمة المفضل</label>
+                        <input type="date" id="service-date" name="service-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="medical-service-level" class="medical-label-level" data-key="medicalLabelLevel">مستوى الخدمة (Service Level)</label>
+                        <select id="medical-service-level" name="medical-service-level" required>
+                            <option value="" data-key="medicalLevelPlaceholder">اختر مستوى الخدمة</option>
+                            <option value="elite" data-key="medicalLevelElite">The Elite Service</option>
+                            <option value="vip" data-key="medicalLevelVip">The VIP Service</option>
+                            <option value="economy" data-key="medicalLevelEconomy">The Economy Service</option>
+                            <option value="standard" data-key="medicalLevelStandard">The Standard Service</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="hospital-type" class="medical-label-hospital" data-key="medicalLabelHospital">نوع المستشفى (Hospital Type)</label>
+                        <select id="hospital-type" name="hospital-type" required onchange="togglePrivateHospitalTier(this)">
+                            <option value="" data-key="hospitalTypePlaceholder">اختر نوع المستشفى</option>
+                            <option value="government" data-key="hospitalTypeGov">مستشفى حكومي (Government Hospital)</option>
+                            <option value="private" data-key="hospitalTypePrivate">مستشفى خاص (Private Hospital)</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="private-hospital-tier-group" style="display: none;">
+                        <label for="private-hospital-tier" class="medical-label-tier" data-key="medicalLabelTier">فئة المستشفى الخاص (Private Hospital Tier)</label>
+                        <select id="private-hospital-tier" name="private-hospital-tier">
+                            <option value="" data-key="hospitalTierPlaceholder">اختر فئة المستشفى</option>
+                            <option value="best" data-key="hospitalTierBest">أفضل فئة (The Best Type)</option>
+                            <option value="madam" data-key="hospitalTierMadam">فئة متوسطة (Madam Type)</option>
+                            <option value="standard" data-key="hospitalTierStandard">فئة عادية (Standard Type)</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -2935,7 +3031,7 @@
                     <div class="form-group">
                         <label for="other-service-type" class="other-label1" data-key="otherLabel1">فئة
                             الخدمة</label>
-                        <select id="other-service-type" name="other-service-type" required>
+                        <select id="other-service-type" name="other-service-type" required onchange="toggleOtherServiceOptions(this)">
                             <option value="" class="other-option-select" data-key="otherOptionSelect">اختر فئة
                                 الخدمة</option>
                             <option value="legal" class="other-option1" data-key="otherOption1">الخدمات
@@ -2949,6 +3045,28 @@
                             <option value="other" class="other-option5" data-key="otherOption5">خدمة أخرى
                             </option>
                         </select>
+                    </div>
+                    <div class="form-group" id="residency-options-group" style="display: none;">
+                        <label for="id-city" class="other-label-id-city" data-key="otherLabelIdCity">مدينة استخراج الهوية/الإقامة</label>
+                        <select id="id-city" name="id-city" class="city-select">
+                            <option value="" data-key="selectCityPlaceholder">اختر المدينة</option>
+                            <!-- Populated by JS -->
+                        </select>
+                        
+                        <label for="residency-type" class="other-label-residency" data-key="otherLabelResidency" style="margin-top: 15px; display: block;">نوع الإقامة</label>
+                        <select id="residency-type" name="residency-type">
+                            <option value="" data-key="residencyPlaceholder">اختر نوع الإقامة</option>
+                            <option value="student" data-key="residencyStudent">إقامة طالب (Student)</option>
+                            <option value="tourist" data-key="residencyTourist">إقامة سياحية (Tourist)</option>
+                            <option value="work" data-key="residencyWork">إقامة عمل (Work)</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="translation-options-group" style="display: none;">
+                        <label class="other-label-translation-opts" data-key="otherLabelTransOpts">خيارات الترجمة والمصادقة</label>
+                        <div style="display: flex; flex-direction: column; gap: 5px;">
+                            <label><input type="checkbox" name="translation-services" value="translate"> <span data-key="transCheckTranslate">أحتاج إلى ترجمة (Need Translation)</span></label>
+                            <label><input type="checkbox" name="translation-services" value="approval"> <span data-key="transCheckApproval">أحتاج إلى تصديق/نوتر (Need Official Approval/Notarization)</span></label>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="other-service-details" class="other-label2" data-key="otherLabel2">مواصفات
@@ -2965,6 +3083,76 @@
             <div id="latest-other-posts" class="service-latest-posts"></div>
         </div>
         </div>
+        </div>
+    </section>
+
+    <!-- Careers / Work With Us Page -->
+    <section id="careers-page" class="service-page" style="display: none;">
+        <div class="service-header">
+            <div class="container">
+                <h1 data-key="careersTitle">انضم لفريقنا</h1>
+                <p data-key="careersSubtitle">ابحث عن فرصة عمل معنا وكن جزءاً من نجاحنا</p>
+            </div>
+        </div>
+        <div class="container" style="max-width: 800px; padding: 4rem 1rem;">
+            <div class="service-form" style="padding: 2rem; border-radius: var(--radius); background: var(--white); box-shadow: var(--shadow-md);">
+                <h2 class="careers-form-title" data-key="careersFormTitle" style="color: var(--primary); margin-bottom: 2rem; font-size: 1.8rem;">نموذج التوظيف (Work With Us)</h2>
+                <form id="careersForm">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label data-key="labelFirstName">First Name</label>
+                            <input type="text" name="first-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label data-key="labelLastName">Last Name</label>
+                            <input type="text" name="last-name" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="label-email" data-key="labelEmail">البريد الإلكتروني</label>
+                        <input type="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="label-phone" data-key="labelPhone">رقم الهاتف</label>
+                        <input type="tel" name="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="career-gender" data-key="careerGenderLabel">الجنس (Gender)</label>
+                        <select id="career-gender" name="career-gender" required>
+                            <option value="" data-key="careerGenderPlaceholder">اختر الجنس</option>
+                            <option value="male" data-key="careerGenderMale">ذكر (Male)</option>
+                            <option value="female" data-key="careerGenderFemale">أنثى (Female)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="career-city" data-key="careerCityLabel">مدينة الإقامة الحالية (Current City)</label>
+                        <select id="career-city" name="career-city" class="city-select" required>
+                            <option value="" data-key="selectCityPlaceholder">اختر المدينة</option>
+                            <!-- Populated by JS -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="career-department" data-key="careerDeptLabel">القسم المفضل (Department)</label>
+                        <select id="career-department" name="career-department" required>
+                            <option value="" data-key="careerDeptPlaceholder">اختر القسم</option>
+                            <option value="real-estate" data-key="careerDeptRealEstate">العقارات (Real Estate)</option>
+                            <option value="tourism" data-key="careerDeptTourism">السياحة (Tourism)</option>
+                            <option value="medical" data-key="careerDeptMedical">الخدمات الطبية (Medical)</option>
+                            <option value="student" data-key="careerDeptStudent">الخدمات الطلابية (Student Services)</option>
+                            <option value="business" data-key="careerDeptBusiness">خدمات الأعمال (Business)</option>
+                            <option value="marketing" data-key="careerDeptMarketing">التسويق (Marketing)</option>
+                            <option value="sales" data-key="careerDeptSales">المبيعات (Sales)</option>
+                            <option value="customer-service" data-key="careerDeptCustomerService">خدمة العملاء (Customer Service)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="career-cv" data-key="careerCVLabel">السيرة الذاتية (CV)</label>
+                        <input type="file" id="career-cv" name="career-cv" accept=".pdf,.doc,.docx" required style="border: 2px dashed var(--gray); padding: 1rem; width: 100%; border-radius: var(--radius); cursor: pointer; display: block; margin-top: 8px;">
+                        <small style="color: var(--text-light); margin-top: 5px; display: block;" data-key="careerCVHelp">مسموح بملفات PDF, DOC, DOCX.</small>
+                    </div>
+                    <button type="submit" class="submit-btn career-submit" data-key="careerSubmit">إرسال الطلب (Submit Application)</button>
+                </form>
+            </div>
         </div>
     </section>
 
@@ -6557,6 +6745,8 @@
                 selector = '.nav-home';
             } else if (route === 'services') {
                 selector = '.nav-services';
+            } else if (route === 'careers') {
+                selector = '.nav-careers';
             } else if (route.startsWith('home#')) {
                 const hash = route.split('#')[1];
                 selector = `.nav-${hash}`;
@@ -7031,34 +7221,45 @@
                 return;
             }
 
-            if (route === 'opportunities') {
-                history.pushState(null, null, '#opportunities');
+            if (route === 'opportunities' || route === 'careers') {
+                history.pushState(null, null, `#${route}`);
 
                 // 1. Hide Top Level Pages
                 document.querySelectorAll('.service-page').forEach(p => p.classList.remove('active'));
                 document.querySelectorAll('.dashboard-section').forEach(p => p.style.display = 'none');
 
-                // 2. Show Services Hub (Parent Container)
-                const hub = document.getElementById('services-hub-page');
-                if (hub) hub.classList.add('active');
+                if (route === 'opportunities') {
+                    // 2. Show Services Hub (Parent Container)
+                    const hub = document.getElementById('services-hub-page');
+                    if (hub) hub.classList.add('active');
 
-                // 3. Hide all specific service contents
-                document.querySelectorAll('.service-content').forEach(p => p.style.display = 'none');
+                    // 3. Hide all specific service contents
+                    document.querySelectorAll('.service-content').forEach(p => p.style.display = 'none');
 
-                // 4. Show Opportunities Content
-                const container = document.getElementById('services-container');
-                if (container) container.style.display = 'block';
+                    // 4. Show Opportunities Content
+                    const container = document.getElementById('services-container');
+                    if (container) container.style.display = 'block';
 
-                const page = document.getElementById('opportunities-page');
-                if (page) {
-                    page.style.display = 'block';
-                    page.classList.add('active');
-                    loadAllOpportunities();
+                    const page = document.getElementById('opportunities-page');
+                    if (page) {
+                        page.style.display = 'block';
+                        page.classList.add('active');
+                        loadAllOpportunities();
 
-                    // Smooth scroll to it
-                    setTimeout(() => {
-                        window.scrollTo({ top: container.offsetTop - 100, behavior: 'smooth' });
-                    }, 100);
+                        // Smooth scroll to it
+                        setTimeout(() => {
+                            window.scrollTo({ top: container.offsetTop - 100, behavior: 'smooth' });
+                        }, 100);
+                    }
+                } else if (route === 'careers') {
+                    const page = document.getElementById('careers-page');
+                    if (page) {
+                        page.style.display = 'block';
+                        page.classList.add('active');
+                        setTimeout(() => {
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }, 100);
+                    }
                 }
                 return;
             }
@@ -7189,6 +7390,63 @@
                     messageBox.focus();
                 }
             }, 500);
+        };
+
+        // ============================================
+        // FORM UI TOGGLES
+        // ============================================
+        window.togglePrivateHospitalTier = function(select) {
+            const group = document.getElementById('private-hospital-tier-group');
+            if(group) {
+                group.style.display = select.value === 'private' ? 'block' : 'none';
+                const tierSelect = document.getElementById('private-hospital-tier');
+                if (tierSelect) {
+                    if (select.value === 'private') {
+                        tierSelect.setAttribute('required', 'required');
+                    } else {
+                        tierSelect.removeAttribute('required');
+                    }
+                }
+            }
+        };
+
+        window.toggleLandOptions = function(select) {
+            const group = document.getElementById('land-options-group');
+            if(group) {
+                group.style.display = select.value === 'land' ? 'block' : 'none';
+                const landSelect = document.getElementById('land-type');
+                if (landSelect) {
+                    if (select.value === 'land') {
+                        landSelect.setAttribute('required', 'required');
+                    } else {
+                        landSelect.removeAttribute('required');
+                    }
+                }
+            }
+        };
+
+        window.toggleOtherServiceOptions = function(select) {
+            const resGroup = document.getElementById('residency-options-group');
+            const transGroup = document.getElementById('translation-options-group');
+            
+            if(resGroup) {
+                resGroup.style.display = select.value === 'residency' ? 'block' : 'none';
+                const resSelect = document.getElementById('residency-type');
+                const citySelect = document.getElementById('id-city');
+                if (resSelect && citySelect) {
+                    if (select.value === 'residency') {
+                        resSelect.setAttribute('required', 'required');
+                        citySelect.setAttribute('required', 'required');
+                    } else {
+                        resSelect.removeAttribute('required');
+                        citySelect.removeAttribute('required');
+                    }
+                }
+            }
+
+            if(transGroup) {
+                transGroup.style.display = select.value === 'translation' ? 'block' : 'none';
+            }
         };
 
         // 6. INITIALIZATION & EVENT LISTENERS
